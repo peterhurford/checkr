@@ -4,14 +4,14 @@
 \alias{ensure}
 \title{Ensure checks that certain preconditions and postconditions of a function are true.}
 \usage{
-ensure(preconditions, postconditions, fn)
+ensure(fn, preconditions = list(), postconditions = list())
 }
 \arguments{
+\item{fn}{function. A function to run with validated pre- and postconditions.}
+
 \item{preconditions}{list. A list of preconditions to check.}
 
 \item{postconditions}{list. A list of postconditions to check.}
-
-\item{fn}{function. A function to run with validated pre- and postconditions.}
 }
 \value{
 The original function, but with added validations.
