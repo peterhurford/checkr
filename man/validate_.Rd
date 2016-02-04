@@ -2,6 +2,7 @@
 % Please edit documentation in R/validate.R
 \name{validate_}
 \alias{validate_}
+\title{Validate without NSE.}
 \usage{
 validate_(conditions, env = parent.frame(2))
 }
@@ -11,5 +12,8 @@ validate_(conditions, env = parent.frame(2))
 \item{env}{environment. An optional environment to evaluate within. Defaults to
 \code{parent.frame(2)}, which contains the variables in the scope immediately beyond
 the validate (though not the validate_) function.}
+}
+\description{
+Validate without NSE.
 }
 

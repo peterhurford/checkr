@@ -10,6 +10,7 @@ validate <- function(...) {
   validate_(conditions)
 }
 
+#' Validate without NSE.
 #' @param conditions list. A list of conditions to check.
 #' @param env environment. An optional environment to evaluate within. Defaults to
 #' \code{parent.frame(2)}, which contains the variables in the scope immediately beyond
