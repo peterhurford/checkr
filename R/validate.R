@@ -1,4 +1,4 @@
-#' Validate checks that certain facts about the inputs of your parameters are true.
+#' Validate checks that certain facts are true.
 #'
 #' @param ... list. A list of conditions to check.
 #' @examples
@@ -7,14 +7,24 @@
 #' @export
 validate <- function(...) {
   conditions <- substitute(list(...))
-  errors <- Filter(Negate(is.null), lapply(conditions, verify_condition))
+  validate_(conditions)
+}
+
+#' Validate_ checks without non-standard evaluation.
+#'
+#' @param conditions list. A list of conditions to check.
+#' @param env environment. An optional environment to evaluate within. Defaults to
+#' \code{parent.frame(2)}, which contains the variables in the scope immediately beyond
+#' the validate (though not the validate_) function.
+validate_ <- function(conditions, env = parent.frame(2)) {
+  errors <- Filter(Negate(is.null), lapply(conditions, verify_condition, env = env))
   if (length(errors) > 0) {
-    stop("Failed conditions: ", paste(errors, collapse = ", "), call. = FALSE)
+    stop("Error on ", paste(errors, collapse = ", "), call. = FALSE)
   }
   TRUE
 }
 
-verify_condition <- function(condition) {
-  if (identical(eval(condition, envir = parent.frame(3)), FALSE)) { deparse(condition) }
+verify_condition <- function(condition, env) {
+  if (identical(eval(condition, envir = env), FALSE)) { deparse(condition) }
   else { NULL }
 }

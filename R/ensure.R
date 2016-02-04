@@ -1,25 +1,24 @@
-#' Require certain things are true about your function call.
+#' Ensure checks that certain preconditions and postconditions of a function are true.
 #'
-#' @param param(s) type. Description of param 
-#' @examples \dontrun{
-#    # fill in with example. I.E.
-#'   a <- rnorm(100)
-#'   b <- a*.7 + rnorm(100)
-#'   plot(a, b) 
-#'   # If wrapped in /code{dontrun} than also sample of return object if possible
-#' }
-#' @return Return Object Description
+#' @param preconditions list. A list of preconditions to check.
+#' @param postconditions list. A list of postconditions to check.
+#' @param fn function. A function to run with validated pre- and postconditions.
+#' @examples
+#'   add <- ensure(pre = list(x %is% numeric, y %is% numeric),
+#'     post = list(result %is% numeric),
+#'     function(x, y) { x + y })
+#' @return The original function, but with added validations.
 #' @export
-validate <- function(...) {
-  conditions <- substitute(list(...))
-  errors <- Filter(Negate(is.null), lapply(conditions, verify_condition))
-  if (length(errors) > 0) {
-    stop("Failed conditions: ", paste(errors, collapse = ", "), call. = FALSE)
+ensure <- function(preconditions, postconditions, fn) {
+  pre <- substitute(preconditions)
+  post <- substitute(postconditions)
+  force(fn)
+  function(...) {
+    args <- list(...)
+    if (is.empty(names(args))) { names(args) <- names(formals(fn)) }
+    validate_(pre, env = args)
+    args$result <- fn(...)
+    validate_(post, env = args)
+    args$result
   }
-  TRUE
-}
-
-verify_condition <- function(condition) {
-  if (identical(eval(condition, envir = parent.frame(3)), FALSE)) { deparse(condition) }
-  else { NULL }
 }
