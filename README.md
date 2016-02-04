@@ -23,7 +23,7 @@ add("a", "b")
 #'
 #' @param length numeric. The length of the random string to generate.
 #' @param alphabet character. A list of characters to draw from to create the string.
-random_string <- ensure(
+random_string <- validations::ensure(
   pre = list(length %is% numeric,
     alphabet %is% list || alphabet %is% vector,
     alphabet %contains_only% simple_string,
