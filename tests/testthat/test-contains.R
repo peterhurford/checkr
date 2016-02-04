@@ -7,6 +7,10 @@ test_that("simple matchers", {
   expect_false(list(1, 2, 3) %contains% character)
 })
 
+test_that("it is FALSE for empty lists", {
+  expect_false(list("", "", "") %contains_only% character)
+})
+
 test_that("complex class matching", {
   obj <- structure("obj", class = "obj_class")
   expect_true(obj %is% obj_class)

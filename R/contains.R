@@ -29,6 +29,7 @@
 }
 
 contains_ <- function(match_list, expected_class, exclusive) {
+  if (is.empty(match_list)) { return(FALSE) }
   match_fn <- if (isTRUE(exclusive)) { all } else { any }
   match_fn(vapply(match_list, `%is_%`, expected_class = expected_class, logical(1)))
 }
