@@ -48,6 +48,6 @@
 }
 
 #' Test whether a match object is not a member of a particular class.
-#' @inheritParams `%is%`
+#' @rdname grapes-is-grapes
 #' @export
 `%isnot%` <- Negate(`%is%`)

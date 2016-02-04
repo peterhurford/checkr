@@ -15,7 +15,7 @@
 }
 
 #' Test if a list contains only elements of the desired class.
-#' @inheritParams `%contains%`
+#' @rdname grapes-contains-grapes
 #' @examples
 #'   list(1, 2, 3) %contains_only% numeric
 #'   list(1, 2, "a") %contains_only% numeric
