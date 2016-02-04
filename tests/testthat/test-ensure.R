@@ -60,3 +60,25 @@ random_string <- ensure(
 test_that("result is checked for length", {
   expect_error(random_string(10, LETTERS), "Error on nchar(result) < length", fixed = TRUE)
 })
+
+
+test_that("it can have preconditions without postconditions", {
+  add <- ensure(pre = list(x %is% numeric, y %is% numeric), function(x, y) x + y)
+  expect_equal(add(1, 2), 3)
+  expect_error(add("a", 2), "x %is% numeric")
+  expect_error(add("a", "b"), "x %is% numeric, y %is% numeric")
+})
+
+test_that("it can have postconditions without preconditions", {
+  add <- ensure(post = list(result %is% numeric), function(x, y) x + y)
+  expect_equal(add(1, 2), 3)
+  add <- ensure(post = list(result %is% character), function(x, y) x + y)
+  expect_error(add(1, 2), "result %is% character")
+})
+
+test_that("a single postcondition does not have to be a list", {
+  add <- ensure(post = result %is% numeric, function(x, y) x + y)
+  expect_equal(add(1, 2), 3)
+  add <- ensure(post = result %is% character, function(x, y) x + y)
+  expect_error(add(1, 2), "result %is% character")
+})
