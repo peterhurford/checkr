@@ -7,13 +7,13 @@
 #'   add <- ensure(pre = list(x %is% numeric, y %is% numeric),
 #'     post = list(result %is% numeric),
 #'     function(x, y) { x + y })
-#' @return The original function, but with added validations.
+#' @return The original function, but also of class validated_function, with added validations.
 #' @export
 ensure <- function(fn, preconditions = list(), postconditions = list()) {
   pre <- substitute(preconditions)
   post <- substitute(postconditions)
   force(fn)
-  function(...) {
+  validated_fn <- function(...) {
     args <- list(...)
     if (is.empty(names(args))) { names(args) <- names(formals(fn)) }
     validate_(pre, env = args)
@@ -21,4 +21,6 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     validate_(post, env = args)
     args$result
   }
+  class(validated_fn) <- append(class(fn), "validated_function")
+  validated_fn
 }

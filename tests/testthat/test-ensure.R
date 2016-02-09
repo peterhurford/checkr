@@ -14,6 +14,18 @@ random_string <- ensure(
     paste0(sample(alphabet, 10, replace = TRUE), collapse = "")
   })
 
+test_that("the result is a validated function", {
+  expect_true(random_string %is% "function")
+  expect_true(random_string %is% validated_function)
+})
+test_that("validation preserves original classes", {
+  add <- function(x, y) x + y
+  class(add) <- "adding_function"
+  expect_true(add %is% adding_function)
+  add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric, add)
+  expect_true(add %is% validated_function)
+  expect_true(add %is% adding_function)
+})
 test_that("length is checked for numeric", {
   expect_error(random_string("pizza", LETTERS), "Error on length %is% numeric")
 })
