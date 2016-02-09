@@ -15,12 +15,37 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
   force(fn)
   validated_fn <- function(...) {
     args <- list(...)
-    if (is.empty(names(args))) { names(args) <- names(formals(fn)) }
+    if (is.empty(names(args))) {
+      formals <- names(formals(fn))
+
+      # If a function has multiple args but some of them are missing, we just
+      # cut out the missing ones.
+      length(formals) <- length(args)
+      names(args) <- formals
+
+      # Get all the non-empty arguments to impute missing arguments.
+      default_args <- Filter(Negate(is.name), formals(fn))
+      for (pos in seq_along(default_args)) {
+        if (!(names(default_args)[[pos]] %in% names(args))) {
+          args[[names(default_args)[[pos]]]] <- default_args[[pos]]
+        }
+      }
+    }
+
+    # Make sure all the formals are present in the args.
+    missing_args <- names(formals(fn))[which(!(names(formals(fn)) %in% names(args)))]
+    if (length(missing_args) > 0) {
+      stop("Error on missing arguments: ",
+        paste0(missing_args, collapse = ", "), call. = FALSE)
+    }
+
+    # Run the preconditions and postconditions.
     validate_(pre, env = args)
     args$result <- fn(...)
     validate_(post, env = args)
     args$result
   }
+
   class(validated_fn) <- append(class(fn), "validated_function")
   validated_fn
 }
