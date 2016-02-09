@@ -1,6 +1,6 @@
 Package: validations
 Title: Check preconditions and postconditions in R functions.
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: person("Peter", "Hurford", email = "peter@peterhuford.com", role = c("aut", "cre"))
 Description: Be able to specify preconditions and postconditions for R functions and have them automatically checked at runtime.
 Depends: R (>= 3.1.0)
