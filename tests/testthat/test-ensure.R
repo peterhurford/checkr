@@ -94,3 +94,15 @@ test_that("a single postcondition does not have to be a list", {
   add <- ensure(post = result %is% character, function(x, y) x + y)
   expect_error(add(1, 2), "result %is% character")
 })
+
+test_that("preconditions fetches the preconditions", {
+  add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric,
+    function(x, y) x + y)
+  expect_identical(preconditions(add), substitute(list(x %is% numeric, y %is% numeric)))
+})
+
+test_that("postconditions fetches the preconditions", {
+  add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric,
+    function(x, y) x + y)
+  expect_identical(postconditions(add), substitute(result %is% numeric))
+})

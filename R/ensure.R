@@ -24,3 +24,20 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
   class(validated_fn) <- append(class(fn), "validated_function")
   validated_fn
 }
+
+
+#' Get the stated preconditions of a validated function.
+#' @param fn validated_function. The function to get the preconditions for.
+#' @returns a call containing the preconditions.
+preconditions <- function(fn) conditions_(fn, "pre")
+
+#' Get the stated postconditions of a validated function.
+#' @param fn validated_function. The function to get the postconditions for.
+#' @returns a call containing the postconditions.
+postconditions <- function(fn) conditions_(fn, "post")
+
+conditions_ <- ensure(
+  pre = list(fn %is% validated_function,
+    key %in% c("pre", "post")),
+  post = result %is% call,
+  function(fn, key) { environment(fn)[[key]] })
