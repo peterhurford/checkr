@@ -15,6 +15,7 @@ validate <- function(...) {
 #' @param env environment. An optional environment to evaluate within. Defaults to
 #' \code{parent.frame(2)}, which contains the variables in the scope immediately beyond
 #' the validate (though not the validate_) function.
+#' @export
 validate_ <- function(conditions, env = parent.frame(2)) {
   # Substituted R expressions have length > 1, so we need to wrap them in lists.
   if (conditions[[1]] != substitute(list) && is.call(conditions)) {

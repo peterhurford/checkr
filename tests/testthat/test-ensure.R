@@ -116,6 +116,9 @@ describe("fetchers", {
   test_that("postconditions fetches the preconditions", {
     expect_identical(postconditions(add), substitute(result %is% numeric))
   })
+  test_that("postconditions fetches the preconditions", {
+    expect_identical(get_prevalidated_fn(add), function(x, y) x + y)
+  })
 })
 
 describe("passing conditions", {

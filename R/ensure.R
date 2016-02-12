@@ -34,6 +34,7 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
 
     # Make sure all the formals are present in the args.
     missing_args <- names(formals(fn))[which(!(names(formals(fn)) %in% names(args)))]
+    missing_args <- missing_args[which(!(missing_args %in% names(default_args)))]
     if (length(missing_args) > 0) {
       stop("Error on missing arguments: ",
         paste0(missing_args, collapse = ", "), call. = FALSE)
@@ -53,12 +54,14 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
 
 #' Get the stated preconditions of a validated function.
 #' @param fn validated_function. The function to get the preconditions for.
-#' @returns a call containing the preconditions.
+#' @return a call containing the preconditions.
+#' @export
 preconditions <- function(fn) conditions_(fn, "pre")
 
 #' Get the stated postconditions of a validated function.
 #' @param fn validated_function. The function to get the postconditions for.
-#' @returns a call containing the postconditions.
+#' @return a call containing the postconditions.
+#' @export
 postconditions <- function(fn) conditions_(fn, "post")
 
 conditions_ <- ensure(
@@ -66,3 +69,13 @@ conditions_ <- ensure(
     key %in% c("pre", "post")),
   post = result %is% call,
   function(fn, key) { environment(fn)[[key]] })
+
+
+#' Get the pre-validated function that is wrapped in validations.
+#' @param fn validated_function. The function to get the pre-validated function for.
+#' @return a call containing the postconditions.
+#' @export
+get_prevalidated_fn <- ensure(
+  pre = fn %is% validated_function,
+  post = list(result %is% "function", result %isnot% validated_function),
+  function(fn) { environment(fn)$fn })
