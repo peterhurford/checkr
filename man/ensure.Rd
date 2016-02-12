@@ -14,7 +14,7 @@ ensure(fn, preconditions = list(), postconditions = list())
 \item{postconditions}{list. A list of postconditions to check.}
 }
 \value{
-The original function, but with added validations.
+The original function, but also of class validated_function, with added validations.
 }
 \description{
 Ensure checks that certain preconditions and postconditions of a function are true.

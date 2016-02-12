@@ -7,11 +7,13 @@ While [some have tried admirably](https://github.com/zatonovo/lambda.r), it seem
 Things still die on runtime instead of compile-time, which is sad, but functions are more explicit about what they do and less tests need to be written -- better than the status quo!
 
 ```R
+library(validations)
+
 #' Add two numbers.
 #'
 #' @param x numeric. The number to add.
 #' @param y numeric. The number to add.
-add <- validations::ensure(
+add <- ensure(
   pre = list(x %is% numeric, y %is% numeric),
   post = result %is% numeric,  # `result` matches whatever the function returns.
   function(x, y) x + y)
@@ -28,7 +30,7 @@ add("a", "b")
 #'
 #' @param length numeric. The length of the random string to generate.
 #' @param alphabet character. A list of characters to draw from to create the string.
-random_string <- validations::ensure(
+random_string <- ensure(
   pre = list(length %is% numeric,
     alphabet %is% list || alphabet %is% vector,
     alphabet %contains_only% simple_string,
