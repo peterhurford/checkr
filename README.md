@@ -37,7 +37,7 @@ random_string <- ensure(
     length > 0),
   post = list(result %is% simple_string, nchar(result) == length),
   function(length, alphabet) {
-    paste0(sample(alphabet, 10, replace = TRUE), collapse = "")
+    paste0(sample(alphabet, length, replace = TRUE), collapse = "")
   })
 ```
 
