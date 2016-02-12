@@ -39,8 +39,12 @@ We may write some tests using testthat:
 
 ```R
 test_that("It generates a random string from the given alphabet", {
+  random_string <- random_string(10, letters)
+  all(strsplit(random_string, "")[[1]] %in% letters)
 })
 test_that("It generates a random string of the given length", {
+  random_string <- random_string(10, letters)
+  expect_equal(length(random_string), 10)
 })
 ```
 
@@ -59,8 +63,13 @@ For example, if we had written a thorough test for (a), we would have noticed th
 
 ```R
 quickcheck(random_string,
-  list(nchar(result) == length, length(result) == 1, is.character(result)))
+  list(nchar(result) == length, length(result) == 1, is.character(result),
+    all(strsplit(result, "")[[1]] %in% alphabet)))
 ```
+
+That will verify that the number of characters of the resulting string is the same as the `length` that you passed into the function, it will verify that the resulting string is not a length > 1 vector, that the resulting string is all characters, and that all the characters in the string are within the given `alphabet`.  This verification will be done with many different values for `length` and `alphabet`.
+
+This easily accomplishes in two lines what normally takes five well thought-out and detailed tests.
 
 **TODO: Write more here, also talk about the validations package.**
 
