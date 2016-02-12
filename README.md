@@ -41,6 +41,16 @@ random_string <- ensure(
   })
 ```
 
+#### Installation
+
+This package is not yet available from CRAN.  Instead, it can be installed using [devtools](http
+://www.github.com/hadley/devtools):
+
+```R
+if (!require("devtools")) { install.packages("devtools") }
+devtools::install_github("peterhurford/validations")
+```
+
 -
 
 Inspired by [Cobra](http://cobra-language.com/).
