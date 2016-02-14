@@ -80,6 +80,8 @@ installed_dataframes <- function() {
 }
 OBJECTS$dataframes <- installed_dataframes()
 
+#TODO: Maybe someday we can also check functions, environments, and some custom structs.
+
 
 #' Generates random R objects to be put into functions for testing purposes.
 test_objects <- memoise::memoise(function() {
@@ -136,7 +138,6 @@ test_objects <- memoise::memoise(function() {
     lapply(seq(LIST_SIZE), function(n) {
       list(sample(testing_frame, LIST_SIZE))
     }))
-  # TODO: more complex objects (matricies, dataframes, custom class objects)
   testing_frame
 })
 
