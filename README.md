@@ -11,7 +11,7 @@ Quickcheck, inspired by [the Haskell namesake](https://github.com/nick8325/quick
 Testing made easy AND quick! ...and more accurate!
 
 
-#### Installation
+## Installation
 
 **This package is a work in progress and is not ready yet.**
 
@@ -23,7 +23,7 @@ devtools::install_github("peterhurford/quickcheck")
 ```
 
 
-#### Using Quickcheck
+## Using Quickcheck
 
 Imagine you want to generate a random string of a given length from a given possible alphabet of characters.  Your R function might look like this:
 
@@ -74,7 +74,7 @@ This easily accomplishes in two lines what normally takes five well thought-out 
 **TODO: Write more here, also talk about the validations package.**
 
 
-#### Why not use Quickcheck by Revolution Analytics?
+## Why not use Quickcheck by Revolution Analytics?
 
 In June 2015 (8 months before me), Revolution Analytics released [their own version of Quickcheck for R](https://github.com/RevolutionAnalytics/quickcheck) which works [to also automatically verify properties of R functions](https://github.com/RevolutionAnalytics/quickcheck/blob/master/docs/tutorial.md).
 
