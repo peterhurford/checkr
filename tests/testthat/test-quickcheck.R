@@ -1,4 +1,4 @@
-context("generate")
+context("quickcheck")
 library(validations)
 
 test_that("simple success example", {
