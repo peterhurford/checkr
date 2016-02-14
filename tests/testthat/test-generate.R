@@ -1,16 +1,23 @@
 context("generate")
 
-classes <- c("numeric", "integer", "list", "character", "logical", "matrix", "data.frame")
+desired_classes <- c("numeric", "integer", "list", "character", "logical",
+  "matrix", "data.frame", "NULL")
 testing_frame <- test_objects()
 
 describe("OBJECTS", {
   test_that("OBJECTS has one of every class", {
-    report <- vapply(classes, function(klass) klass %in% list_classes(OBJECTS), logical(1))
+    found_classes <- unique(unname(unlist(lapply(OBJECTS, list_classes))))
+    report <- vapply(desired_classes,
+      function(klass) klass %in% found_classes, logical(1))
     error <- paste(paste0(names(which(!report)), collapse = ", "), "not found among OBJECTS")
     expect_true(all(report), info = error)
   })
   test_that("The empties are one of every class, plus NULL-class", {
-    for (klass in c(classes, "NULL")) { expect_true(klass %in% list_classes(OBJECTS$empties)) }
+    found_classes <- list_classes(OBJECTS$empties)
+    report <- vapply(desired_classes,
+      function(klass) klass %in% found_classes, logical(1))
+    error <- paste(paste0(names(which(!report)), collapse = ", "), "not found among empties")
+    expect_true(all(report), info = error)
   })
   test_that("The negative integers for OBJECTS work right", {
     expect_true(all(OBJECTS$negative_integers < 0))
@@ -20,7 +27,9 @@ describe("OBJECTS", {
 
 describe("test_objects", {
   test_that("the testing_frame has one of every class", {
-    report <- vapply(classes, function(klass) klass %in% list_classes(testing_frame), logical(1))
+    found_classes <- unique(unname(unlist(lapply(testing_frame, list_classes))))
+    report <- vapply(desired_classes,
+      function(klass) klass %in% found_classes, logical(1))
     error <- paste(paste0(names(which(!report)), collapse = ", "),
       "not found among testing_frame")
     expect_true(all(report), info = error)
