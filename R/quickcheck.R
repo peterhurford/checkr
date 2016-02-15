@@ -1,7 +1,7 @@
 #' Create the necessary testing objects to quickcheck a function.
 #' @param fn function. A function to generate test objects for.
 #' @import validations
-function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
+function_test_objects <- validations::ensure(pre = fn %is% "function", post = result %is% list,
   function(fn) {
     if (fn %is% validated_function) {
       preconditions <- validations::preconditions(fn)
@@ -25,18 +25,20 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
           TRUE
         }, frame)
       }), error = function(e) {
-        # If there was an error, we assume it was because of interdependent preconditions,
-        # so we go to the backup of calculating the arguments jointly.
-        lapply(lapply(testing_frame, function(frame) {
-          lapply(seq_along(testing_frame[[1]]), function(pos) {
-            env <- lapply(testing_frame, `[[`, pos)
-            names(env) <- formals
-            for (precondition in as.list(preconditions)) {
-              if (!isTRUE(eval(precondition, env = env))) { return(NULL) }
-            }
-            frame[[pos]]
-          })
-        }), function(frame) { Filter(Negate(is.null), frame) })
+        if (grepl("not found", as.character(e), fixed = TRUE)) {
+          # If there was a not found error, we assume it was because of interdependent
+          # preconditions, so we go to the backup of calculating the arguments jointly.
+          lapply(lapply(testing_frame, function(frame) {
+            lapply(seq_along(testing_frame[[1]]), function(pos) {
+              env <- lapply(testing_frame, `[[`, pos)
+              names(env) <- formals
+              for (precondition in as.list(preconditions)) {
+                if (!isTRUE(eval(precondition, env = env))) { return(NULL) }
+              }
+              frame[[pos]]
+            })
+          }), function(frame) { Filter(Negate(is.null), frame) })
+        } else { stop(e) }
       })
     } else {
       formals <- names(formals(fn))
@@ -85,7 +87,7 @@ function_name <- function(orig_function_name) {
 #' @param verbose logical. Whether or not to announce the success.
 #' @return either TRUE if the function passed the quickcheck or a specific error.
 #' @import validations
-quickcheck <- ensure(pre = list(fn %is% "function", verbose %is% logical),
+quickcheck <- validations::ensure(pre = list(fn %is% "function", verbose %is% logical),
   post = isTRUE(result),
 function(fn, postconditions = NULL, verbose = TRUE) {
   post <- substitute(postconditions)

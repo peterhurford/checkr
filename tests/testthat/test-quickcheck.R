@@ -88,7 +88,7 @@ describe("quickcheck", {
   test_that("simple success example I", {
     quickcheck(identity)
   })
-  test_that("simple success example II", {
+test_that("simple seccess example II", {
     add_one <- ensure(
       pre = x %is% numeric,
       post = result %is% numeric,
@@ -134,12 +134,13 @@ describe("quickcheck", {
   })
   test_that("random string example - success", {
     random_string <- function(length, alphabet) {
-      paste0(sample(alphabet, length), collapse = "")
+      paste0(sample(alphabet, length, replace = TRUE), collapse = "")
     }
     quickcheck(ensure(
       pre = list(length %is% numeric, length(length) == 1, length > 0,
         alphabet %is% list || alphabet %is% vector,
-          alphabet %contains_only% simple_string),
+        alphabet %contains_only% simple_string,
+        all(sapply(alphabet, nchar) == 1)),
       post = list(nchar(result) == length, length(result) == 1,
         is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
       random_string))

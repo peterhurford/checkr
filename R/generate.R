@@ -102,6 +102,11 @@ test_objects_ <- function() {
     random_objs(c(OBJECTS$positive_doubles, 0, OBJECTS$negative_doubles), LIST_SIZE))
   testing_frame <- append(testing_frame,
     random_objs(c(OBJECTS$positive_integers, 0L, OBJECTS$negative_integers), LIST_SIZE))
+  # construct random-length vectors of single characters
+  testing_frame <- append(testing_frame, random_objs(OBJECTS$characters, LIST_SIZE))
+  testing_frame <- append(testing_frame, random_objs(OBJECTS$utf8, LIST_SIZE))
+  testing_frame <- append(testing_frame,
+    random_objs(c(OBJECTS$characters, OBJECTS$utf8), LIST_SIZE))
   # construct random-length simple strings
   testing_frame <- append(testing_frame,
     random_simple_strings(LIST_SIZE, chars = TRUE, utf8 = FALSE))
