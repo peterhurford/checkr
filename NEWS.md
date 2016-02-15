@@ -1,3 +1,8 @@
+#### v0.0.0.9003
+
+* Validating a function twice creates an error.
+* Printing a validated function will show the preconditions, postconditions, and the original function, rather than the metaprogramming behind the scenes.
+
 #### v0.0.0.9002
 
 * Adds helpers `preconditions` and `postconditions` for fetching the conditions of validated functions.

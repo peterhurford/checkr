@@ -50,7 +50,7 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     args$result
   }
 
-  class(validated_fn) <- append(class(fn), "validated_function")
+  class(validated_fn) <- append(class(fn), "validated_function", 0)
   validated_fn
 }
 
@@ -82,3 +82,16 @@ get_prevalidated_fn <- ensure(
   pre = fn %is% validated_function,
   post = list(result %is% "function", result %isnot% validated_function),
   function(fn) { environment(fn)$fn })
+
+
+#' Print validated functions more clearly.
+#' @param x function. The function to print.
+#' @param ... Additional arguments to pass to print.
+#' @export
+print.validated_function <- function(x, ...) {
+  print(list(
+    preconditions = preconditions(x),
+    postconditions = postconditions(x),
+    fn = get_prevalidated_fn(x)),
+  ...)
+}
