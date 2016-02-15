@@ -6,7 +6,8 @@ GENERATIONS <- 3       # How many times should the test generation be repeated?
 # It's basically a staging area for our random madness.
 OBJECTS <- list(
   empties           = list(NA, NULL, "", character(0), logical(0), numeric(0), integer(0),
-                        data.frame(), list(), matrix(), c()),
+                        data.frame(), list(), matrix(), c(), structure(NA, class = "table"),
+                        factor(NA)),
   positive_doubles  = c(seq(100), 1000, 100000, 2147483647),
   logicals          = c(TRUE, FALSE),
   characters        = c(letters, LETTERS),
@@ -28,11 +29,7 @@ list_classes <- function(object) {
 #' Generate a vector or list of random objects from a particular set of possible choices.
 random_objs <- function(objects, amount) {
   lengths <- sample(seq(LIST_MAX_LENGTH), amount, replace = TRUE)
-  lapply(lengths, function(l) {
-    random_list <- lapply(seq(l), function(n) sample(objects, 1))
-    if (length(list_classes(random_list)) == 1) { unlist(random_list) }
-    else { random_list }
-  })
+  lapply(lengths, function(l) { sample(objects, l, replace = TRUE) })
 }
 
 #' Generate a random simple string (i.e., a length-1 non-empty vector of characters).
@@ -79,7 +76,10 @@ installed_dataframes <- function() {
   names(dataframes) <- dataframe_names
   dataframes
 }
-OBJECTS$dataframes <- installed_dataframes()
+dataframes <- installed_dataframes()
+OBJECTS$dataframes <- Filter(is.data.frame, dataframes)
+OBJECTS$factors <- Filter(is.factor, dataframes)
+OBJECTS$table <- Filter(is.table, dataframes)
 
 #TODO: Maybe someday we can also check functions, environments, and some custom structs.
 

@@ -1,7 +1,7 @@
 context("generate")
 
 desired_classes <- c("numeric", "integer", "list", "character", "logical",
-  "matrix", "data.frame", "NULL")
+  "matrix", "data.frame", "NULL", "table", "factor")
 testing_frame <- test_objects()
 
 describe("OBJECTS", {

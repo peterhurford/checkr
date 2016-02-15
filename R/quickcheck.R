@@ -3,21 +3,24 @@
 #' @import validations
 function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
   function(fn) {
-    formals <- names(formals(fn))
-    testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
-    names(testing_frame) <- formals
     if (fn %is% validated_function) {
       preconditions <- validations::preconditions(fn)
       pre_fn <- validations::get_prevalidated_fn(fn)
       formals <- names(formals(pre_fn))
+      testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
       testing_frame <- lapply(testing_frame, function(set) {
         Filter(function(item) {
           env <- list(item)
-          names(env) <- names(formals(pre_fn))
-          validated <- try(validations::validate_(preconditions, env = env), silent = TRUE)
+          names(env) <- formals
+          if (is.data.frame(item)) browser()
+          validated  <- try(validations::validate_(preconditions, env = env), silent = TRUE)
           !is(validated, "try-error")  # Turn validation error into TRUE/FALSE
         }, set) })
+    } else {
+      formals <- names(formals(fn))
+      testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
     }
+    names(testing_frame) <- formals
     testing_frame
   })
 
