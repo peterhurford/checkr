@@ -10,25 +10,27 @@
 #' @return The original function, but also of class validated_function, with added validations.
 #' @export
 ensure <- function(fn, preconditions = list(), postconditions = list()) {
+  if (is(fn, "validated_function")) {
+    stop("The function has already been validated.")  
+  }
   pre <- substitute(preconditions)
   post <- substitute(postconditions)
   force(fn)
   validated_fn <- function(...) {
     args <- list(...)
-    if (is.empty(names(args))) {
-      formals <- names(formals(fn))
 
-      # If a function has multiple args but some of them are missing, we just
-      # cut out the missing ones.
-      length(formals) <- length(args)
-      names(args) <- formals
+    formals <- names(formals(fn))
 
-      # Get all the non-empty arguments to impute missing arguments.
-      default_args <- Filter(Negate(is.name), formals(fn))
-      for (pos in seq_along(default_args)) {
-        if (!(names(default_args)[[pos]] %in% names(args))) {
-          args[[names(default_args)[[pos]]]] <- default_args[[pos]]
-        }
+    # If a function has multiple args but some of them are missing, we just
+    # cut out the missing ones.
+    length(formals) <- length(args)
+    names(args) <- formals
+
+    # Get all the non-empty arguments to impute missing arguments.
+    default_args <- Filter(Negate(is.name), formals(fn))
+    for (pos in seq_along(default_args)) {
+      if (!(names(default_args)[[pos]] %in% names(args))) {
+        args[[names(default_args)[[pos]]]] <- default_args[[pos]]
       }
     }
 
@@ -47,7 +49,7 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     args$result
   }
 
-  class(validated_fn) <- append(class(fn), "validated_function")
+  class(validated_fn) <- append(class(fn), "validated_function", 0)
   validated_fn
 }
 
@@ -79,3 +81,16 @@ get_prevalidated_fn <- ensure(
   pre = fn %is% validated_function,
   post = list(result %is% "function", result %isnot% validated_function),
   function(fn) { environment(fn)$fn })
+
+
+#' Print validated functions more clearly.
+#' @param x function. The function to print.
+#' @param ... Additional arguments to pass to print.
+#' @export
+print.validated_function <- function(x, ...) {
+  print(list(
+    preconditions = preconditions(x),
+    postconditions = postconditions(x),
+    fn = get_prevalidated_fn(x)),
+  ...)
+}
