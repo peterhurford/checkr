@@ -1,4 +1,4 @@
-## Quickcheck
+## Quickcheckr
 
 R is a dynamically typed language, which is great for writing code quickly but bad for verifying that your code works as intended.  Instead, we need to write formal test suites to ensure our code works.
 

@@ -1,4 +1,4 @@
-Package: quickcheck
+Package: quickcheckr
 Title: Automatically Test R Functions
 Version: 0.0.0.9000
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
