@@ -51,8 +51,11 @@ But because we were lazy when writing the tests and had 10 in our mind, all the 
 Additionally, we don't look for other errors, such as:
 
 (a) Does it work when the alphabet is only a length 1 list?
+
 (b) Does it work when the alphabet is a string?
+
 (c) Does it work when length is a negative number?
+
 (d) Does it work when length is a list?
 
 For example, if we had written a thorough test for (a), we would have noticed that we're using `sample` with `replace = FALSE`, which means that if the `length` is larger than `length(alphabet)`, the function will crash.  We should use `replace = TRUE` instead!
