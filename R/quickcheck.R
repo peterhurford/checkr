@@ -30,7 +30,7 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
 #' [1] "x = 1:3, y = 1:4"
 print_args <- function(x) {
   paste0(paste(names(x),
-    unname(vapply(x, function(y) capture.output(dput(y)), character(1))),
+    unname(sapply(x, function(y) capture.output(dput(y)))),
   sep = " = "), collapse = ", ")
 }
 
