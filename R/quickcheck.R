@@ -9,11 +9,13 @@
 #'
 #' @param fn function. A function to randomly check postconditions for.
 #' @param postconditions. Optional postconditions to quickcheck for.
+#' @param verbose logical. Whether or not to announce the success.
 #' @return either TRUE if the function passed the quickcheck or a specific error.
 quickcheck <- validations::ensure(
-  pre = fn %is% "function",
-  post = result %is% logical,
-  function(fn, postconditions = NULL) {
+  pre = list(fn %is% "function", verbose %is% logical),
+  #post = result %is% TRUE,
+  function(fn, postconditions = NULL, verbose = TRUE) {
+    function_name <- deparse(substitute(fn))
     testing_frame <- test_objects()
     if (fn %is% validated_function) {
       preconditions <- validations::preconditions(fn)
@@ -25,18 +27,23 @@ quickcheck <- validations::ensure(
         !is(validated, "try-error")  # Turn validation error into TRUE/FALSE
       }, testing_frame)
     }
-    for (item in testing_frame) {
-      result <- fn(item)
-      if (!is.null(postconditions)) {
-        validations::validate_(postconditions, env = list(result = result))
-      }
+    for (pos in seq_along(testing_frame)) {
+      item <- testing_frame[[pos]]
+      tryCatch({
+        result <- fn(item)
+        if (!is.null(postconditions)) {
+          validations::validate_(postconditions, env = list(result = result))
+        }
+      }, error = function(e) {
+        stop("Quickcheck for ", function_name, " failed on item #", pos, ": ", dput(item))
+      })
     }
+    if (isTRUE(verbose)) {
+      message("Quickcheck for ", function_name, " passed on ", pos, " random examples!")
+    }
+    expect_true(TRUE)
     TRUE
   })
 #TODO: Test coverage for quickcheck.
-#TODO: Quickcheck gives a more informative error message.
-#TODO: Quickcheck runs in test suite.
 #TODO: Quickcheck function with more than one formal.
 #TODO: Can mix-in your own custom objects into the test objects
-
-
