@@ -98,7 +98,7 @@ And when we run the Quickcheck, we get:
 Quickcheck for function(x) rev(x) passed on 132 random examples!
 ```
 
-...Here, 576 random possible test objects were created and these objects were filtered down to the 138 ones that met the specified preconditions (input must be of length 1). All of these were then sent to the `rev` function and the result was then checked against the postcondition that `identical(result, x)` to make sure the result is identical to the original `x`.
+...Here, 576 random possible test objects were created and these objects were filtered down to the 132 ones that met the specified preconditions (input must be of length 1). All of these were then sent to the `rev` function and the result was then checked against the postcondition that `identical(result, x)` to make sure the result is identical to the original `x`.
 
 And we can also test that the reverse of a reverse of a list is that same list:
 
