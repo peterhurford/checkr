@@ -8,13 +8,21 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
       pre_fn <- validations::get_prevalidated_fn(fn)
       formals <- names(formals(pre_fn))
       testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
-      testing_frame <- lapply(testing_frame, function(set) {
+      testing_frame <- lapply(seq_along(testing_frame), function(pos) {
+        set <- testing_frame[[pos]]
         Filter(function(item) {
           env <- list(item)
-          names(env) <- formals
-          validated  <- try(validations::validate_(preconditions, env = env), silent = TRUE)
-          !is(validated, "try-error")  # Turn validation error into TRUE/FALSE
-        }, set) })
+          names(env) <- formals[[pos]]
+          if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
+              preconditions <- list(preconditions)
+          }
+          for (precondition in as.list(preconditions)) {
+            if (!grepl(formals[[pos]], deparse(precondition), fixed = TRUE)) { next }
+            if (!isTRUE(eval(precondition, env = env))) { return(FALSE) }
+          }
+          TRUE
+        }, set)
+      })
     } else {
       formals <- names(formals(fn))
       testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
@@ -71,8 +79,5 @@ function(fn, postconditions = NULL, verbose = TRUE) {
   expect_true(TRUE)
   TRUE
 })
-
-#TODO: Quickcheck function with more than one formal.
-# Plan for this -- generate a different testing_frame using function_test_objects on each formal. Function will have to be refactored and renamed.
-
+#TODO: Handle splats
 #TODO, but later: Can mix-in your own custom objects into the test objects

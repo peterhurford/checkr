@@ -43,22 +43,39 @@ describe("testing frame", {
     add_positive <- ensure(pre = list(x %is% numeric, all(x > 0)), function(x) x + 1)
     testing_frame <- function_test_objects(add_positive)[[1]]
     expect_true(testing_frame %contains_only% numeric)
-    expect_true(FALSE)
+    expect_true(all(sapply(testing_frame, function(vec) all(na.omit(vec) > 0))))
   })
   test_that("it generates for two formals", {
-    expect_true(FALSE)
+    add_two <- ensure(pre = list(x %is% numeric, y %is% numeric), function(x, y) x + y)
+    expect_equal(2, length(function_test_objects(add_two)))
   })
   test_that("it generates for three formals", {
-    expect_true(FALSE)
+    add_three <- ensure(pre = list(x %is% numeric, y %is% numeric, z %is% numeric),
+      function(x, y, z) x + y + z)
+    expect_equal(3, length(function_test_objects(add_three)))
   })
   test_that("it generates based on restrictions of each formal I", {
-    expect_true(FALSE)
+    add_three <- ensure(pre = list(x %is% numeric, y %is% numeric, z %is% numeric),
+      function(x, y, z) x + y + z)
+    testing_frame <- function_test_objects(add_three)
+    lapply(testing_frame, function(frame) {
+      expect_true(frame %contains% integer)
+      expect_true(frame %contains% double)
+      expect_true(frame %contains_only% numeric)
+    })
   })
   test_that("it generates based on restrictions of each formal II", {
-    expect_true(FALSE)
-  })
-  test_that("it generates based on restrictions of each formal III", {
-    expect_true(FALSE)
+    random_string <- ensure(
+      pre = list(length %is% numeric, length(length) == 1, length > 0,
+        alphabet %is% list || alphabet %is% vector,
+        alphabet %contains_only% simple_string),
+      function(length, alphabet) {
+        paste0(sample(alphabet, length, replace = TRUE), collapse = "")
+      })
+    testing_frame <- function_test_objects(random_string)
+    expect_true(testing_frame$length %contains_only% numeric)
+    expect_true(all(vapply(testing_frame$alphabet,
+      function(alpha) alpha %contains_only% simple_string, logical(1))))
   })
 })
 
@@ -97,6 +114,24 @@ describe("quickcheck", {
     expect_true(FALSE)
   })
   test_that("reverse example", {
-    expect_true(FALSE)
+    quickcheck(ensure(pre = length(x) == 1, post = identical(result, x), function(x) rev(x)))
+    quickcheck(ensure(post = identical(result, c(rev(x), rev(y))), function(x, y) rev(c(x, y))))
+    quickcheck(ensure(post = identical(result, x), function(x) rev(rev(x))))
+  })
+  test_that("random string example - failure", {
+    random_string <- function(length, alphabet) {
+      paste0(sample(alphabet, 10), collapse = "")
+    }
+    expect_error(quickcheck(random_string,
+      list(nchar(result) == length, length(result) == 1, is.character(result),
+        all(strsplit(result, "")[[1]] %in% alphabet))), "string")
+  })
+  test_that("random string example - success", {
+    random_string <- function(length, alphabet) {
+      paste0(sample(alphabet, length), collapse = "")
+    }
+    quickcheck(random_string,
+      list(nchar(result) == length, length(result) == 1, is.character(result),
+        all(strsplit(result, "")[[1]] %in% alphabet)))
   })
 })

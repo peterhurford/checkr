@@ -124,7 +124,7 @@ test_objects_ <- function() {
       c(as.list(OBJECTS$positive_doubles), as.list(OBJECTS$positive_integers)), LIST_SIZE))
   # construct lists that mix empties into all of the above
   testing_frame <- append(testing_frame,
-    lapply(Filter(Negate(is.list), testing_frame), function(item) {
+    lapply(Filter(Negate(is.empty), Filter(Negate(is.list), testing_frame)), function(item) {
       sample(append(item, NA))
     }))
   testing_frame <- append(testing_frame,
