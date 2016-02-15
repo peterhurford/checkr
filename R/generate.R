@@ -88,7 +88,10 @@ OBJECTS$table <- Filter(is.table, dataframes)
 test_objects_ <- function() {
   testing_frame <- list()
   # start with one of each at random
-  testing_frame <- append(testing_frame, lapply(OBJECTS, function(type) sample(type, 1)))
+  testing_frame <- append(testing_frame, lapply(OBJECTS, function(type) {
+    random_obj <- sample(type, 1)
+    if (random_obj %is% list) { random_obj[[1]] } else { random_obj }
+  }))
   # construct random-length vectors or lists of all types
   #     (depending on class, vectors when possible)
   testing_frame <- append(testing_frame, lapply(OBJECTS, function(type) {

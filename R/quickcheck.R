@@ -12,7 +12,6 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
         Filter(function(item) {
           env <- list(item)
           names(env) <- formals
-          if (is.data.frame(item)) browser()
           validated  <- try(validations::validate_(preconditions, env = env), silent = TRUE)
           !is(validated, "try-error")  # Turn validation error into TRUE/FALSE
         }, set) })
