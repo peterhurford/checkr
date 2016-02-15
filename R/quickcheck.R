@@ -1,3 +1,22 @@
+#' Create the necessary testing objects to quickcheck a function.
+#' @param fn function. A function to generate test objects for.
+#' @import validations
+function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
+  function(fn) {
+    testing_frame <- test_objects()
+    if (fn %is% validated_function) {
+      preconditions <- validations::preconditions(fn)
+      testing_frame <- Filter(function(item) {
+        env <- list(item)
+        pre_fn <- validations::get_prevalidated_fn(fn)
+        names(env) <- names(formals(pre_fn))
+        validated <- try(validations::validate_(preconditions, env = env), silent = TRUE)
+        !is(validated, "try-error")  # Turn validation error into TRUE/FALSE
+      }, testing_frame)
+    }
+    testing_frame
+  })
+
 #' Quickcheck a function.
 #'
 #' Tests a function with many automatically generated inputs, checking that stated
@@ -11,22 +30,12 @@
 #' @param postconditions. Optional postconditions to quickcheck for.
 #' @param verbose logical. Whether or not to announce the success.
 #' @return either TRUE if the function passed the quickcheck or a specific error.
-quickcheck <- validations::ensure(
-  pre = list(fn %is% "function", verbose %is% logical),
+#' @import validations
+quickcheck <- ensure(pre = list(fn %is% "function", verbose %is% logical),
   post = isTRUE(result),
   function(fn, postconditions = NULL, verbose = TRUE) {
     function_name <- deparse(substitute(fn))
-    testing_frame <- test_objects()
-    if (fn %is% validated_function) {
-      preconditions <- validations::preconditions(fn)
-      testing_frame <- Filter(function(item) {
-        env <- list(item)
-        pre_fn <- validations::get_prevalidated_fn(fn)
-        names(env) <- names(formals(pre_fn))
-        validated <- try(validations::validate_(preconditions, env = env), silent = TRUE)
-        !is(validated, "try-error")  # Turn validation error into TRUE/FALSE
-      }, testing_frame)
-    }
+    testing_frame <- function_test_objects(fn)
     for (pos in seq_along(testing_frame)) {
       item <- testing_frame[[pos]]
       tryCatch({
@@ -44,6 +53,5 @@ quickcheck <- validations::ensure(
     expect_true(TRUE)
     TRUE
   })
-#TODO: Test coverage for quickcheck.
 #TODO: Quickcheck function with more than one formal.
 #TODO: Can mix-in your own custom objects into the test objects

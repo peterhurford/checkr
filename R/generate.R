@@ -65,7 +65,7 @@ random_matrix <- function() {
     simple_string = sample_data(random_simple_strings(random_width * random_height)))
   matrix(random_data, random_width, random_height)
 }
-OBJECTS$matricies <- lapply(seq(LIST_SIZE), function(n) random_matrix())
+OBJECTS$matricies <- lapply(seq(LIST_SIZE * 4), function(n) random_matrix())
 
 #' Get all the user-installed dataframes through data()
 installed_dataframes <- function() {
