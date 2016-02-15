@@ -13,7 +13,7 @@
 #' @return either TRUE if the function passed the quickcheck or a specific error.
 quickcheck <- validations::ensure(
   pre = list(fn %is% "function", verbose %is% logical),
-  #post = result %is% TRUE,
+  post = isTRUE(result),
   function(fn, postconditions = NULL, verbose = TRUE) {
     function_name <- deparse(substitute(fn))
     testing_frame <- test_objects()
