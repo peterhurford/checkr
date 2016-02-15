@@ -68,7 +68,9 @@ quickcheck(random_string,
   list(nchar(result) == length, length(result) == 1, is.character(result),
     all(strsplit(result, "")[[1]] %in% alphabet)))
 ```
-(TODO: write out output)
+```
+(TODO: Put in output)
+```
 
 That will verify that the number of characters of the resulting string is the same as the `length` that you passed into the function, it will verify that the resulting string is not a length > 1 vector, that the resulting string is all characters, and that all the characters in the string are within the given `alphabet`.  This verification will be done with many different values for `length` and `alphabet`.
 
@@ -100,7 +102,7 @@ We can test some other properties as well, such as that reversing a larger list 
 quickcheck(ensure(post = identical(result, c(rev(x), rev(y))), function(x, y) rev(c(x, y))))
 ```
 ```
-(TODO: Put in input)
+(TODO: Put in output)
 ```
 
 And that the reverse of a reverse of a list is that same list:
