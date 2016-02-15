@@ -98,6 +98,8 @@ We can test some other properties as well, such as that reversing a larger list 
 
 ```R
 quickcheck(ensure(post = identical(result, c(rev(x), rev(y))), function(x, y) rev(c(x, y))))
+```
+```
 (TODO: Put in input)
 ```
 
@@ -105,7 +107,9 @@ And that the reverse of a reverse of a list is that same list:
 
 ```R
 quickcheck(ensure(post = identical(result, x), function(x) rev(rev(x))))
-uickcheck for ensure(post = identical(result, x), function(x) rev(rev(x))) passed on 576 random examples!
+```
+```
+Quickcheck for ensure(post = identical(result, x), function(x) rev(rev(x))) passed on 576 random examples!
 ```
 
 
