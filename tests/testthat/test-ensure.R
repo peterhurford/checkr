@@ -139,4 +139,7 @@ describe("passing conditions", {
     expect_equal(add_default(4, 5), 9)
     expect_equal(add_default(4), 5)
   })
+  test_that("can't validate twice", {
+    expect_error(ensure(pre = x %is% numeric, random_string), "already been validated")
+  })
 })

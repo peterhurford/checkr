@@ -10,6 +10,9 @@
 #' @return The original function, but also of class validated_function, with added validations.
 #' @export
 ensure <- function(fn, preconditions = list(), postconditions = list()) {
+  if (is(fn, "validated_function")) {
+    stop("The function has already been validated.")  
+  }
   pre <- substitute(preconditions)
   post <- substitute(postconditions)
   force(fn)
