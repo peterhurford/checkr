@@ -110,7 +110,7 @@ function(fn, postconditions = NULL, verbose = TRUE) {
   if (isTRUE(verbose)) {
     message("Quickcheck for ", function_name, " passed on ", pos, " random examples!")
   }
-  expect_true(TRUE)
+  testthat::expect_true(TRUE)
   TRUE
 })
 #TODO: Handle splats

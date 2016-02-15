@@ -104,11 +104,11 @@ Quickcheck for function(x) rev(x) passed on 132 random examples!
 And we can also test that the reverse of a reverse of a list is that same list:
 
 ```R
-quickcheck(ensure(pre = list(x %is% vector || x %is% list,
-  post = identical(result, x), function(x) rev(rev(x)))))
+quickcheck(ensure(pre = list(x %is% vector || x %is% list),
+  post = identical(result, x), function(x) rev(rev(x))))
 ```
 ```
-Quickcheck for ensure(post = identical(result, x), function(x) rev(rev(x))) passed on 576 random examples!
+Quickcheck for function(x) rev(rev(x)) passed on 708 random examples!
 ```
 
 
@@ -116,4 +116,12 @@ Quickcheck for ensure(post = identical(result, x), function(x) rev(rev(x))) pass
 
 In June 2015 (8 months before me), Revolution Analytics released [their own version of Quickcheck for R](https://github.com/RevolutionAnalytics/quickcheck) which works [to also automatically verify properties of R functions](https://github.com/RevolutionAnalytics/quickcheck/blob/master/docs/tutorial.md).
 
-**TODO: Explain the improvements I made over Revolution Analytic's Quickcheck.**
+However, this version of Quickcheck has a few important improvements:
+
+(1) The tight integration with the validations package lets you more clearly specify the preconditions and postconditions.
+
+(2) You can be a lot more specific about the preconditions you can specify on the random objects. Revolution Analytics's objects are always one class and all objects of that class, whereas with this package you can mix and match classes and specify other things (e.g., all >0).
+
+(3) The random object generator is smarter (a.k.a. biased), making sure to explicitly test important things you might forget (e.g., a vector of all negative numbers) and that might not come up in a truly random generator (like Revolution Analytics's).
+
+(4) This version naturally integrates with Hadley's popular testthat package.
