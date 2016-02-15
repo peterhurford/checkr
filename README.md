@@ -1,7 +1,5 @@
 ## Quickcheck
 
-**This package is a work in progress and is not ready yet.**
-
 R is a dynamically typed language, which is great for writing code quickly but bad for verifying that your code works as intended.  Instead, we need to write formal test suites to ensure our code works.
 
 Thanks to Hadley's [testthat package](https://github.com/hadley/testthat), writing tests for R code [is pretty easy](http://r-pkgs.had.co.nz/).  But writing tests take a long time and it's easy to forget to write certain tests.  And [while coverage tools in R exist](https://github.com/jimhester/covr), 100% test coverage is still insufficient for verifying that your code works.
@@ -12,8 +10,6 @@ Testing made easy AND quick! ...and more accurate!
 
 
 ## Installation
-
-**This package is a work in progress and is not ready yet.**
 
 This package is not yet available from CRAN.  Instead, it can be installed using [devtools](http://www.github.com/hadley/devtools):
 
