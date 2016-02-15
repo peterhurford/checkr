@@ -11,10 +11,11 @@ Testing made easy AND quick! ...and more accurate!
 
 ## Installation
 
-This package is not yet available from CRAN.  Instead, it can be installed using [devtools](http://www.github.com/hadley/devtools):
+This package is not yet available from CRAN.  Instead, it and the required [validations package](http://www.github.com/peterhurford/validations) can be installed using [devtools](http://www.github.com/hadley/devtools):
 
 ```R
 if (!require("devtools")) { install.packages("devtools") }
+devtools::install_github("peterhurford/validations")
 devtools::install_github("peterhurford/quickcheckr")
 ```
 
