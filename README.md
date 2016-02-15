@@ -15,7 +15,7 @@ This package is not yet available from CRAN.  Instead, it can be installed using
 
 ```R
 if (!require("devtools")) { install.packages("devtools") }
-devtools::install_github("peterhurford/quickcheck")
+devtools::install_github("peterhurford/quickcheckr")
 ```
 
 
