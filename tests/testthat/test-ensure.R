@@ -7,7 +7,8 @@ context("ensure")
 random_string <- ensure(
   pre = list(length %is% numeric, length(length) == 1, length > 0,
     alphabet %is% list || alphabet %is% vector,
-    alphabet %contains_only% simple_string),
+    alphabet %contains_only% simple_string,
+    all(sapply(alphabet, nchar) == 1)),
   post = list(result %is% simple_string, nchar(result) == length),
   function(length, alphabet) {
     paste0(sample(alphabet, length, replace = TRUE), collapse = "")
