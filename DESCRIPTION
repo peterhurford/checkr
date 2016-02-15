@@ -6,4 +6,5 @@ Description: Randomly generate R objects and pass them into R functions, verifyi
 Depends: R (>= 3.1.0)
 License: MIT
 LazyData: true
-Suggests: testthat
+Imports: validations
+Suggests: testthat, microbenchmark
