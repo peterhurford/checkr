@@ -77,6 +77,11 @@ describe("testing frame", {
     expect_true(all(vapply(testing_frame$alphabet,
       function(alpha) alpha %contains_only% simple_string, logical(1))))
   })
+  test_that("formals can be interdependent when necessary", {
+    class_matcher <- ensure(pre = identical(class(x), class(y)), function(x, y) c(x, y))
+    testing_frame <- function_test_objects(class_matcher)
+    expect_equal(sapply(testing_frame$x, class), sapply(testing_frame$y, class))
+  })
 })
 
 describe("quickcheck", {
@@ -104,34 +109,39 @@ describe("quickcheck", {
       function(x) x + 1) 
     expect_error(quickcheck(add_one), "Quickcheck for add_one failed on item #1")
   })
-  test_that("succeeding based on a specified postcondition", {
-    expect_true(FALSE)
-  })
-  test_that("failing based on a specified postcondition", {
-    expect_true(FALSE)
-  })
   test_that("it errors if the testing frame is reduced to 0", {
-    expect_true(FALSE)
+    impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
+      identity)
+    expect_error(quickcheck(impossible_preconditions), "impossible to satisfy")
   })
   test_that("reverse example", {
-    quickcheck(ensure(pre = length(x) == 1, post = identical(result, x), function(x) rev(x)))
-    quickcheck(ensure(post = identical(result, c(rev(x), rev(y))), function(x, y) rev(c(x, y))))
-    quickcheck(ensure(post = identical(result, x), function(x) rev(rev(x))))
+    quickcheck(ensure(pre = list(length(x) == 1, x %is% vector || x %is% list),
+      post = identical(result, x), function(x) rev(x)))
+    quickcheck(ensure(pre = list(x %is% vector || x %is% list),
+      post = identical(result, x), function(x) rev(rev(x))))
   })
   test_that("random string example - failure", {
     random_string <- function(length, alphabet) {
       paste0(sample(alphabet, 10), collapse = "")
     }
-    expect_error(quickcheck(random_string,
-      list(nchar(result) == length, length(result) == 1, is.character(result),
-        all(strsplit(result, "")[[1]] %in% alphabet))), "string")
+    expect_error(quickcheck(ensure(
+      pre = list(length %is% numeric, length(length) == 1, length > 0,
+        alphabet %is% list || alphabet %is% vector,
+          alphabet %contains_only% simple_string),
+      post = list(nchar(result) == length, length(result) == 1,
+        is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
+      random_string)), "Quickcheck for random_string failed on item #1")
   })
   test_that("random string example - success", {
     random_string <- function(length, alphabet) {
       paste0(sample(alphabet, length), collapse = "")
     }
-    quickcheck(random_string,
-      list(nchar(result) == length, length(result) == 1, is.character(result),
-        all(strsplit(result, "")[[1]] %in% alphabet)))
+    quickcheck(ensure(
+      pre = list(length %is% numeric, length(length) == 1, length > 0,
+        alphabet %is% list || alphabet %is% vector,
+          alphabet %contains_only% simple_string),
+      post = list(nchar(result) == length, length(result) == 1,
+        is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
+      random_string))
   })
 })

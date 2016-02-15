@@ -64,12 +64,16 @@ For example, if we had written a thorough test for (a), we would have noticed th
 ...So we could add all these tests ourselves and be really thorough, or we could use quickcheck and just automatically test some simple properties:
 
 ```R
-quickcheck(random_string,
-  list(nchar(result) == length, length(result) == 1, is.character(result),
-    all(strsplit(result, "")[[1]] %in% alphabet)))
+quickcheck(ensure(
+  pre = list(length %is% numeric, length(length) == 1, length > 0,
+    alphabet %is% list || alphabet %is% vector,
+      alphabet %contains_only% simple_string),
+  post = list(nchar(result) == length, length(result) == 1,
+    is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
+  random_string))
 ```
 ```
-(TODO: Put in output)
+Error: Quickcheck for random_string failed on item #1: length = 53L, alphabet = list("shtafWoWGRWmCSIRquDNxqskiKGyVdHFApld")
 ```
 
 That will verify that the number of characters of the resulting string is the same as the `length` that you passed into the function, it will verify that the resulting string is not a length > 1 vector, that the resulting string is all characters, and that all the characters in the string are within the given `alphabet`.  This verification will be done with many different values for `length` and `alphabet`.
@@ -85,30 +89,23 @@ Let's say that we want to be confident that the `rev` function in R's base works
 First, we know that reversing a length-1 list should be itself.
 
 ```R
-quickcheck(ensure(pre = length(x) == 1, post = identical(result, x), function(x) rev(x)))
+quickcheck(ensure(pre = list(length(x) == 1, x %is% vector || x %is% list),
+  post = identical(result, x), function(x) rev(x)))
 ```
 
 And when we run the Quickcheck, we get:
 
 ```
-Quickcheck for ensure(pre = length(x) == 1, post = identical(result, x), function(x) rev(x)) passed on 138 random examples!
+Quickcheck for function(x) rev(x) passed on 132 random examples!
 ```
 
 ...Here, 576 random possible test objects were created and these objects were filtered down to the 138 ones that met the specified preconditions (input must be of length 1). All of these were then sent to the `rev` function and the result was then checked against the postcondition that `identical(result, x)` to make sure the result is identical to the original `x`.
 
-We can test some other properties as well, such as that reversing a larger list is the same as concatenating the reverse of two sublists:
+And we can also test that the reverse of a reverse of a list is that same list:
 
 ```R
-quickcheck(ensure(post = identical(result, c(rev(x), rev(y))), function(x, y) rev(c(x, y))))
-```
-```
-(TODO: Put in output)
-```
-
-And that the reverse of a reverse of a list is that same list:
-
-```R
-quickcheck(ensure(post = identical(result, x), function(x) rev(rev(x))))
+quickcheck(ensure(pre = list(x %is% vector || x %is% list,
+  post = identical(result, x), function(x) rev(rev(x)))))
 ```
 ```
 Quickcheck for ensure(post = identical(result, x), function(x) rev(rev(x))) passed on 576 random examples!

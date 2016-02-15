@@ -5,23 +5,39 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
   function(fn) {
     if (fn %is% validated_function) {
       preconditions <- validations::preconditions(fn)
+      if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
+          preconditions <- list(preconditions)
+      }
       pre_fn <- validations::get_prevalidated_fn(fn)
       formals <- names(formals(pre_fn))
       testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
-      testing_frame <- lapply(seq_along(testing_frame), function(pos) {
-        set <- testing_frame[[pos]]
+      testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
+        # First we try calculating each input independently so that we can maximize
+        # the number of test samples.
+        frame <- testing_frame[[pos]]
         Filter(function(item) {
           env <- list(item)
           names(env) <- formals[[pos]]
-          if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
-              preconditions <- list(preconditions)
-          }
           for (precondition in as.list(preconditions)) {
             if (!grepl(formals[[pos]], deparse(precondition), fixed = TRUE)) { next }
             if (!isTRUE(eval(precondition, env = env))) { return(FALSE) }
           }
           TRUE
-        }, set)
+        }, frame)
+      }), error = function(e) {
+        # If there was an error, we assume it was because of interdependent preconditions,
+        # so we go to the backup of calculating the arguments jointly.
+        lapply(testing_frame, function(frame) {
+          lapply(seq_along(testing_frame[[1]]), function(pos) {
+            env <- lapply(testing_frame, `[[`, pos)
+            names(env) <- formals
+            for (precondition in as.list(preconditions)) {
+              if (!isTRUE(eval(precondition, env = env))) { return(NULL) }
+            }
+            frame[[pos]]
+          })
+        })
+        lapply(testing_frame, function(frame) { Filter(Negate(is.null), frame) })
       })
     } else {
       formals <- names(formals(fn))
@@ -43,6 +59,19 @@ print_args <- function(x) {
 }
 
 
+#' Get the name from a passed function, which may be a validated function or just a block.
+#'
+#' @param orig_function_name. A substituted call of the function.
+function_name <- function(orig_function_name) {
+  function_name <- if (identical(deparse(as.list(orig_function_name)[[1]]), "ensure")) {
+    as.list(orig_function_name)[length(as.list(orig_function_name))][[1]]
+  } else {
+    orig_function_name
+  }
+  deparse(function_name)
+}
+
+
 #' Quickcheck a function.
 #'
 #' Tests a function with many automatically generated inputs, checking that stated
@@ -61,8 +90,12 @@ quickcheck <- ensure(pre = list(fn %is% "function", verbose %is% logical),
   post = isTRUE(result),
 function(fn, postconditions = NULL, verbose = TRUE) {
   post <- substitute(postconditions)
-  function_name <- deparse(substitute(fn))
   testing_frame <- function_test_objects(fn)
+  if (any(vapply(testing_frame, length, numeric(1)) == 0)) {
+    stop("No quickcheck testing frame was generated. Make sure your preconditions aren't",
+      " impossible to satisfy!")
+  }
+  function_name <- function_name(substitute(fn))
   for (pos in seq_along(testing_frame[[1]])) {
     args <- lapply(testing_frame, `[[`, pos)
     tryCatch({
