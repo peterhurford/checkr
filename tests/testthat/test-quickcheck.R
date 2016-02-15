@@ -3,33 +3,61 @@ library(validations)
 
 describe("testing frame", {
   test_that("by default it has everything", {
-    expect_true(length(list_classes(function_test_objects(identity))) > 3)
+    expect_true(length(list_classes(function_test_objects(identity)[[1]])) > 3)
   })
   test_that("it results in only integers if the function takes only integers", {
     add_one_int <- ensure(pre = x %is% integer, function(x) x + 1L)
-    expect_true(function_test_objects(add_one_int) %contains_only% integer)
+    expect_true(function_test_objects(add_one_int)[[1]] %contains_only% integer)
   })
   test_that("it results in only doubles if the function takes only doubles", {
     add_one_double <- ensure(pre = x %is% double, function(x) x + 1.0)
-    expect_true(function_test_objects(add_one_double) %contains_only% double)
+    expect_true(function_test_objects(add_one_double)[[1]] %contains_only% double)
   })
   test_that("it results in both numerics if the function takes numerics", {
     add_one_number <- ensure(pre = x %is% numeric, function(x) x + 1)
-    testing_frame <- function_test_objects(add_one_number)
+    testing_frame <- function_test_objects(add_one_number)[[1]]
     expect_equal(2, length(list_classes(testing_frame)))
     expect_true(testing_frame %contains% integer)
     expect_true(testing_frame %contains% double)
   })
   test_that("it results in lists of all sorts but only lists if the function takes lists", {
-    expect_true(FALSE)
+    rev_list <- ensure(pre = x %is% list, rev)
+    testing_frame <- function_test_objects(rev_list)[[1]]
+    expect_true(testing_frame %contains_only% list)
   })
   test_that("it results in dataframes of all sorts but only dataframes", {
-    expect_true(FALSE)
+    rev_df <- ensure(pre = x %is% dataframe, rev)
+    testing_frame <- function_test_objects(rev_df)[[1]]
+    expect_true(testing_frame %contains_only% dataframe)
   })
-  test_that("it results in lists or vectors if the function takes that", {
-    expect_true(FALSE)
+  test_that("it results in both lists and vectors if the function takes that", {
+    rev <- ensure(pre = x %is% list || x %is% vector, rev)
+    testing_frame <- function_test_objects(rev)[[1]]
+    expect_true(testing_frame %is% list)
+    expect_true(testing_frame %contains% list)
+    expect_true(testing_frame %contains% vector)
+    expect_false(testing_frame %contains_only% list)
+    expect_false(testing_frame %contains_only% vector)
   })
   test_that("it can further restrict based on things other than class", {
+    add_positive <- ensure(pre = list(x %is% numeric, all(x > 0)), function(x) x + 1)
+    testing_frame <- function_test_objects(add_positive)[[1]]
+    expect_true(testing_frame %contains_only% numeric)
+    expect_true(FALSE)
+  })
+  test_that("it generates for two formals", {
+    expect_true(FALSE)
+  })
+  test_that("it generates for three formals", {
+    expect_true(FALSE)
+  })
+  test_that("it generates based on restrictions of each formal I", {
+    expect_true(FALSE)
+  })
+  test_that("it generates based on restrictions of each formal II", {
+    expect_true(FALSE)
+  })
+  test_that("it generates based on restrictions of each formal III", {
     expect_true(FALSE)
   })
 })
