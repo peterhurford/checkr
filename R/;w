@@ -140,9 +140,10 @@ test_objects_ <- function() {
 
 test_objects <- memoise::memoise(function() {
   testing_frame <- list()
-  for (generation in seq(GENERATIONS)) {
+  for (generation in seq_along(GENERATIONS)) {
     testing_frame <- append(testing_frame, test_objects_())
   }
+  browser()
   testing_frame
 })
 

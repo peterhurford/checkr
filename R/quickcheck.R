@@ -44,7 +44,8 @@ quickcheck <- ensure(pre = list(fn %is% "function", verbose %is% logical),
           validations::validate_(postconditions, env = list(result = result))
         }
       }, error = function(e) {
-        stop("Quickcheck for ", function_name, " failed on item #", pos, ": ", dput(item))
+        stop("Quickcheck for ", function_name, " failed on item #", pos, ": ",
+          capture.output(dput(item)), call. = FALSE)
       })
     }
     if (isTRUE(verbose)) {
