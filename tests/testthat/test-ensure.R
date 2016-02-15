@@ -127,17 +127,34 @@ describe("passing conditions", {
     expect_is(rand_string, "character")
     expect_true(nchar(rand_string) == 10)
   })
+  test_that("random_string works with both pre- and post- checks and explicit formals", {
+    rand_string <- random_string(length = 10, alphabet = LETTERS)
+    expect_is(rand_string, "character")
+    expect_true(nchar(rand_string) == 10)
+  })
   test_that("add works with both pre- and post- checks", {
     add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric,
       function(x, y) x + y)
     expect_equal(add(4, 5), 9)
     expect_equal(add(4L, 5L), 9L)
   })
+  test_that("add works with both pre- and post- checks and explicit formals", {
+    add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric,
+      function(x, y) x + y)
+    expect_equal(add(x = 4, y = 5), 9)
+    expect_equal(add(x = 4L, y = 5L), 9L)
+  })
   test_that("function works with a default argument", {
     add_default <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric,
       function(x, y = 1) x + y)
     expect_equal(add_default(4, 5), 9)
     expect_equal(add_default(4), 5)
+  })
+  test_that("function works with a default argument and explicit formals", {
+    add_default <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric,
+      function(x, y = 1) x + y)
+    expect_equal(add_default(x = 4, y = 5), 9)
+    expect_equal(add_default(x = 4), 5)
   })
   test_that("can't validate twice", {
     expect_error(ensure(pre = x %is% numeric, random_string), "already been validated")

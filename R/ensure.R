@@ -18,20 +18,19 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
   force(fn)
   validated_fn <- function(...) {
     args <- list(...)
-    if (is.empty(names(args))) {
-      formals <- names(formals(fn))
 
-      # If a function has multiple args but some of them are missing, we just
-      # cut out the missing ones.
-      length(formals) <- length(args)
-      names(args) <- formals
+    formals <- names(formals(fn))
 
-      # Get all the non-empty arguments to impute missing arguments.
-      default_args <- Filter(Negate(is.name), formals(fn))
-      for (pos in seq_along(default_args)) {
-        if (!(names(default_args)[[pos]] %in% names(args))) {
-          args[[names(default_args)[[pos]]]] <- default_args[[pos]]
-        }
+    # If a function has multiple args but some of them are missing, we just
+    # cut out the missing ones.
+    length(formals) <- length(args)
+    names(args) <- formals
+
+    # Get all the non-empty arguments to impute missing arguments.
+    default_args <- Filter(Negate(is.name), formals(fn))
+    for (pos in seq_along(default_args)) {
+      if (!(names(default_args)[[pos]] %in% names(args))) {
+        args[[names(default_args)[[pos]]]] <- default_args[[pos]]
       }
     }
 
