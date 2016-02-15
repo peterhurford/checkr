@@ -27,7 +27,7 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
       }), error = function(e) {
         # If there was an error, we assume it was because of interdependent preconditions,
         # so we go to the backup of calculating the arguments jointly.
-        lapply(testing_frame, function(frame) {
+        lapply(lapply(testing_frame, function(frame) {
           lapply(seq_along(testing_frame[[1]]), function(pos) {
             env <- lapply(testing_frame, `[[`, pos)
             names(env) <- formals
@@ -36,8 +36,7 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
             }
             frame[[pos]]
           })
-        })
-        lapply(testing_frame, function(frame) { Filter(Negate(is.null), frame) })
+        }), function(frame) { Filter(Negate(is.null), frame) })
       })
     } else {
       formals <- names(formals(fn))
