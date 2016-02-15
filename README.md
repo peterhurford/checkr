@@ -31,10 +31,9 @@ add("a", "b")
 #' @param length numeric. The length of the random string to generate.
 #' @param alphabet character. A list of characters to draw from to create the string.
 random_string <- ensure(
-  pre = list(length %is% numeric,
+  pre = list(length %is% numeric, length(length) == 1, length > 0,
     alphabet %is% list || alphabet %is% vector,
-    alphabet %contains_only% simple_string,
-    length > 0),
+    alphabet %contains_only% simple_string),
   post = list(result %is% simple_string, nchar(result) == length),
   function(length, alphabet) {
     paste0(sample(alphabet, length, replace = TRUE), collapse = "")
