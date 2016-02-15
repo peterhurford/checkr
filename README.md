@@ -76,7 +76,7 @@ quickcheck(ensure(
 Error: Quickcheck for random_string failed on item #1: length = 53L, alphabet = list("shtafWoWGRWmCSIRquDNxqskiKGyVdHFApld")
 ```
 
-We use `ensure` from the [validations package](https://github.com/peterhurford/validations) to specify preconditions for what random items we should test our function with and to specify postconditions that must hold true for every run that satisfies the preconditions.
+We use `ensure` from the [validations package](https://github.com/peterhurford/validations) to specify preconditions for what random items we should test our function with and to specify postconditions that must hold true for every run that satisfies the preconditions.  (I recommend making every-day use of the validations package even if not doing `quickcheck`, because it creates more clear functions that are more explicit about what they require and are less likely to crash in confusing ways.  ...They're also way easier to quickcheck.)
 
 This quickcheck will automaticaly generate possible arguments that match the preconditions and then do some verifications, such as (a) verifying that the number of characters of the resulting string is the same as the `length` that you passed into the function, (b) that the resulting string is not a length > 1 vector, (c) that the resulting string is all characters, and (d) that all the characters in the string are within the given `alphabet`.
 
