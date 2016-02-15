@@ -54,4 +54,6 @@ quickcheck <- ensure(pre = list(fn %is% "function", verbose %is% logical),
     TRUE
   })
 #TODO: Quickcheck function with more than one formal.
-#TODO: Can mix-in your own custom objects into the test objects
+# Plan for this -- generate a different testing_frame using function_test_objects on each formal. Function will have to be refactored and renamed.
+
+#TODO, but later: Can mix-in your own custom objects into the test objects

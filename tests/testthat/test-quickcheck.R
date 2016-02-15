@@ -20,6 +20,18 @@ describe("testing frame", {
     expect_true(testing_frame %contains% integer)
     expect_true(testing_frame %contains% double)
   })
+  test_that("it results in lists of all sorts but only lists if the function takes lists", {
+    expect_true(FALSE)
+  })
+  test_that("it results in dataframes of all sorts but only dataframes", {
+    expect_true(FALSE)
+  })
+  test_that("it results in lists or vectors if the function takes that", {
+    expect_true(FALSE)
+  })
+  test_that("it can further restrict based on things other than class", {
+    expect_true(FALSE)
+  })
 })
 
 describe("quickcheck", {
@@ -51,6 +63,9 @@ describe("quickcheck", {
     expect_true(FALSE)
   })
   test_that("failing based on a specified postcondition", {
+    expect_true(FALSE)
+  })
+  test_that("it errors if the testing frame is reduced to 0", {
     expect_true(FALSE)
   })
   test_that("reverse example", {
