@@ -87,6 +87,7 @@ function_name <- function(orig_function_name) {
 #' @param verbose logical. Whether or not to announce the success.
 #' @return either TRUE if the function passed the quickcheck or a specific error.
 #' @import validations
+#' @export
 quickcheck <- validations::ensure(pre = list(fn %is% "function", verbose %is% logical),
   post = isTRUE(result),
 function(fn, postconditions = NULL, verbose = TRUE) {
