@@ -6,7 +6,7 @@ R is a dynamically typed language, which is great for writing code quickly but b
 
 Thanks to Hadley's [testthat package](https://github.com/hadley/testthat), writing tests for R code [is pretty easy](http://r-pkgs.had.co.nz/).  But writing tests take a long time and it's easy to forget to write certain tests.  And [while coverage tools in R exist](https://github.com/jimhester/covr), 100% test coverage is still insufficient for verifying that your code works.
 
-Quickcheck, inspired by [the Haskell namesake](https://github.com/nick8325/quickcheck), aims to automatically verify your code through running hundreds of tests that you don't have to write yourself.
+Quickcheck, inspired by [the Haskell namesake](https://github.com/nick8325/quickcheck) (and in true Haskell style you can [see the corresponding academic paper](http://www.eecs.northwestern.edu/~robby/courses/395-495-2009-fall/quick.pdf)), aims to automatically verify your code through running hundreds of tests that you don't have to write yourself.
 
 Testing made easy AND quick! ...and more accurate!
 
