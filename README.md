@@ -54,3 +54,5 @@ devtools::install_github("peterhurford/validations")
 -
 
 Inspired by [Cobra](http://cobra-language.com/).
+
+Similar to the [ensurer](https://github.com/smbache/ensurer) package (and I think these two packages would work well together), but I didn't remember that package existed until now.
