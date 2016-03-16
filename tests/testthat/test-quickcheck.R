@@ -1,5 +1,4 @@
 context("quickcheck")
-library(validations)
 
 describe("testing frame", {
   test_that("by default it has everything", {
