@@ -2,4 +2,6 @@
 #'
 #' This function is the opposite of missing.
 #' @export
-present <- function(...) { !missing(...) }
+present <- function(...) {
+  try(list(...), silent = TRUE) %isnot% "try-error"
+}

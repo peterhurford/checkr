@@ -32,9 +32,9 @@ test_that("present can be used in the positive case", {
 
 test_that("present can be used in a validation", {
   fn <- ensure(pre = present(x) && present(y),
-    function(x, y) {
+    function(x = NULL, y = NULL) {
       if (missing(x)) { x <- 1 }
       x + y
     })
-  expect_error(fn(y = 2), "Error on present(x) && present(y)")
+  expect_error(fn(y = 2), "Error on present(x) && present(y)", fixed = TRUE)
 })
