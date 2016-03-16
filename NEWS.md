@@ -1,3 +1,11 @@
+#### v0.0.1.9001
+
+* Added `present` to check for the presence of arguments.
+
+#### v0.0.1.9000
+
+* Added quickcheck.
+
 #### v0.0.0.9003
 
 * Validating a function twice creates an error.
