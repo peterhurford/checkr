@@ -1,30 +1,23 @@
-context("is.empty")
+context("is.simple_string")
 
-test_that("it is TRUE for NULL, NA, and empty string", {
-  expect_true(is.empty(NULL))
-  expect_true(is.empty(NA))
-  expect_true(is.empty(""))
+test_that("it is TRUE for length-1 non-empty strings", {
+  expect_true(is.simple_string("pizza"))
+  expect_true(is.simple_string("paul"))
+  expect_true(is.simple_string("having spaces is okay too"))
+  expect_true(is.simple_string("also /slashes and nonAlph@nUm3ric char$"))
 })
 
-test_that("it is TRUE for length-0 objects", {
-  expect_true(is.empty(list()))
-  expect_true(is.empty(c()))
-  expect_true(is.empty(data.frame()))
-  expect_true(is.empty(logical(0)))
+test_that("it is FALSE for length >1 non-empty strings", {
+  expect_false(is.simple_string(c("two", "strings")))
+  expect_false(is.simple_string(c("a", "vector", "with", "five", "strings")))
 })
 
-test_that("it is TRUE for lists and vectors that combine the above", {
-  expect_true(is.empty(list(NA, NA)))
-  expect_true(is.empty(list(NA, NULL, NA)))
-  expect_true(is.empty(list(list())))
-  expect_true(is.empty(list(a = list())))
-  expect_true(is.empty(list(a = list(NA, NULL), b = list(NA))))
+test_that("it is FALSE for length-1 empty strings", {
+  expect_false(is.simple_string(NA))
+  expect_false(is.simple_string(NULL))
 })
 
-test_that("it is FALSE for everything else", {
-  expect_false(is.empty("a"))
-  expect_false(is.empty(1))
-  expect_false(is.empty(iris))
-  expect_false(is.empty(list(NA, NULL, 1)))
-  expect_false(is.empty(list(a = list(NA, NA), b = list(1, 2))))
+test_that("it is FALSE for length-1 non-empty non-strings", {
+  expect_false(is.simple_string(FALSE))
+  expect_false(is.simple_string(iris))
 })
