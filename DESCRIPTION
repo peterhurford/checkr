@@ -1,6 +1,6 @@
 Package: checkr
 Title: Automatically Test R Functions
-Version: 0.0.1.9001
+Version: 0.0.1.9002
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
 Description: Be able to specify preconditions and postconditions for R functions
     and have them automatically checked at runtime. Then, randomly generate R

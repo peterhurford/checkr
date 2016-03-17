@@ -160,3 +160,64 @@ describe("passing conditions", {
     expect_error(ensure(pre = x %is% numeric, random_string), "already been validated")
   })
 })
+
+describe("present", {
+  test_that("present can be used in a validation", {
+    fn <- ensure(pre = present(x) && present(y),
+      function(x = NULL, y = NULL) {
+        if (missing(x)) { x <- 1 }
+        if (missing(y)) { y <- 1 }
+        x + y
+      })
+    expect_error(fn(y = 2), "Error on present(x) && present(y)", fixed = TRUE)
+  })
+  test_that("present can be used in a validation II", {
+    fn <- ensure(pre = list(present(x), present(y)),
+      function(x = NULL, y = NULL) {
+        if (missing(x)) { x <- 1 }
+        if (missing(y)) { y <- 1 }
+        x + y
+      })
+    expect_error(fn(x = 2), "Error on present(y)", fixed = TRUE)
+    expect_error(fn(y = 2), "Error on present(x)", fixed = TRUE)
+  })
+  test_that("present can be used in a validation III", {
+    fn <- ensure(pre = list(present(x), present(y)),
+      function(x = NULL, y = NULL) {
+        if (missing(x)) { x <- 1 }
+        if (missing(y)) { y <- 1 }
+        x + y
+      })
+    expect_error(fn(x = 2), "Error on present(y)", fixed = TRUE)
+    expect_error(fn(y = 2), "Error on present(x)", fixed = TRUE)
+  })
+  test_that("present can be used in a validation IV", {
+    fn <- ensure(pre = present(x),
+      function(x = NULL, y = NULL) {
+        if (missing(x)) { x <- 1 }
+        if (missing(y)) { y <- 1 }
+        x + y
+      })
+    expect_equal(3, fn(x = 2))
+    expect_error(fn(y = 2), "Error on present(x)", fixed = TRUE)
+  })
+})
+
+describe("missing arguments", {
+  fn <- ensure(pre = list(
+    a %is% "NULL" || a %is% list,
+    b %is% "NULL" || b %is% list),
+     function(a = NULL, b = NULL, c = NULL) { c(a, b, c) })
+  test_that("the function works", {
+    expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
+  })
+  test_that("c can be missing", {
+    expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
+  })
+  test_that("b cannot be missing", {
+    expect_error(fn(a = list(1), c = list(2)), "Error on missing arguments: b")
+  })
+  test_that("a cannot be missing", {
+    expect_error(fn(b = list(1), c = list(2)), "Error on missing arguments: a")
+  })
+})

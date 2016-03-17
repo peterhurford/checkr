@@ -1,3 +1,7 @@
+#### v0.0.1.9002
+
+* Fixed how we checked for missing args, fixing bugs with `missing` and `present`.
+
 #### v0.0.1.9001
 
 * Added `present` to check for the presence of arguments.
