@@ -23,8 +23,13 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
 
     # If a function has multiple args but some of them are missing, we just
     # cut out the missing ones.
+    missing_args <- NULL
     length(formals) <- length(args)
-    names(args) <- formals
+    if (is.null(names(args)) || all(formals %in% names(args))) {
+      names(args) <- formals
+    } else if (!(length(names(args)) == length(formals))) {
+      missing_args <- Filter(function(x) { !(x %in% names(args)) }, formals)
+    }
 
     # Get all the non-empty arguments to impute missing arguments.
     default_args <- Filter(Negate(is.name), formals(fn))
@@ -35,15 +40,22 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     }
 
     # Make sure all the formals are present in the args.
-    missing_args <- names(formals(fn))[which(!(names(formals(fn)) %in% names(args)))]
-    missing_args <- missing_args[which(!(missing_args %in% names(default_args)))]
-    if (length(missing_args) > 0) {
-      stop("Error on missing arguments: ",
-        paste0(missing_args, collapse = ", "), call. = FALSE)
+    if (is.null(missing_args)) {
+      missing_args <- names(formals(fn))[which(!(names(formals(fn)) %in% names(args)))]
+      missing_args <- missing_args[which(!(missing_args %in% names(default_args)))]
     }
+    if (length(missing_args) > 0) { missing_args_error(missing_args) }
 
     # Run the preconditions and postconditions.
-    validate_(pre, env = args)
+    tryCatch(validate_(pre, env = args),
+      error = function(e) {
+        e <- as.character(e)
+        flag <- "object '.*not found"
+        if (grepl(flag, e)) {
+          missing_args_error(gsub("' not found", "",
+            gsub("object '", "", regmatches(e, regexpr(flag, e)))))
+        } else { stop(e) } 
+      })
     args$result <- fn(...)
     validate_(post, env = args)
     args$result
@@ -93,4 +105,10 @@ print.validated_function <- function(x, ...) {
     postconditions = postconditions(x),
     fn = get_prevalidated_fn(x)),
   ...)
+}
+
+
+missing_args_error <- function(missing_args) {
+  stop("Error on missing arguments: ",
+    paste0(missing_args, collapse = ", "), call. = FALSE)
 }

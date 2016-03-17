@@ -26,15 +26,7 @@ test_that("present can be used in the positive case", {
     if (missing(x)) { x <- 3 }
     x
   }
-  expect_equal(1, fn(3))
+  expect_equal(1, fn(x = 3))
+  expect_equal(1, fn(x = NULL))
   expect_equal(3, fn())
-})
-
-test_that("present can be used in a validation", {
-  fn <- ensure(pre = present(x) && present(y),
-    function(x = NULL, y = NULL) {
-      if (missing(x)) { x <- 1 }
-      x + y
-    })
-  expect_error(fn(y = 2), "Error on present(x) && present(y)", fixed = TRUE)
 })
