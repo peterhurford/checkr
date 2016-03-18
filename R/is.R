@@ -25,6 +25,12 @@
     return(all(vapply(expected_class, `%is%`, match_object = match_object, logical(1))))
   }
 
+  if (identical(expected_class, NULL)) {
+    expected_class <- "NULL"
+  }
+  if (identical(expected_class, NA)) {
+    expected_class <- "NA"
+  }
   if (identical(expected_class, "string")) {
     expected_class <- "character"
   }
@@ -40,6 +46,9 @@
   }
   if (identical(expected_class, "empty")) {
     return(is.empty(match_object))
+  }
+  if (identical(expected_class, "NA")) {
+    return(!is.null(match_object) && is.na(match_object))
   }
   if (identical(expected_class, "vector")) {
     return(is.vector(match_object) && !is(match_object, "list"))

@@ -145,3 +145,29 @@ test_that("simple seccess example II", {
       random_string))
   })
 })
+
+describe("print_args", {
+  test_that("works on a simple example I", {
+    expect_equal("a = \"a\"", print_args(list(a = "a")))
+  })
+  test_that("works on a simple example II", {
+    expect_equal("x = 1:3, y = 1:4",
+      print_args(list(x = seq(3), y = seq(4))))
+  })
+  test_that("works on a simple example III", {
+    expect_equal("x = list(3), y = list(4)",
+      print_args(list(x = list(3), y = list(4))))
+  })
+  test_that("works on a simple example IV", {
+    expect_equal("x = list(3, 2, \"a\"), y = list(4, 3, \"b\")",
+      print_args(list(x = list(3, 2, "a"), y = list(4, 3, "b"))))
+  })
+  test_that("works on a dataframe", {
+    expect_equal("df = structure(list(a = 1, b = 2), .Names = c(\"a\", \"b\"), row.names = c(NA, -1L), class = \"data.frame\")",
+      print_args(list(df = data.frame(a = 1, b = 2))))
+  })
+  test_that("works on a long list", {
+    expect_equal("x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)",
+      print_args(list(x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4))))
+  })
+})

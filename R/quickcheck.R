@@ -54,8 +54,10 @@ function_test_objects <- validations::ensure(pre = fn %is% "function", post = re
 #' [1] "x = 1:3, y = 1:4"
 print_args <- function(x) {
   paste0(paste(names(x),
-    unname(sapply(x, function(y) capture.output(dput(y)))),
-  sep = " = "), collapse = ", ")
+    unname(sapply(x, function(y) {
+      # Correct for the tendency of capture.output to go over one string.
+      gsub("    ", "", paste0(capture.output(dput(y)), collapse = ""))
+    })), sep = " = "), collapse = ", ")
 }
 
 
