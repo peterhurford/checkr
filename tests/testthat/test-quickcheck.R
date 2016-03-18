@@ -99,14 +99,14 @@ test_that("simple seccess example II", {
       pre = x %is% numeric,
       post = result %is% character, # this will fail because the result will actually be numeric
       function(x) x + 1) 
-    expect_error(quickcheck(add_one), "Quickcheck for add_one failed on item #1")
+    expect_false(quickcheck(add_one, testthat = FALSE))
   })
   test_that("simple failure example II", {
     add_one <- ensure(
       pre = x %is% character, # quickcheck will only generate characters which will fail
       post = result %is% numeric,
       function(x) x + 1) 
-    expect_error(quickcheck(add_one), "Quickcheck for add_one failed on item #1")
+    expect_false(quickcheck(add_one, testthat = FALSE))
   })
   test_that("it errors if the testing frame is reduced to 0", {
     impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
@@ -123,13 +123,13 @@ test_that("simple seccess example II", {
     random_string <- function(length, alphabet) {
       paste0(sample(alphabet, 10), collapse = "")
     }
-    expect_error(quickcheck(ensure(
+    expect_false(quickcheck(ensure(
       pre = list(length %is% numeric, length(length) == 1, length > 0,
         alphabet %is% list || alphabet %is% vector,
           alphabet %contains_only% simple_string),
       post = list(nchar(result) == length, length(result) == 1,
         is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
-      random_string)), "Quickcheck for random_string failed on item #1")
+      random_string), testthat = FALSE))
   })
   test_that("random string example - success", {
     random_string <- function(length, alphabet) {
@@ -143,5 +143,31 @@ test_that("simple seccess example II", {
       post = list(nchar(result) == length, length(result) == 1,
         is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
       random_string))
+  })
+})
+
+describe("print_args", {
+  test_that("works on a simple example I", {
+    expect_equal("a = \"a\"", print_args(list(a = "a")))
+  })
+  test_that("works on a simple example II", {
+    expect_equal("x = 1:3, y = 1:4",
+      print_args(list(x = seq(3), y = seq(4))))
+  })
+  test_that("works on a simple example III", {
+    expect_equal("x = list(3), y = list(4)",
+      print_args(list(x = list(3), y = list(4))))
+  })
+  test_that("works on a simple example IV", {
+    expect_equal("x = list(3, 2, \"a\"), y = list(4, 3, \"b\")",
+      print_args(list(x = list(3, 2, "a"), y = list(4, 3, "b"))))
+  })
+  test_that("works on a dataframe", {
+    expect_equal("df = structure(list(a = 1, b = 2), .Names = c(\"a\", \"b\"), row.names = c(NA, -1L), class = \"data.frame\")",
+      print_args(list(df = data.frame(a = 1, b = 2))))
+  })
+  test_that("works on a long list", {
+    expect_equal("x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)",
+      print_args(list(x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4))))
   })
 })

@@ -72,7 +72,7 @@ installed_dataframes <- function() {
     else { name }}
   dataframe_names <- lapply(apply(data()$results, 1, `[[`, "Item"),
     take_only_part_of_name_before_the_space)
-  dataframes <- lapply(dataframe_names, get)
+  dataframes <- lapply(dataframe_names, function(df) try(get(df), silent = TRUE))
   names(dataframes) <- dataframe_names
   dataframes
 }

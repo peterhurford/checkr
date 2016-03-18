@@ -27,6 +27,7 @@ test_that("no overlap in classes", {
 test_that("custom class names", {
   expect_true("a" %is% string)
   expect_true(iris %is% dataframe)
+  expect_true(NULL %is% NULL)
 })
 
 describe("custom matchers", {
@@ -44,6 +45,21 @@ describe("custom matchers", {
     expect_true(c(a = "a", b = "b", c = "c") %is% vector)
     expect_false(list(1, 2, 3) %is% vector)
     expect_false(iris %is% vector)
+  })
+  test_that("empty", {
+    expect_true("" %is% empty)
+    expect_true(NA %is% empty)
+    expect_true(NULL %is% empty)
+    expect_false(1 %is% empty)
+    expect_false("a" %is% empty)
+    expect_false(iris %is% empty)
+  })
+  test_that("NA", {
+    expect_true(NA %is% NA)
+    expect_true(NA_character_ %is% NA)
+    expect_true(NA_integer_ %is% NA)
+    expect_false("" %is% NA)
+    expect_false(NULL %is% NA)
   })
 })
 

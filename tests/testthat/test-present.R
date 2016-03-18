@@ -26,7 +26,27 @@ test_that("present can be used in the positive case", {
     if (missing(x)) { x <- 3 }
     x
   }
-  expect_equal(1, fn(x = 3))
+  expect_equal(1, fn(x = 5))
   expect_equal(1, fn(x = NULL))
   expect_equal(3, fn())
+})
+
+test_that("present only tests variables in the scope and doesn't get confused", {
+  fn <- function(mean) {  # Could get confused for the funtion `mean`.
+    if (present(mean)) { mean <- 1 }
+    if (missing(mean)) { mean <- 3 }
+    mean
+  }
+  expect_equal(1, fn(mean = 5))
+  expect_equal(1, fn(mean = NULL))
+  expect_equal(3, fn())
+})
+
+test_that("present only tests variables in the scope and doesn't get confused II", {
+  a <- 1
+  fn <- function(b) {
+    expect_false(present(a))
+    expect_true(present(b))
+  }
+  fn(1)
 })

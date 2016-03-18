@@ -1,3 +1,15 @@
+#### v0.0.2.9000
+
+* Adds `%does_not_contain%` as a validator.
+* Adds NA and NULL as classes that can be tested using `%is%`, `%contains%`, etc.
+* Fixed bugs where missing arguments were not allowed in certain places where they should be allowed.
+* Prevent a failed quickcheck from breaking the entire test suite. Quickcheck now returns FALSE when failing instead of an error.
+* The testthat integration in quickcheck can be turned off with `testthat = FALSE`
+* Fixed a bug where the report of the quickcheck failure would not be correct because the output was too long.
+* Fixed a bug where quickcheck breaks if it can't load some built-in dataframes.
+* Removed stray references to the old validation package.
+* Fixed a merge conflict.
+
 #### v0.0.1.9002
 
 * Fixed how we checked for missing args, fixing bugs with `missing` and `present`.
