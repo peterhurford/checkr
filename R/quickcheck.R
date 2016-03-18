@@ -121,9 +121,7 @@ function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
   } else {
     error_msg <- paste0("Quickcheck for ", function_name, " failed on item #", pos, ": ",
       print_args(args))
-    if (isTRUE(verbose)) {
-      message(error_msg)
-    }
+    if (isTRUE(verbose) && !isTRUE(testthat)) { message(error_msg) }
     if (isTRUE(testthat)) { testthat::expect_true(FALSE, error_msg) } 
     FALSE
   }

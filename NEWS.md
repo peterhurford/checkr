@@ -2,6 +2,7 @@
 
 * Adds `%does_not_contain%` as a validator.
 * Adds NA and NULL as classes that can be tested using `%is%`, `%contains%`, etc.
+* Fixed bugs where missing arguments were not allowed in certain places where they should be allowed.
 * Prevent a failed quickcheck from breaking the entire test suite. Quickcheck now returns FALSE when failing instead of an error.
 * The testthat integration in quickcheck can be turned off with `testthat = FALSE`
 * Fixed a bug where the report of the quickcheck failure would not be correct because the output was too long.

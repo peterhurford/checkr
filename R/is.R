@@ -22,7 +22,8 @@
 
 `%is_%` <- function(match_object, expected_class) {
   if (length(expected_class) > 1) {
-    return(all(vapply(expected_class, `%is%`, match_object = match_object, logical(1))))
+    return(all(vapply(expected_class, `%is%`,
+      match_object = match_object, logical(1))))
   }
 
   if (identical(expected_class, NULL)) {
