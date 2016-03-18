@@ -1,3 +1,8 @@
+#### v0.0.1.9003
+
+* Prevent a failed quickcheck from breaking the entire test suite.
+* Fixed a bug where quickcheck breaks if it can't load some built-in dataframes.
+
 #### v0.0.1.9002
 
 * Fixed how we checked for missing args, fixing bugs with `missing` and `present`.

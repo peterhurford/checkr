@@ -98,21 +98,32 @@ function(fn, postconditions = NULL, verbose = TRUE) {
       " impossible to satisfy!")
   }
   function_name <- function_name(substitute(fn))
+  failed <- FALSE
   for (pos in seq_along(testing_frame[[1]])) {
     args <- lapply(testing_frame, `[[`, pos)
     tryCatch({
       result <- do.call(fn, args)
       validations::validate_(post, env = list(result = result))
     }, error = function(e) {
-      stop("Quickcheck for ", function_name, " failed on item #", pos, ": ",
-        print_args(args), call. = FALSE)
+      failed <- TRUE
+      break
     })
   }
-  if (isTRUE(verbose)) {
-    message("Quickcheck for ", function_name, " passed on ", pos, " random examples!")
+  if (identical(failed, FALSE)) {
+    if (isTRUE(verbose)) {
+      message("Quickcheck for ", function_name, " passed on ", pos, " random examples!")
+    }
+    testthat::expect_true(TRUE)
+    TRUE
+  } else {
+    error_msg <- paste0("Quickcheck for ", function_name, " failed on item #", pos, ": ",
+      print_args(args))
+    if (isTRUE(verbose)) {
+      message(error_msg)
+    }
+    testthat::expect_true(FALSE, error_msg)
+    FALSE
   }
-  testthat::expect_true(TRUE)
-  TRUE
 })
 #TODO: Handle splats
 #TODO, but later: Can mix-in your own custom objects into the test objects
