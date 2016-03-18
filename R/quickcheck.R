@@ -1,6 +1,5 @@
 #' Create the necessary testing objects to quickcheck a function.
 #' @param fn function. A function to generate test objects for.
-#' @import validations
 function_test_objects <- validations::ensure(pre = fn %is% "function", post = result %is% list,
   function(fn) {
     if (fn %is% validated_function) {
@@ -85,12 +84,13 @@ function_name <- function(orig_function_name) {
 #' @param fn function. A function to randomly check postconditions for.
 #' @param postconditions. Optional postconditions to quickcheck for.
 #' @param verbose logical. Whether or not to announce the success.
-#' @return either TRUE if the function passed the quickcheck or a specific error.
-#' @import validations
+#' @param testthat logical. Whether or not to run testthat.
+#' @return either TRUE if the function passed the quickcheck or FALSE if it didn't.
 #' @export
-quickcheck <- validations::ensure(pre = list(fn %is% "function", verbose %is% logical),
-  post = isTRUE(result),
-function(fn, postconditions = NULL, verbose = TRUE) {
+quickcheck <- validations::ensure(
+  pre = list(fn %is% "function", verbose %is% logical, testthat %is% logical),
+  post = result%is% logical,
+function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
   post <- substitute(postconditions)
   testing_frame <- function_test_objects(fn)
   if (any(vapply(testing_frame, length, numeric(1)) == 0)) {
@@ -100,20 +100,21 @@ function(fn, postconditions = NULL, verbose = TRUE) {
   function_name <- function_name(substitute(fn))
   failed <- FALSE
   for (pos in seq_along(testing_frame[[1]])) {
-    args <- lapply(testing_frame, `[[`, pos)
-    tryCatch({
-      result <- do.call(fn, args)
-      validations::validate_(post, env = list(result = result))
-    }, error = function(e) {
-      failed <- TRUE
-      break
-    })
+    if (identical(failed, FALSE)) {
+      args <- lapply(testing_frame, `[[`, pos)
+      tryCatch({
+        result <- do.call(fn, args)
+        validations::validate_(post, env = list(result = result))
+      }, error = function(e) {
+        failed <<- TRUE
+      })
+    }
   }
   if (identical(failed, FALSE)) {
     if (isTRUE(verbose)) {
       message("Quickcheck for ", function_name, " passed on ", pos, " random examples!")
     }
-    testthat::expect_true(TRUE)
+    if (isTRUE(testthat)) { testthat::expect_true(TRUE) }
     TRUE
   } else {
     error_msg <- paste0("Quickcheck for ", function_name, " failed on item #", pos, ": ",
@@ -121,7 +122,7 @@ function(fn, postconditions = NULL, verbose = TRUE) {
     if (isTRUE(verbose)) {
       message(error_msg)
     }
-    testthat::expect_true(FALSE, error_msg)
+    if (isTRUE(testthat)) { testthat::expect_true(FALSE, error_msg) } 
     FALSE
   }
 })

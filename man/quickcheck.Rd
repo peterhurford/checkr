@@ -12,9 +12,11 @@ quickcheck(...)
 \item{postconditions.}{Optional postconditions to quickcheck for.}
 
 \item{verbose}{logical. Whether or not to announce the success.}
+
+\item{testthat}{logical. Whether or not to run testthat.}
 }
 \value{
-either TRUE if the function passed the quickcheck or a specific error.
+either TRUE if the function passed the quickcheck or FALSE if it didn't.
 }
 \description{
 Tests a function with many automatically generated inputs, checking that stated

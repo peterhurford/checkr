@@ -14,6 +14,16 @@
   contains_(match_list, expected_class, exclusive = FALSE)
 }
 
+#' Test if a list does not contain some elements of the desired class.
+#'
+#' @param match_list. The list to test for class of the elements.
+#' @param expected_class. The name of the expected class to test.
+#' @examples
+#'   list(1, 2, 3) %does_not_contain% character
+#' @return Boolean whether or not the match_list has no elements of the expected_class.
+#' @export
+`%does_not_contain%` <- Negate(`%contains%`)
+
 #' Test if a list contains only elements of the desired class.
 #' @rdname grapes-contains-grapes
 #' @examples

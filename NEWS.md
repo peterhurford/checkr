@@ -1,7 +1,11 @@
-#### v0.0.1.9003
+#### v0.0.2.9000
 
-* Prevent a failed quickcheck from breaking the entire test suite.
+* Adds `%does_not_contain%` as a validator.
+* Prevent a failed quickcheck from breaking the entire test suite. Quickcheck now returns FALSE when failing instead of an error.
+* The testthat integration in quickcheck can be turned off with `testthat = FALSE`
 * Fixed a bug where quickcheck breaks if it can't load some built-in dataframes.
+* Removed stray references to the old validation package.
+* Fixed a merge conflict.
 
 #### v0.0.1.9002
 
