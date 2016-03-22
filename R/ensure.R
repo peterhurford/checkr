@@ -24,8 +24,12 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     # and (b) detect if any formals are missing so we can place in their defaults
     # or error
     missing_formals <- setdiff(formals, names(args))
-    empty_names <- vapply(names(args), is.empty, logical(1))
-    names(args)[empty_names] <- missing_formals[empty_names]
+    if (is.null(names(args))) {
+      names(args) <- head(formals, length(args))
+    } else {
+      empty_names <- vapply(names(args), is.empty, logical(1))
+      names(args)[empty_names] <- missing_formals[empty_names]
+    }
 
     # These formals are going to be the ones that need to be replaced with defaults
     # or error
