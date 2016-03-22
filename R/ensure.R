@@ -31,10 +31,6 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
       names(args)[empty_names] <- head(missing_formals, length(args))
     }
 
-    # These formals are going to be the ones that need to be replaced with defaults
-    # or error
-    missing_formals <- setdiff(formals, names(args))
-
     # Get all the non-empty arguments to impute missing arguments.
     default_args <- Filter(Negate(is.name), formals(fn))
     for (pos in seq_along(default_args)) {
