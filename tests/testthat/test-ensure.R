@@ -256,3 +256,16 @@ describe("missing arguments IV", {
     expect_equal(list(1, 2), fn(b = list(1), c = list(2)))
   })
 })
+
+describe("missing arguments V", {
+  fn <- ensure(pre = list(fn %is% "function", flag %is% logical),
+    post = result %is% logical,
+    function(fn, flag = TRUE) { fn(flag) })
+  test_that("the function works V", {
+    expect_true(fn(isTRUE, flag = TRUE))
+    expect_false(fn(isTRUE, flag = FALSE))
+  })
+  test_that("flag can be missing V", {
+    expect_true(fn(isTRUE))
+  })
+})
