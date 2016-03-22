@@ -1,13 +1,13 @@
 #' Create the necessary testing objects to quickcheck a function.
 #' @param fn function. A function to generate test objects for.
-function_test_objects <- validations::ensure(pre = fn %is% "function", post = result %is% list,
+function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
   function(fn) {
     if (fn %is% validated_function) {
-      preconditions <- validations::preconditions(fn)
+      preconditions <- preconditions(fn)
       if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
           preconditions <- list(preconditions)
       }
-      pre_fn <- validations::get_prevalidated_fn(fn)
+      pre_fn <- get_prevalidated_fn(fn)
       formals <- names(formals(pre_fn))
       testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
       testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
@@ -89,7 +89,7 @@ function_name <- function(orig_function_name) {
 #' @param testthat logical. Whether or not to run testthat.
 #' @return either TRUE if the function passed the quickcheck or FALSE if it didn't.
 #' @export
-quickcheck <- validations::ensure(
+quickcheck <- ensure(
   pre = list(fn %is% "function", verbose %is% logical, testthat %is% logical),
   post = result%is% logical,
 function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
@@ -106,7 +106,7 @@ function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
       args <- lapply(testing_frame, `[[`, pos)
       tryCatch({
         result <- do.call(fn, args)
-        validations::validate_(post, env = list(result = result))
+        validate_(post, env = list(result = result))
       }, error = function(e) {
         failed <<- TRUE
       })
