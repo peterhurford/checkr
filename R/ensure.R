@@ -20,14 +20,15 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     args <- list(...)
     formals <- names(formals(fn))
 
-    # If a function has multiple args but some of them are missing, we just
-    # cut out the missing ones.
-    missing_args <- NULL
-    length(formals) <- length(args)
-    if (is.null(names(args)) || all(formals %in% names(args))) {
-      names(args) <- formals
-    } else if (!(length(names(args)) == length(formals))) {
-      missing_args <- Filter(function(x) { !(x %in% names(args)) }, formals)
+    # Goal here is to (a) impute names the user doesn't give with the formals
+    # and (b) detect if any formals are missing so we can place in their defaults
+    # or error
+    missing_formals <- setdiff(formals, names(args))
+    if (is.null(names(args))) {
+      names(args) <- head(formals, length(args))
+    } else {
+      empty_names <- vapply(names(args), is.empty, logical(1))
+      names(args)[empty_names] <- head(missing_formals, length(args))
     }
 
     # Get all the non-empty arguments to impute missing arguments.

@@ -1,4 +1,12 @@
-#### v0.0.2.9000
+#### v0.0.2.9002
+
+* Redo the imputation of arguments within the validator.
+
+#### v0.0.2.9001
+
+* Remove calls to the now non-existent `validations` package.
+
+## v0.0.2.9000
 
 * Adds `%does_not_contain%` as a validator.
 * Adds NA and NULL as classes that can be tested using `%is%`, `%contains%`, etc.
@@ -10,6 +18,7 @@
 * Removed stray references to the old validation package.
 * Fixed a merge conflict.
 
+
 #### v0.0.1.9002
 
 * Fixed how we checked for missing args, fixing bugs with `missing` and `present`.
@@ -18,9 +27,10 @@
 
 * Added `present` to check for the presence of arguments.
 
-#### v0.0.1.9000
+## v0.0.1.9000
 
 * Added quickcheck.
+
 
 #### v0.0.0.9003
 
@@ -38,6 +48,6 @@
 
 * The resulting function is now also of class `validated_function`.
 
-#### v0.0.0.9000
+## v0.0.0.9000
 
 * Initial package
