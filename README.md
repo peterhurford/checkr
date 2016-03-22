@@ -69,13 +69,13 @@ This is a pretty simple function, but it's possible to make an error even on som
 We may write some tests using testthat:
 
 ```R
-test_that("It generates a random string from the given alphabet", {
+test_that("it generates a random string from the given alphabet", {
   random_string <- random_string(10, letters)
   all(strsplit(random_string, "")[[1]] %in% letters)
 })
-test_that("It generates a random string of the given length", {
+test_that("it generates a random string of the given length", {
   random_string <- random_string(10, letters)
-  expect_equal(length(random_string), 10)
+  expect_equal(nchar(random_string), 10)
 })
 ```
 
@@ -110,7 +110,7 @@ Error: Quickcheck for random_string failed on item #1: length = 53L, alphabet = 
 
 We use `ensure` from the [validations package](https://github.com/peterhurford/validations) to specify preconditions for what random items we should test our function with and to specify postconditions that must hold true for every run that satisfies the preconditions.  (I recommend making every-day use of the validations package even if not doing `quickcheck`, because it creates more clear functions that are more explicit about what they require and are less likely to crash in confusing ways.  ...They're also way easier to quickcheck.)
 
-This quickcheck will automaticaly generate possible arguments that match the preconditions and then do some verifications, such as (a) verifying that the number of characters of the resulting string is the same as the `length` that you passed into the function, (b) that the resulting string is not a length > 1 vector, (c) that the resulting string is all characters, and (d) that all the characters in the string are within the given `alphabet`.
+This quickcheck will automatically generate possible arguments that match the preconditions and then do some verifications, such as (a) verifying that the number of characters of the resulting string is the same as the `length` that you passed into the function, (b) that the resulting string is not a length > 1 vector, (c) that the resulting string is all characters, and (d) that all the characters in the string are within the given `alphabet`.
 
 This easily accomplishes in two lines what normally takes five well thought-out and detailed tests.
 
@@ -152,9 +152,9 @@ However, this version of Quickcheck has a few important improvements:
 
 (1) The tight integration with the validations package lets you more clearly specify the preconditions and postconditions.
 
-(2) You can be a lot more specific about the preconditions you can specify on the random objects. Revolution Analytics's objects are always one class and all objects of that class, whereas with this package you can mix and match classes and specify other things (e.g., all >0).
+(2) You can be a lot more specific about the preconditions you can specify on the random objects. Revolution Analytics' objects are always one class and all objects of that class, whereas with this package you can mix and match classes and specify other things (e.g., all >0).
 
-(3) The random object generator is smarter (a.k.a. biased), making sure to explicitly test important things you might forget (e.g., a vector of all negative numbers) and that might not come up in a truly random generator (like Revolution Analytics's).
+(3) The random object generator is smarter (a.k.a. biased), making sure to explicitly test important things you might forget (e.g., a vector of all negative numbers) and that might not come up in a truly random generator (like Revolution Analytics').
 
 (4) This version naturally integrates with Hadley's popular testthat package.
 
