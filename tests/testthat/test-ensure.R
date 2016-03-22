@@ -388,10 +388,14 @@ describe("missing arguments VI", {
     post = result %is% logical,
     function(fn, flag = TRUE, second_flag = "hi") { fn(flag) })
   test_that("the function works VI", {
-    expect_true(fn(isTRUE, flag = TRUE, second_flag = "pizza"))
-    expect_false(fn(isTRUE, flag = FALSE, second_flag = "pizza"))
     expect_true(fn(fn = isTRUE, flag = TRUE, second_flag = "pizza"))
     expect_false(fn(fn = isTRUE, flag = FALSE, second_flag = "pizza"))
+    expect_true(fn(isTRUE, flag = TRUE, second_flag = "pizza"))
+    expect_false(fn(isTRUE, flag = FALSE, second_flag = "pizza"))
+    expect_true(fn(isTRUE, TRUE, second_flag = "pizza"))
+    expect_false(fn(isTRUE, FALSE, second_flag = "pizza"))
+    expect_true(fn(isTRUE, TRUE, "pizza"))
+    expect_false(fn(isTRUE, FALSE, "pizza"))
   })
   test_that("the function works in the opposite order VI", {
     expect_true(fn(fn = isTRUE, second_flag = "pizza", flag = TRUE))
@@ -400,6 +404,8 @@ describe("missing arguments VI", {
     expect_false(fn(isTRUE, second_flag = "pizza", flag = FALSE))
     expect_true(fn(flag = TRUE, fn = isTRUE, second_flag = "pizza"))
     expect_false(fn(flag = FALSE, fn = isTRUE, second_flag = "pizza"))
+    expect_true(fn(flag = TRUE, fn = isTRUE, "pizza"))
+    expect_false(fn(flag = FALSE, fn = isTRUE, "pizza"))
     expect_true(fn(flag = TRUE, second_flag = "pizza", fn = isTRUE))
     expect_false(fn(flag = FALSE, second_flag = "pizza", fn = isTRUE))
   })
