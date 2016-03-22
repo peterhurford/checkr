@@ -181,6 +181,11 @@ describe("missing arguments", {
   test_that("the function works I", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works in the opposite order I", {
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), a = list(2), c = list(3)))
+  })
   test_that("c can be missing I", {
     expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
   })
@@ -200,6 +205,11 @@ describe("missing arguments II", {
     })
   test_that("the function works II", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
+  })
+  test_that("the function works in the opposite order II", {
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
   })
   test_that("c can be missing II", {
     expect_equal(list(1, 2, 1), fn(a = list(1), b = list(2)))
@@ -226,6 +236,11 @@ describe("missing arguments III", {
   test_that("the function works III", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works in the opposite order III", {
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
+  })
   test_that("c can be missing III", {
     expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
   })
@@ -245,6 +260,11 @@ describe("missing arguments IV", {
     function(a = NULL, b = NULL, c = NULL) { c(a, b, c) })
   test_that("the function works IV", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
+  })
+  test_that("the function works in the opposite order IV", {
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
   })
   test_that("c can be missing IV", {
     expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
@@ -267,6 +287,10 @@ describe("missing arguments V", {
     expect_true(fn(fn = isTRUE, flag = TRUE))
     expect_false(fn(fn = isTRUE, flag = FALSE))
   })
+  test_that("the function works in the opposite order V", {
+    expect_true(fn(flag = TRUE, fn = isTRUE))
+    expect_false(fn(flag = FALSE, fn = isTRUE))
+  })
   test_that("flag can be missing V", {
     expect_true(fn(isTRUE))
   })
@@ -281,6 +305,16 @@ describe("missing arguments VI", {
     expect_false(fn(isTRUE, flag = FALSE, second_flag = "pizza"))
     expect_true(fn(fn = isTRUE, flag = TRUE, second_flag = "pizza"))
     expect_false(fn(fn = isTRUE, flag = FALSE, second_flag = "pizza"))
+  })
+  test_that("the function works in the opposite order VI", {
+    expect_true(fn(fn = isTRUE, second_flag = "pizza", flag = TRUE))
+    expect_false(fn(fn = isTRUE, second_flag = "pizza", flag = FALSE))
+    expect_true(fn(isTRUE, second_flag = "pizza", flag = TRUE))
+    expect_false(fn(isTRUE, second_flag = "pizza", flag = FALSE))
+    expect_true(fn(flag = TRUE, fn = isTRUE, second_flag = "pizza"))
+    expect_false(fn(flag = FALSE, fn = isTRUE, second_flag = "pizza"))
+    expect_true(fn(flag = TRUE, second_flag = "pizza", fn = isTRUE))
+    expect_false(fn(flag = FALSE, second_flag = "pizza", fn = isTRUE))
   })
   test_that("flag can be missing VI", {
     expect_true(fn(isTRUE, second_flag = "pizza"))

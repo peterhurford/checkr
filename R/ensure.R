@@ -23,13 +23,16 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     # If a function has multiple args but some of them are missing, we just
     # cut out the missing ones.
     missing_args <- NULL
-    length(formals) <- length(args)
     named_args <- Filter(Negate(is.empty), names(args))
     if (all(named_args %in% formals)) {
-    #if (is.null(names(args)) || all(formals %in% names(args))) {
-      names(args) <- formals
-    } else if (!(length(names(args)) == length(formals))) {
-      missing_args <- Filter(function(x) { !(x %in% names(args)) }, formals)
+      if (length(args) == length(formals)) {
+        names(args) <- formals
+      } else if (length(args) < length(formals)) {
+        if (is.null(names(args))) {
+          names(args) <- head(formals, length(args))
+        }
+        missing_args <- setdiff(formals, names(args))
+      }
     }
 
     # Get all the non-empty arguments to impute missing arguments.
