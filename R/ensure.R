@@ -28,7 +28,7 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
       names(args) <- head(formals, length(args))
     } else {
       empty_names <- vapply(names(args), is.empty, logical(1))
-      names(args)[empty_names] <- missing_formals[empty_names]
+      names(args)[empty_names] <- head(missing_formals, length(args))
     }
 
     # These formals are going to be the ones that need to be replaced with defaults
