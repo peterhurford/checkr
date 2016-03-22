@@ -24,7 +24,9 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     # cut out the missing ones.
     missing_args <- NULL
     length(formals) <- length(args)
-    if (is.null(names(args)) || all(formals %in% names(args))) {
+    named_args <- Filter(Negate(is.empty), names(args))
+    if (all(named_args %in% formals)) {
+    #if (is.null(names(args)) || all(formals %in% names(args))) {
       names(args) <- formals
     } else if (!(length(names(args)) == length(formals))) {
       missing_args <- Filter(function(x) { !(x %in% names(args)) }, formals)

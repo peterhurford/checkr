@@ -264,8 +264,29 @@ describe("missing arguments V", {
   test_that("the function works V", {
     expect_true(fn(isTRUE, flag = TRUE))
     expect_false(fn(isTRUE, flag = FALSE))
+    expect_true(fn(fn = isTRUE, flag = TRUE))
+    expect_false(fn(fn = isTRUE, flag = FALSE))
   })
   test_that("flag can be missing V", {
     expect_true(fn(isTRUE))
+  })
+})
+
+describe("missing arguments VI", {
+  fn <- ensure(pre = list(fn %is% "function", flag %is% logical, second_flag %is% character),
+    post = result %is% logical,
+    function(fn, flag = TRUE, second_flag = "hi") { fn(flag) })
+  test_that("the function works VI", {
+    expect_true(fn(isTRUE, flag = TRUE, second_flag = "pizza"))
+    expect_false(fn(isTRUE, flag = FALSE, second_flag = "pizza"))
+    expect_true(fn(fn = isTRUE, flag = TRUE, second_flag = "pizza"))
+    expect_false(fn(fn = isTRUE, flag = FALSE, second_flag = "pizza"))
+  })
+  test_that("flag can be missing VI", {
+    expect_true(fn(isTRUE, second_flag = "pizza"))
+    expect_true(fn(fn = isTRUE, second_flag = "pizza"))
+  })
+  test_that("second_flag can be missing VI", {
+    expect_false(fn(isTRUE, flag = FALSE))
   })
 })
