@@ -175,25 +175,41 @@ describe("present", {
   })
 })
 
-describe("missing arguments", {
+describe("missing arguments I", {
   fn <- ensure(pre = list(a %is% list, b %is% list),
     function(a, b, c = NULL) { c(a, b, c) })
   test_that("the function works I", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works without names I", {
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), list(3)))
+  })
+  test_that("the function works with partial names I", {
+    expect_equal(list(1, 2, 3), fn(a = list(1), list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), list(3)))
+  })
   test_that("the function works in the opposite order I", {
-    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), c = list(3), b = list(2)))
+    expect_equal(list(1, 2, 3), fn(list(1), c = list(3), b = list(2)))
     expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
     expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
   })
   test_that("c can be missing I", {
     expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
+    expect_equal(list(1, 2), fn(list(1), b = list(2)))
+    expect_equal(list(1, 2), fn(a = list(1), list(2)))
+    expect_equal(list(1, 2), fn(list(1), list(2)))
   })
   test_that("c can be missing in the opposite order I", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
   test_that("b cannot be missing I", {
     expect_error(fn(a = list(1), c = list(2)), "Error on missing arguments: b")
+    expect_error(fn(list(1), c = list(2)), "Error on missing arguments: b")
   })
   test_that("a cannot be missing I", {
     expect_error(fn(b = list(1), c = list(2)), "Error on missing arguments: a")
@@ -209,19 +225,35 @@ describe("missing arguments II", {
   test_that("the function works II", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works without names II", {
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), list(3)))
+  })
+  test_that("the function works with partial names II", {
+    expect_equal(list(1, 2, 3), fn(a = list(1), list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), list(3)))
+  })
   test_that("the function works in the opposite order II", {
-    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), c = list(3), b = list(2)))
+    expect_equal(list(1, 2, 3), fn(list(1), c = list(3), b = list(2)))
     expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
     expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
   })
   test_that("c can be missing II", {
     expect_equal(list(1, 2, 1), fn(a = list(1), b = list(2)))
+    expect_equal(list(1, 2, 1), fn(list(1), b = list(2)))
+    expect_equal(list(1, 2, 1), fn(a = list(1), list(2)))
+    expect_equal(list(1, 2, 1), fn(list(1), list(2)))
   })
   test_that("c can be missing in the opposite order II", {
     expect_equal(list(1, 2, 1), fn(b = list(2), a = list(1)))
   })
   test_that("b cannot be missing II", {
     expect_error(fn(a = list(1), c = list(2)), "Error on missing arguments: b")
+    expect_error(fn(list(1), c = list(2)), "Error on missing arguments: b")
   })
   test_that("a cannot be missing II", {
     expect_error(fn(b = list(1), c = list(2)), "Error on missing arguments: a")
@@ -242,19 +274,35 @@ describe("missing arguments III", {
   test_that("the function works III", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works without names III", {
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), list(3)))
+  })
+  test_that("the function works with partial names III", {
+    expect_equal(list(1, 2, 3), fn(a = list(1), list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), list(3)))
+  })
   test_that("the function works in the opposite order III", {
-    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), c = list(3), b = list(2)))
+    expect_equal(list(1, 2, 3), fn(list(1), c = list(3), b = list(2)))
     expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
     expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
   })
   test_that("c can be missing III", {
     expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
+    expect_equal(list(1, 2), fn(list(1), b = list(2)))
+    expect_equal(list(1, 2), fn(a = list(1), list(2)))
+    expect_equal(list(1, 2), fn(list(1), list(2)))
   })
   test_that("c can be missing in the opposite order III", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
   test_that("b can be missing III", {
     expect_equal(list(1, 2), fn(a = list(1), c = list(2)))
+    expect_equal(list(1, 2), fn(list(1), c = list(2)))
   })
   test_that("b can be missing in the opposite order III", {
     expect_equal(list(1, 2), fn(c = list(2), a = list(1)))
@@ -276,19 +324,34 @@ describe("missing arguments IV", {
   test_that("the function works IV", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works without names IV", {
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), list(3)))
+  })
+  test_that("the function works with partial names IV", {
+    expect_equal(list(1, 2, 3), fn(a = list(1), list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(list(1), b = list(2), c = list(3)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), list(3)))
+  })
   test_that("the function works in the opposite order IV", {
-    expect_equal(list(1, 2, 3), fn(c = list(3), b = list(2), a = list(1)))
+    expect_equal(list(1, 2, 3), fn(a = list(1), c = list(3), b = list(2)))
+    expect_equal(list(1, 2, 3), fn(list(1), c = list(3), b = list(2)))
     expect_equal(list(1, 2, 3), fn(b = list(2), c = list(3), a = list(1)))
     expect_equal(list(1, 2, 3), fn(b = list(2), a = list(1), c = list(3)))
   })
   test_that("c can be missing IV", {
     expect_equal(list(1, 2), fn(a = list(1), b = list(2)))
+    expect_equal(list(1, 2), fn(list(1), b = list(2)))
+    expect_equal(list(1, 2), fn(a = list(1), list(2)))
+    expect_equal(list(1, 2), fn(list(1), list(2)))
   })
   test_that("c can be missing in the opposite order IV", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
   test_that("b can be missing IV", {
     expect_equal(list(1, 2), fn(a = list(1), c = list(2)))
+    expect_equal(list(1, 2), fn(list(1), c = list(2)))
   })
   test_that("b can be missing in the opposite order IV", {
     expect_equal(list(1, 2), fn(c = list(2), a = list(1)))
