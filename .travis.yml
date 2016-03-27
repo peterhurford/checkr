@@ -21,6 +21,6 @@ before_script:
   - Rscript -e 'if (!require("roxygen2")) devtools::install_github("klutometis/roxygen@v5.0.1")'
   - Rscript -e 'devtools::install_deps(repos = "http://cran.rstudio.com", dependencies = TRUE)'
 script:
-  - Rscript -e 'res <- try(devtools::check()); quit(save = "no", status = if (isTRUE(res)) { 0 } else { 1 }, runLast = FALSE)'
+  - Rscript -e 'library(checkr); res <- try(devtools::check()); quit(save = "no", status = if (isTRUE(res)) { 0 } else { 1 }, runLast = FALSE)'
 after_success:
   - Rscript -e 'library(covr);coveralls()'
