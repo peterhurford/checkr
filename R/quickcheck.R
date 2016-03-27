@@ -3,7 +3,7 @@
 #' @param fn function. A function to generate test objects for.
 function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
   function(fn) {
-    if (fn %is% validated_function) {
+    if (is(fn, "validated_function")) {
       preconditions <- preconditions(fn)
       if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
           preconditions <- list(preconditions)
