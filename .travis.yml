@@ -11,7 +11,10 @@ addons:
       - r-recommended
       - pandoc
 env:
-  - R_LIBS_USER=~/.R/library
+  - global:
+    - R_LIBS_USER=~/.R/library
+    - WARNINGS_ARE_ERRORS=1
+    - _R_CHECK_FORCE_SUGGESTS_=0
 cache:
   directories:
     $R_LIBS_USER
@@ -36,8 +39,3 @@ notifications:
       | Details: %{build_url} | Changes: %{compare_url}"
     rooms:
       secure: SQirvWbQ9b0roApmf3gt6JTcWIra9NguGzR45azxVDaWw2n0w/sIufA/cxa2sTLLhKfIMNlJwwhQjNaWyHeZkTTxRb76tcHWQdPpMcNKTwfr3+C3/bXDkmQozvQkYNgGuRc2Iln5ms12fiHmwI6dp5aENACUo5fbV2SLJQvmt5w=
-
-env:
-  - global:
-    - WARNINGS_ARE_ERRORS=1
-    - _R_CHECK_FORCE_SUGGESTS_=0
