@@ -23,7 +23,7 @@ before_script:
 script:
   - Rscript -e 'library(checkr); res <- try(devtools::check()); quit(save = "no", status = if (isTRUE(res)) { 0 } else { 1 }, runLast = FALSE)'
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - Rscript -e 'library(covr);codecov()'
 notifications:
   email:
     on_success: change
