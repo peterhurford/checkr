@@ -1,4 +1,4 @@
-## Checkr <a href=""><img src="https://img.shields.io/travis/peterhurford/checkr.svg"></a> <a href="https://github.com/peterhurford/checkr/tags"><img src="https://img.shields.io/github/tag/peterhurford/checkr.svg"></a>
+## Checkr <a href="https://travis-ci.org/peterhurford/checkr"><img src="https://img.shields.io/travis/peterhurford/checkr.svg"></a> <a href="https://github.com/peterhurford/checkr/tags"><img src="https://img.shields.io/github/tag/peterhurford/checkr.svg"></a>
 
 R is a dynamically typed language. This is pretty great for writing code quickly, but bad for architecturing large systems.
 
