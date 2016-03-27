@@ -1,4 +1,5 @@
 #' Create the necessary testing objects to quickcheck a function.
+#' @import checkr
 #' @param fn function. A function to generate test objects for.
 function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
   function(fn) {
