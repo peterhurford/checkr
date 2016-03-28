@@ -21,7 +21,10 @@
 #' @return Boolean whether or not the match_list has no elements of the expected_class.
 #' @export
 `%does_not_contain%` <- function(match_list, expected_class) {
-  Negate(`%contains%`)(match_list, expected_class)
+  if (is.name(substitute(expected_class))) {
+    expected_class <- deparse(substitute(expected_class))
+  }
+  !contains_(match_list, expected_class, exclusive = FALSE)
 }
 
 #' Test if a list contains only elements of the desired class.

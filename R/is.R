@@ -61,5 +61,8 @@
 #' @rdname grapes-is-grapes
 #' @export
 `%isnot%` <- function(match_object, expected_class) {
-  Negate(`%is%`)(match_object, expected_class)
+  if (is.name(substitute(expected_class))) {
+    expected_class <- deparse(substitute(expected_class))
+  }
+  !(match_object %is_% expected_class)
 }
