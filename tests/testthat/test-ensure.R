@@ -435,8 +435,8 @@ describe("printing calculates preconditions, postconditions, and the before_fn",
   called_post <- FALSE
   called_prevalid <- FALSE
   with_mock(
-    `checkr::preconditions` = function(...) { called_pre <<- TRUE }, 
-    `checkr::postconditions` = function(...) { called_post <<- TRUE }, 
+    `checkr::preconditions` = function(...) { called_pre <<- TRUE },
+    `checkr::postconditions` = function(...) { called_post <<- TRUE },
     `checkr::get_prevalidated_fn` = function(...) { called_prevalid <<- TRUE }, {
       expect_false(called_pre)
       expect_false(called_post)
