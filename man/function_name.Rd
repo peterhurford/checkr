@@ -7,7 +7,7 @@
 function_name(orig_function_name)
 }
 \arguments{
-\item{orig_function_name.}{A substituted call of the function.}
+\item{orig_function_name}{call. A substituted call of the function.}
 }
 \description{
 Get the name from a passed function, which may be a validated function or just a block.

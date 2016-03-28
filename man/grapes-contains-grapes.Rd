@@ -13,9 +13,9 @@ match_list \%contains\% expected_class
 match_list \%contains_only\% expected_class
 }
 \arguments{
-\item{match_list.}{The list to test for class of the elements.}
+\item{match_list}{list. The list to test for class of the elements.}
 
-\item{expected_class.}{The name of the expected class to test.}
+\item{expected_class}{character. The name of the expected class to test.}
 }
 \value{
 Boolean whether or not the match_list has at least one element of expected_class.

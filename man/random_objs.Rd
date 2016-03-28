@@ -6,6 +6,11 @@
 \usage{
 random_objs(objects, amount)
 }
+\arguments{
+\item{objects}{list. The list of objects to generate from.}
+
+\item{amount}{numeric. The amount of objects to generate.}
+}
 \description{
 Generate a vector or list of random objects from a particular set of possible choices.
 }

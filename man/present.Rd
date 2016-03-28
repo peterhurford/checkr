@@ -6,6 +6,9 @@
 \usage{
 present(...)
 }
+\arguments{
+\item{...}{list. The list of things to check for presence.}
+}
 \description{
 This function is the opposite of missing.
 }

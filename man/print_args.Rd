@@ -6,6 +6,9 @@
 \usage{
 print_args(x)
 }
+\arguments{
+\item{x}{ANY. The object to print args for.}
+}
 \description{
 Print function arguments
 }

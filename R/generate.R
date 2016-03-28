@@ -19,6 +19,7 @@ OBJECTS$positive_doubles <- append(OBJECTS$positive_doubles, c(1e18, 1e100))
 OBJECTS$negative_doubles <- OBJECTS$positive_doubles * -1
 
 #' Get all the classes within a list.
+#' @param object ANY. The object to check classes for.
 list_classes <- function(object) {
   classes <- unique(sapply(object, class))
   if (identical(classes, "list")) {
@@ -27,12 +28,17 @@ list_classes <- function(object) {
 }
 
 #' Generate a vector or list of random objects from a particular set of possible choices.
+#' @param objects list. The list of objects to generate from.
+#' @param amount numeric. The amount of objects to generate.
 random_objs <- function(objects, amount) {
   lengths <- sample(seq(LIST_MAX_LENGTH), amount, replace = TRUE)
   lapply(lengths, function(l) { sample(objects, l, replace = TRUE) })
 }
 
 #' Generate a random simple string (i.e., a length-1 non-empty vector of characters).
+#' @param amount numeric. The amount of simple strings to generate.
+#' @param chars logical. Whether or not to include characters.
+#' @param utf8 logical. Whether or not to include utf8 characters.
 random_simple_strings <- function(amount, chars = TRUE, utf8 = FALSE) {
   objs <- list()
   if (isTRUE(chars)) { objs <- append(objs, OBJECTS$characters) }

@@ -47,6 +47,7 @@ function_test_objects <- function(fn) {
   }
 
 #' Print function arguments
+#' @param x ANY. The object to print args for.
 #' @examples
 #' l <- list(x = seq(3), y = seq(4))
 #' print_args(l)
@@ -62,7 +63,7 @@ print_args <- function(x) {
 
 #' Get the name from a passed function, which may be a validated function or just a block.
 #'
-#' @param orig_function_name. A substituted call of the function.
+#' @param orig_function_name call. A substituted call of the function.
 function_name <- function(orig_function_name) {
   function_name <- if (identical(deparse(as.list(orig_function_name)[[1]]), "ensure")) {
     as.list(orig_function_name)[length(as.list(orig_function_name))][[1]]

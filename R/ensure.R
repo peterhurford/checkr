@@ -98,7 +98,7 @@ get_prevalidated_fn <- ensure(
 
 #' Print validated functions more clearly.
 #' @param x function. The function to print.
-#' @param ... Additional arguments to pass to print.
+#' @param ... list. Additional arguments to pass to print.
 #' @export
 print.validated_function <- function(x, ...) {
   print(list(

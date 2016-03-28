@@ -1,7 +1,7 @@
 #' Test if a list contains some elements of the desired class.
 #'
-#' @param match_list. The list to test for class of the elements.
-#' @param expected_class. The name of the expected class to test.
+#' @param match_list list. The list to test for class of the elements.
+#' @param expected_class character. The name of the expected class to test.
 #' @examples
 #'   list(1, 2, 3) %contains% numeric
 #'   list(1, 2, "a") %contains% numeric
