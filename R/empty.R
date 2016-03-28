@@ -15,6 +15,6 @@
 #' @return a boolean whether or not the object is empty.
 #' @export
 is.empty <- function(obj) {
-  if (obj %is% list) { return(all(vapply(obj, is.empty, logical(1)))) }
+  if (is(obj, "list")) { return(all(vapply(obj, is.empty, logical(1)))) }
   suppressWarnings(is.na(obj) || is.null(obj) || NROW(obj) == 0 || obj == "")
 }

@@ -11,7 +11,7 @@
 #' @export
 ensure <- function(checker_fn, preconditions = list(), postconditions = list()) {
   if (is(checker_fn, "validated_function")) {
-    stop("The function has already been validated.")  
+    stop("The function has already been validated.")
   }
   pre <- substitute(preconditions)
   post <- substitute(postconditions)
@@ -27,7 +27,7 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
     if (is.null(names(args))) {
       names(args) <- head(formals, length(args))
     } else {
-      empty_names <- vapply(names(args), is.empty, logical(1))
+      empty_names <- vapply(names(args), checkr::is.empty, logical(1))
       names(args)[empty_names] <- head(missing_formals, length(args))
     }
 
@@ -44,21 +44,22 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
     missing_defaults <- setdiff(names(default_args), names(args))
     if (length(missing_defaults) > 0) {
       length(args) <- length(args) + length(missing_defaults)
-      names(args) <- Filter(Negate(is.empty), union(names(args), missing_defaults))
+      names(args) <- Filter(Negate(checkr::is.empty),
+        union(names(args), missing_defaults))
     }
 
     # Run the preconditions and postconditions.
-    tryCatch(validate_(pre, env = args),
+    tryCatch(checkr:::validate_(pre, env = args),
       error = function(e) {
         e <- as.character(e)
         flag <- "object '.*not found"
         if (grepl(flag, e)) {
           missing_args_error(gsub("' not found", "",
             gsub("object '", "", regmatches(e, regexpr(flag, e)))))
-        } else { stop(e) } 
+        } else { stop(e) }
       })
     args$result <- do.call(checker_fn, args)
-    validate_(post, env = args)
+    checkr:::validate_(post, env = args)
     args$result
   }
 

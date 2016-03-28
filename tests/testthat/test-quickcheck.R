@@ -91,21 +91,21 @@ test_that("simple seccess example II", {
     add_one <- ensure(
       pre = x %is% numeric,
       post = result %is% numeric,
-      function(x) x + 1) 
+      function(x) x + 1)
     quickcheck(add_one)
   })
   test_that("simple failure example I", {
     add_one <- ensure(
       pre = x %is% numeric,
       post = result %is% character, # this will fail because the result will actually be numeric
-      function(x) x + 1) 
+      function(x) x + 1)
     expect_false(quickcheck(add_one, testthat = FALSE))
   })
   test_that("simple failure example II", {
     add_one <- ensure(
       pre = x %is% character, # quickcheck will only generate characters which will fail
       post = result %is% numeric,
-      function(x) x + 1) 
+      function(x) x + 1)
     expect_false(quickcheck(add_one, testthat = FALSE))
   })
   test_that("it errors if the testing frame is reduced to 0", {
@@ -163,11 +163,14 @@ describe("print_args", {
       print_args(list(x = list(3, 2, "a"), y = list(4, 3, "b"))))
   })
   test_that("works on a dataframe", {
-    expect_equal("df = structure(list(a = 1, b = 2), .Names = c(\"a\", \"b\"), row.names = c(NA, -1L), class = \"data.frame\")",
+    expect_equal(paste0("df = structure(list(a = 1, b = 2), ",
+    ".Names = c(\"a\", \"b\"), row.names = c(NA, -1L), class = \"data.frame\")"),
       print_args(list(df = data.frame(a = 1, b = 2))))
   })
   test_that("works on a long list", {
-    expect_equal("x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)",
-      print_args(list(x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4))))
+    expect_equal(paste0("x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41",
+      ", 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)"),
+      print_args(list(x = list(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 41,
+        2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4))))
   })
 })

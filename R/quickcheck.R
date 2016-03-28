@@ -1,50 +1,50 @@
 #' Create the necessary testing objects to quickcheck a function.
 #' @param fn function. A function to generate test objects for.
 function_test_objects <- function(fn) {
-    if (is(fn, "validated_function")) {
-      preconditions <- preconditions(fn)
-      if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
-          preconditions <- list(preconditions)
-      }
-      pre_fn <- get_prevalidated_fn(fn)
-      formals <- names(formals(pre_fn))
-      testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
-      testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
-        # First we try calculating each input independently so that we can maximize
-        # the number of test samples.
-        frame <- testing_frame[[pos]]
-        Filter(function(item) {
-          env <- list(item)
-          names(env) <- formals[[pos]]
-          for (precondition in as.list(preconditions)) {
-            if (!grepl(formals[[pos]], deparse(precondition), fixed = TRUE)) { next }
-            if (!isTRUE(eval(precondition, envir = env))) { return(FALSE) }
-          }
-          TRUE
-        }, frame)
-      }), error = function(e) {
-        if (grepl("not found", as.character(e), fixed = TRUE)) {
-          # If there was a not found error, we assume it was because of interdependent
-          # preconditions, so we go to the backup of calculating the arguments jointly.
-          lapply(lapply(testing_frame, function(frame) {
-            lapply(seq_along(testing_frame[[1]]), function(pos) {
-              env <- lapply(testing_frame, `[[`, pos)
-              names(env) <- formals
-              for (precondition in as.list(preconditions)) {
-                if (!isTRUE(eval(precondition, envir = env))) { return(NULL) }
-              }
-              frame[[pos]]
-            })
-          }), function(frame) { Filter(Negate(is.null), frame) })
-        } else { stop(e) }
-      })
-    } else {
-      formals <- names(formals(fn))
-      testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
+  if (is(fn, "validated_function")) {
+    preconditions <- preconditions(fn)
+    if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
+        preconditions <- list(preconditions)
     }
-    names(testing_frame) <- formals
-    testing_frame
+    pre_fn <- get_prevalidated_fn(fn)
+    formals <- names(formals(pre_fn))
+    testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
+    testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
+      # First we try calculating each input independently so that we can maximize
+      # the number of test samples.
+      frame <- testing_frame[[pos]]
+      Filter(function(item) {
+        env <- list(item)
+        names(env) <- formals[[pos]]
+        for (precondition in as.list(preconditions)) {
+          if (!grepl(formals[[pos]], deparse(precondition), fixed = TRUE)) { next }
+          if (!isTRUE(eval(precondition, envir = env))) { return(FALSE) }
+        }
+        TRUE
+      }, frame)
+    }), error = function(e) {
+      if (grepl("not found", as.character(e), fixed = TRUE)) {
+        # If there was a not found error, we assume it was because of interdependent
+        # preconditions, so we go to the backup of calculating the arguments jointly.
+        lapply(lapply(testing_frame, function(frame) {
+          lapply(seq_along(testing_frame[[1]]), function(pos) {
+            env <- lapply(testing_frame, `[[`, pos)
+            names(env) <- formals
+            for (precondition in as.list(preconditions)) {
+              if (!isTRUE(eval(precondition, envir = env))) { return(NULL) }
+            }
+            frame[[pos]]
+          })
+        }), function(frame) { Filter(Negate(is.null), frame) })
+      } else { stop(e) }
+    })
+  } else {
+    formals <- names(formals(fn))
+    testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
   }
+  names(testing_frame) <- formals
+  testing_frame
+}
 
 #' Print function arguments
 #' @param x ANY. The object to print args for.
@@ -118,7 +118,7 @@ quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRU
     error_msg <- paste0("Quickcheck for ", function_name, " failed on item #", pos, ": ",
       print_args(args))
     if (isTRUE(verbose) && !isTRUE(testthat)) { message(error_msg) }
-    if (isTRUE(testthat)) { testthat::expect_true(FALSE, error_msg) } 
+    if (isTRUE(testthat)) { testthat::expect_true(FALSE, error_msg) }
     FALSE
   }
 }

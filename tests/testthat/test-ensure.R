@@ -42,7 +42,7 @@ describe("precondition validations", {
     expect_error(random_string(10), "Error on missing arguments: alphabet")
   })
   test_that("alphabet is checked for list or vector", {
-    expect_error(random_string(10, "pizza"), 
+    expect_error(random_string(10, "pizza"),
       "Error on alphabet %is% list || alphabet %is% vector")
   })
   test_that("alphabet is checked that it only contains characters", {
