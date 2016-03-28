@@ -18,7 +18,7 @@ function_test_objects <- function(fn) {
           names(env) <- formals[[pos]]
           for (precondition in as.list(preconditions)) {
             if (!grepl(formals[[pos]], deparse(precondition), fixed = TRUE)) { next }
-            if (!isTRUE(eval(precondition, env = env))) { return(FALSE) }
+            if (!isTRUE(eval(precondition, envir = env))) { return(FALSE) }
           }
           TRUE
         }, frame)
@@ -31,7 +31,7 @@ function_test_objects <- function(fn) {
               env <- lapply(testing_frame, `[[`, pos)
               names(env) <- formals
               for (precondition in as.list(preconditions)) {
-                if (!isTRUE(eval(precondition, env = env))) { return(NULL) }
+                if (!isTRUE(eval(precondition, envir = env))) { return(NULL) }
               }
               frame[[pos]]
             })
