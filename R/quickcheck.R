@@ -6,7 +6,7 @@ function_test_objects <- function(fn) {
     if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
         preconditions <- list(preconditions)
     }
-    pre_fn <- get_prevalidated_fn(fn)
+    pre_fn <- checkr::get_prevalidated_fn(fn)
     formals <- names(formals(pre_fn))
     testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
     testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
@@ -40,7 +40,7 @@ function_test_objects <- function(fn) {
     })
   } else {
     formals <- names(formals(fn))
-    testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
+    testing_frame <- lapply(seq_along(formals), function(n) sample(checkr::test_objects()))
   }
   names(testing_frame) <- formals
   testing_frame
@@ -90,7 +90,7 @@ function_name <- function(orig_function_name) {
 #' @export
 quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
   post <- substitute(postconditions)
-  testing_frame <- function_test_objects(fn)
+  testing_frame <- checkr::function_test_objects(fn)
   if (any(vapply(testing_frame, length, numeric(1)) == 0)) {
     stop("No quickcheck testing frame was generated. Make sure your preconditions aren't",
       " impossible to satisfy!")
@@ -102,7 +102,7 @@ quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRU
       args <- lapply(testing_frame, `[[`, pos)
       tryCatch({
         result <- do.call(fn, args)
-        validate_(post, env = list(result = result))
+        checkr:::validate_(post, env = list(result = result))
       }, error = function(e) {
         failed <<- TRUE
       })

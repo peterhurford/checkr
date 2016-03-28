@@ -33,6 +33,7 @@ list_classes <- function(object) {
 }
 
 #' Generate a vector or list of random objects from a particular set of possible choices.
+#'
 #' @param objects list. The list of objects to generate from.
 #' @param amount numeric. The amount of objects to generate.
 #' @param list_max_length numeric. What is the maximum size of a given vector or list?
@@ -45,11 +46,12 @@ random_objs <- function(objects, amount, list_max_length = 50) {
 #' @param amount numeric. The amount of simple strings to generate.
 #' @param chars logical. Whether or not to include characters.
 #' @param utf8 logical. Whether or not to include utf8 characters.
+#' @param objects list. The object frame to work from.
 random_simple_strings <- function(amount, chars = TRUE, utf8 = FALSE, objects) {
   objs <- list()
   if (isTRUE(chars)) { objs <- append(objs, objects$characters) }
   if (isTRUE(utf8)) { objs <- append(objs, objects$utf8) }
-  lapply(random_objs(objs, amount), function(str) paste0(str, collapse = ""))
+  lapply(checkr:::random_objs(objs, amount), function(str) paste0(str, collapse = ""))
 }
 
 #' Generate a random matrix.
@@ -61,6 +63,8 @@ random_simple_strings <- function(amount, chars = TRUE, utf8 = FALSE, objects) {
 #' Because there are so many possible matricies, it seems easier to generate them on
 #' demand rather than preallocate all possible matricies into default_objects().
 #' We will then populate some random matricies onto default_objects() for later use.
+#'
+#' @param objects list. The object frame to start from.
 random_matrix <- function(objects) {
   random_width <- sample(seq(30L), 1)
   random_height <- sample(seq(30L), 1)
@@ -91,29 +95,30 @@ installed_dataframes <- function() {
 
 
 #' Generates random R objects to be put into functions for testing purposes.
+#' @param objects list. The object frame to work from.
 test_objects_ <- function(objects) {
   testing_frame <- list()
   # start with one of each at random
   testing_frame <- append(testing_frame, lapply(objects, function(type) {
     random_obj <- sample(type, 1)
-    if (random_obj %is% list) { random_obj[[1]] } else { random_obj }
+    if (methods::is(random_obj, "list")) { random_obj[[1]] } else { random_obj }
   }))
   LIST_SIZE <- 4         # How many different lists of the same kind should be made?
   # construct random-length vectors or lists of all types
   #     (depending on class, vectors when possible)
   testing_frame <- append(testing_frame, lapply(objects, function(type) {
-    random_objs(type, LIST_SIZE)
+    checkr:::random_objs(type, LIST_SIZE)
   }))
   # construct random-length vectors of mixed positive and negative doubles; integers
   testing_frame <- append(testing_frame,
-    random_objs(c(objects$positive_doubles, 0, objects$negative_doubles), LIST_SIZE))
+    checkr:::random_objs(c(objects$positive_doubles, 0, objects$negative_doubles), LIST_SIZE))
   testing_frame <- append(testing_frame,
-    random_objs(c(objects$positive_integers, 0L, objects$negative_integers), LIST_SIZE))
+    checkr:::random_objs(c(objects$positive_integers, 0L, objects$negative_integers), LIST_SIZE))
   # construct random-length vectors of single characters
-  testing_frame <- append(testing_frame, random_objs(objects$characters, LIST_SIZE))
-  testing_frame <- append(testing_frame, random_objs(objects$utf8, LIST_SIZE))
+  testing_frame <- append(testing_frame, checkr:::random_objs(objects$characters, LIST_SIZE))
+  testing_frame <- append(testing_frame, checkr:::random_objs(objects$utf8, LIST_SIZE))
   testing_frame <- append(testing_frame,
-    random_objs(c(objects$characters, objects$utf8), LIST_SIZE))
+    checkr:::random_objs(c(objects$characters, objects$utf8), LIST_SIZE))
   # construct random-length simple strings
   testing_frame <- append(testing_frame,
     random_simple_strings(LIST_SIZE, chars = TRUE, utf8 = FALSE, objects = objects))
@@ -136,7 +141,7 @@ test_objects_ <- function(objects) {
   testing_frame <- append(testing_frame,
     lapply(Filter(Negate(is.list), testing_frame), as.list))
   # construct random-length lists of mixed doubles and integers
-  testing_frame <- append(testing_frame, random_objs(
+  testing_frame <- append(testing_frame, checkr:::random_objs(
       c(as.list(objects$positive_doubles), as.list(objects$positive_integers)), LIST_SIZE))
   # construct lists that mix empties into all of the above
   testing_frame <- append(testing_frame,
@@ -161,15 +166,15 @@ test_objects <- memoise::memoise(function(objects = default_objects()) {
   testing_frame <- list()
   GENERATIONS <- 3       # How many times should the test generation be repeated?
   for (generation in seq(GENERATIONS)) {
-    testing_frame <- append(testing_frame, test_objects_(objects))
+    testing_frame <- append(testing_frame, checkr:::test_objects_(objects))
   }
   testing_frame
 })
 
 #' Function to force reload the test object cache, if needed.
 force_reload_test_objects <- function() {
-  memoise::forget(test_objects)
-  memoise::forget(default_objects)
-  test_objects(default_objects())
+  memoise::forget(checkr:::test_objects)
+  memoise::forget(checkr:::default_objects)
+  test_objects(checkr:::default_objects())
   TRUE
 }

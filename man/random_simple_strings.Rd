@@ -4,7 +4,7 @@
 \alias{random_simple_strings}
 \title{Generate a random simple string (i.e., a length-1 non-empty vector of characters).}
 \usage{
-random_simple_strings(amount, chars = TRUE, utf8 = FALSE)
+random_simple_strings(amount, chars = TRUE, utf8 = FALSE, objects)
 }
 \arguments{
 \item{amount}{numeric. The amount of simple strings to generate.}
@@ -12,6 +12,8 @@ random_simple_strings(amount, chars = TRUE, utf8 = FALSE)
 \item{chars}{logical. Whether or not to include characters.}
 
 \item{utf8}{logical. Whether or not to include utf8 characters.}
+
+\item{objects}{list. The object frame to work from.}
 }
 \description{
 Generate a random simple string (i.e., a length-1 non-empty vector of characters).

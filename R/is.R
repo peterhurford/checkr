@@ -16,7 +16,7 @@
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
-  match_object %is_% expected_class
+  `%is_%`(match_object, expected_class)
 }
 
 
@@ -40,21 +40,21 @@
   }
 
   if (identical(expected_class, "simple_string")) {
-    return(is.simple_string(match_object))
+    return(checkr::is.simple_string(match_object))
   }
   if (identical(expected_class, "double")) {
     return(is.double(match_object))
   }
   if (identical(expected_class, "empty")) {
-    return(is.empty(match_object))
+    return(checkr::is.empty(match_object))
   }
   if (identical(expected_class, "NA")) {
     return(!is.null(match_object) && is.na(match_object))
   }
   if (identical(expected_class, "vector")) {
-    return(is.vector(match_object) && !is(match_object, "list"))
+    return(is.vector(match_object) && !methods::is(match_object, "list"))
   }
-  is(match_object, expected_class)
+  methods::is(match_object, expected_class)
 }
 
 #' Test whether a match object is not a member of a particular class.
@@ -64,5 +64,5 @@
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
-  !(match_object %is_% expected_class)
+  !(checkr:::`%is_%`(match_object, expected_class))
 }
