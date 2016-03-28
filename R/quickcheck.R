@@ -1,8 +1,7 @@
 #' Create the necessary testing objects to quickcheck a function.
 #' @import checkr
 #' @param fn function. A function to generate test objects for.
-function_test_objects <- ensure(pre = fn %is% "function", post = result %is% list,
-  function(fn) {
+function_test_objects <- function(fn) {
     if (is(fn, "validated_function")) {
       preconditions <- preconditions(fn)
       if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
@@ -46,7 +45,7 @@ function_test_objects <- ensure(pre = fn %is% "function", post = result %is% lis
     }
     names(testing_frame) <- formals
     testing_frame
-  })
+  }
 
 #' Print function arguments
 #' @examples
@@ -90,10 +89,7 @@ function_name <- function(orig_function_name) {
 #' @param testthat logical. Whether or not to run testthat.
 #' @return either TRUE if the function passed the quickcheck or FALSE if it didn't.
 #' @export
-quickcheck <- ensure(
-  pre = list(fn %is% "function", verbose %is% logical, testthat %is% logical),
-  post = result%is% logical,
-function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
+quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
   post <- substitute(postconditions)
   testing_frame <- function_test_objects(fn)
   if (any(vapply(testing_frame, length, numeric(1)) == 0)) {
@@ -126,6 +122,6 @@ function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
     if (isTRUE(testthat)) { testthat::expect_true(FALSE, error_msg) } 
     FALSE
   }
-})
+}
 #TODO: Handle splats
 #TODO, but later: Can mix-in your own custom objects into the test objects
