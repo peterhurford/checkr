@@ -17,7 +17,7 @@ random_string <- ensure(
 describe("classes", {
   test_that("the result is a validated function", {
     expect_true(random_string %is% "function")
-  expect_true(random_string %is% validated_function)
+    expect_true(random_string %is% validated_function)
   })
   test_that("validation preserves original classes", {
     add <- function(x, y) x + y
@@ -26,6 +26,11 @@ describe("classes", {
     add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric, add)
     expect_true(add %is% validated_function)
     expect_true(add %is% adding_function)
+  })
+  test_that("validation preserves original formals", {
+    add <- function(x, y) x + y
+    eadd <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric, add)
+    expect_equal(formals(add), formals(eadd))
   })
 })
 
@@ -113,10 +118,10 @@ describe("fetchers", {
   test_that("preconditions fetches the preconditions", {
     expect_identical(preconditions(add), substitute(list(x %is% numeric, y %is% numeric)))
   })
-  test_that("postconditions fetches the preconditions", {
+  test_that("postconditions fetches the postconditions", {
     expect_equal(postconditions(add), substitute(result %is% numeric))
   })
-  test_that("postconditions fetches the preconditions", {
+  test_that("get_prevalidated_fn gets the pre-validated function", {
     expect_equal(get_prevalidated_fn(add), function(x, y) x + y)
   })
 })
