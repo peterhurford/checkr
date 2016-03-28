@@ -8,11 +8,9 @@ Description: Be able to specify preconditions and postconditions for R functions
     and have them automatically checked at runtime. Then, randomly generate R
     objects and pass them into R functions, verifying that certain specified
     conditions hold.
-Depends:
-    R (>= 3.1.0)
+Depends: R (>= 3.1.0)
 License: MIT
 LazyData: true
-Suggests:
-    testthat,
-    microbenchmark
+Suggests: testthat, microbenchmark
 RoxygenNote: 5.0.1.9000
+Built: R 3.2.3; ; 2016-03-28 00:13:24 UTC; unix

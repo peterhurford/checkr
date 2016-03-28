@@ -4,7 +4,7 @@
 \alias{function_test_objects}
 \title{Create the necessary testing objects to quickcheck a function.}
 \usage{
-function_test_objects(...)
+function_test_objects(fn)
 }
 \arguments{
 \item{fn}{function. A function to generate test objects for.}

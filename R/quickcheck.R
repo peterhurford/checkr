@@ -1,5 +1,4 @@
 #' Create the necessary testing objects to quickcheck a function.
-#' @import checkr
 #' @param fn function. A function to generate test objects for.
 function_test_objects <- function(fn) {
     if (is(fn, "validated_function")) {

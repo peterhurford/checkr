@@ -4,16 +4,16 @@
 \alias{quickcheck}
 \title{Quickcheck a function.}
 \usage{
-quickcheck(...)
+quickcheck(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE)
 }
 \arguments{
 \item{fn}{function. A function to randomly check postconditions for.}
 
-\item{postconditions.}{Optional postconditions to quickcheck for.}
-
 \item{verbose}{logical. Whether or not to announce the success.}
 
 \item{testthat}{logical. Whether or not to run testthat.}
+
+\item{postconditions.}{Optional postconditions to quickcheck for.}
 }
 \value{
 either TRUE if the function passed the quickcheck or FALSE if it didn't.
