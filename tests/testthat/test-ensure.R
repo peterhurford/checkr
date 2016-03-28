@@ -429,3 +429,21 @@ describe("missing arguments VI", {
     expect_false(fn(flag = FALSE, fn = isTRUE))
   })
 })
+
+describe("printing calculates preconditions, postconditions, and the before_fn", {
+  called_pre <- FALSE
+  called_post <- FALSE
+  called_prevalid <- FALSE
+  with_mock(
+    `checkr::preconditions` = function(...) { called_pre <<- TRUE }, 
+    `checkr::postconditions` = function(...) { called_post <<- TRUE }, 
+    `checkr::get_prevalidated_fn` = function(...) { called_prevalid <<- TRUE }, {
+      expect_false(called_pre)
+      expect_false(called_post)
+      expect_false(called_prevalid)
+      print(random_string)
+      expect_true(called_pre)
+      expect_true(called_post)
+      expect_true(called_prevalid)
+    })
+})
