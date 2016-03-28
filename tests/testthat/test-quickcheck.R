@@ -87,7 +87,7 @@ describe("quickcheck", {
   test_that("simple success example I", {
     quickcheck(identity)
   })
-test_that("simple seccess example II", {
+  test_that("simple seccess example II", {
     add_one <- ensure(
       pre = x %is% numeric,
       post = result %is% numeric,
