@@ -8,7 +8,7 @@
 \usage{
 match_list \%contains\% expected_class
 
-... \%does_not_contain\% NA
+match_list \%does_not_contain\% expected_class
 
 match_list \%contains_only\% expected_class
 }

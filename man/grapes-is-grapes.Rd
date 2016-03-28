@@ -7,7 +7,7 @@
 \usage{
 match_object \%is\% expected_class
 
-... \%isnot\% NA
+match_object \%isnot\% expected_class
 }
 \arguments{
 \item{match_object.}{The object to test for class.}

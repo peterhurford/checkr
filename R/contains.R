@@ -20,7 +20,9 @@
 #'   list(1, 2, 3) %does_not_contain% character
 #' @return Boolean whether or not the match_list has no elements of the expected_class.
 #' @export
-`%does_not_contain%` <- Negate(`%contains%`)
+`%does_not_contain%` <- function(match_list, expected_class) {
+  Negate(`%contains%`)(match_list, expected_class)
+}
 
 #' Test if a list contains only elements of the desired class.
 #' @rdname grapes-contains-grapes

@@ -60,4 +60,6 @@
 #' Test whether a match object is not a member of a particular class.
 #' @rdname grapes-is-grapes
 #' @export
-`%isnot%` <- Negate(`%is%`)
+`%isnot%` <- function(match_object, expected_class) {
+  Negate(`%is%`)(match_object, expected_class)
+}
