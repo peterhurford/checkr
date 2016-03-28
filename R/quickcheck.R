@@ -40,7 +40,7 @@ function_test_objects <- function(fn) {
     })
   } else {
     formals <- names(formals(fn))
-    testing_frame <- lapply(seq_along(formals), function(n) sample(checkr::test_objects()))
+    testing_frame <- lapply(seq_along(formals), function(n) sample(checkr:::test_objects()))
   }
   names(testing_frame) <- formals
   testing_frame
@@ -90,7 +90,7 @@ function_name <- function(orig_function_name) {
 #' @export
 quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
   post <- substitute(postconditions)
-  testing_frame <- checkr::function_test_objects(fn)
+  testing_frame <- checkr:::function_test_objects(fn)
   if (any(vapply(testing_frame, length, numeric(1)) == 0)) {
     stop("No quickcheck testing frame was generated. Make sure your preconditions aren't",
       " impossible to satisfy!")
