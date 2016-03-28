@@ -10,7 +10,7 @@ Description: Be able to specify preconditions and postconditions for R functions
     conditions hold.
 Depends:
     R (>= 3.1.0)
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
 Suggests:
     testthat,
