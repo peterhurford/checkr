@@ -11,7 +11,7 @@ describe("objects", {
     report <- vapply(desired_classes,
       function(klass) klass %in% found_classes, logical(1))
     error <- paste(paste0(names(which(!report)), collapse = ", "), "not found among objects")
-    expect_false(all(report), info = error)
+    expect_true(all(report), info = error)
   })
   test_that("The empties are one of every class, plus NULL-class", {
     found_classes <- list_classes(objects$empties)
