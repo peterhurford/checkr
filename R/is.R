@@ -16,7 +16,7 @@
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
-  `%is_%`(match_object, expected_class)
+  checkr:::`%is_%`(match_object, expected_class)
 }
 
 

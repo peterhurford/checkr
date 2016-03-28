@@ -8,7 +8,7 @@ function_test_objects <- function(fn) {
     }
     pre_fn <- checkr::get_prevalidated_fn(fn)
     formals <- names(formals(pre_fn))
-    testing_frame <- lapply(seq_along(formals), function(n) sample(test_objects()))
+    testing_frame <- lapply(seq_along(formals), function(n) sample(checkr:::test_objects()))
     testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
       # First we try calculating each input independently so that we can maximize
       # the number of test samples.

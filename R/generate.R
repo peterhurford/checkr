@@ -175,6 +175,6 @@ test_objects <- memoise::memoise(function(objects = default_objects()) {
 force_reload_test_objects <- function() {
   memoise::forget(checkr:::test_objects)
   memoise::forget(checkr:::default_objects)
-  test_objects(checkr:::default_objects())
+  checkr:::test_objects(checkr:::default_objects())
   TRUE
 }
