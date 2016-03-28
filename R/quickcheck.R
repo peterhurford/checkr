@@ -51,7 +51,6 @@ function_test_objects <- function(fn) {
 #' @examples
 #' l <- list(x = seq(3), y = seq(4))
 #' print_args(l)
-#' [1] "x = 1:3, y = 1:4"
 print_args <- function(x) {
   paste0(paste(names(x),
     unname(sapply(x, function(y) {
