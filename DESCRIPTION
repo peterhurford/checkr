@@ -14,5 +14,5 @@ License: MIT
 LazyData: true
 Suggests:
     testthat,
-    microbenchmark
+    memoise
 RoxygenNote: 5.0.1.9000
