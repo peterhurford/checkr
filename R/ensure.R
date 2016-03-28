@@ -1,6 +1,6 @@
 #' Ensure checks that certain preconditions and postconditions of a function are true.
 #'
-#' @param checkr.fn function. A function to run with validated pre- and postconditions.
+#' @param checker_fn function. A function to run with validated pre- and postconditions.
 #' @param preconditions list. A list of preconditions to check.
 #' @param postconditions list. A list of postconditions to check.
 #' @examples
@@ -9,16 +9,16 @@
 #'     function(x, y) { x + y })
 #' @return The original function, but also of class validated_function, with added validations.
 #' @export
-ensure <- function(checkr.fn, preconditions = list(), postconditions = list()) {
-  if (is(checkr.fn, "validated_function")) {
+ensure <- function(checker_fn, preconditions = list(), postconditions = list()) {
+  if (is(checker_fn, "validated_function")) {
     stop("The function has already been validated.")  
   }
   pre <- substitute(preconditions)
   post <- substitute(postconditions)
-  force(checkr.fn)
+  force(checker_fn)
   validated_fn <- function(...) {
     args <- lapply(as.list(sys.call()[-1]), eval)
-    formals <- names(formals(checkr.fn))
+    formals <- names(formals(checker_fn))
 
     # Goal here is to (a) impute names the user doesn't give with the formals
     # and (b) detect if any formals are missing so we can place in their defaults
@@ -32,7 +32,7 @@ ensure <- function(checkr.fn, preconditions = list(), postconditions = list()) {
     }
 
     # Get all the non-empty arguments to impute missing arguments.
-    default_args <- Filter(Negate(is.name), formals(checkr.fn))
+    default_args <- Filter(Negate(is.name), formals(checker_fn))
     for (pos in seq_along(default_args)) {
       if (!(names(default_args)[[pos]] %in% names(args))) {
         args[[names(default_args)[[pos]]]] <- default_args[[pos]]
@@ -57,13 +57,13 @@ ensure <- function(checkr.fn, preconditions = list(), postconditions = list()) {
             gsub("object '", "", regmatches(e, regexpr(flag, e)))))
         } else { stop(e) } 
       })
-    args$result <- do.call(checkr.fn, args)
+    args$result <- do.call(checker_fn, args)
     validate_(post, env = args)
     args$result
   }
 
-  formals(validated_fn) <- formals(checkr.fn)
-  class(validated_fn) <- append(class(checkr.fn), "validated_function", 0)
+  formals(validated_fn) <- formals(checker_fn)
+  class(validated_fn) <- append(class(checker_fn), "validated_function", 0)
   validated_fn
 }
 
@@ -81,14 +81,13 @@ preconditions <- function(fn) conditions_(fn, "pre")
 postconditions <- function(fn) conditions_(fn, "post")
 
 conditions_ <- function(fn, key) { environment(fn)[[key]] }
-  function(fn, key) { environment(fn)[[key]] }
 
 
 #' Get the pre-validated function that is wrapped in validations.
 #' @param fn validated_function. The function to get the pre-validated function for.
 #' @return a call containing the postconditions.
 #' @export
-get_prevalidated_fn <- function(fn) { environment(fn)$checkr.fn }
+get_prevalidated_fn <- function(fn) { environment(fn)$checker_fn }
 
 
 #' Print validated functions more clearly.

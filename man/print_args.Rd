@@ -14,6 +14,6 @@ Print function arguments
 }
 \examples{
 l <- list(x = seq(3), y = seq(4))
-print_args(l)
+checkr:::print_args(l)
 }
 

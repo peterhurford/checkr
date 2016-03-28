@@ -4,10 +4,10 @@
 \alias{ensure}
 \title{Ensure checks that certain preconditions and postconditions of a function are true.}
 \usage{
-ensure(fn, preconditions = list(), postconditions = list())
+ensure(checker_fn, preconditions = list(), postconditions = list())
 }
 \arguments{
-\item{fn}{function. A function to run with validated pre- and postconditions.}
+\item{checker_fn}{function. A function to run with validated pre- and postconditions.}
 
 \item{preconditions}{list. A list of preconditions to check.}
 

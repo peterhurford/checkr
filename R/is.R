@@ -1,7 +1,7 @@
 #' Test for class membership
 #'
-#' @param match_object. The object to test for class.
-#' @param expected_class. The name of the expected class.
+#' @param match_object ANY. The object to test for class.
+#' @param expected_class character. The name of the expected class.
 #' @examples
 #'   1 %is% numeric
 #'   1.0 %is% double

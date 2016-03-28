@@ -50,7 +50,7 @@ function_test_objects <- function(fn) {
 #' @param x ANY. The object to print args for.
 #' @examples
 #' l <- list(x = seq(3), y = seq(4))
-#' print_args(l)
+#' checkr:::print_args(l)
 print_args <- function(x) {
   paste0(paste(names(x),
     unname(sapply(x, function(y) {
@@ -83,7 +83,7 @@ function_name <- function(orig_function_name) {
 #' test the function will be screened ahead of time to ensure they meet the preconditions.
 #'
 #' @param fn function. A function to randomly check postconditions for.
-#' @param postconditions. Optional postconditions to quickcheck for.
+#' @param postconditions list. Optional postconditions to quickcheck for.
 #' @param verbose logical. Whether or not to announce the success.
 #' @param testthat logical. Whether or not to run testthat.
 #' @return either TRUE if the function passed the quickcheck or FALSE if it didn't.
