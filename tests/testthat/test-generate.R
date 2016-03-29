@@ -37,7 +37,6 @@ describe("test_objects", {
   })
   test_that("the function is memoised", {
     expect_true(memoise::is.memoised(test_objects))
-    expect_true(microbenchmark::microbenchmark(test_objects(), times = 1)$time < 5000000)
   })
   test_that("force_reload_test_objects reloads test objects", {
     expect_false(memoise::is.memoised(force_reload_test_objects))
