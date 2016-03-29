@@ -1,3 +1,10 @@
+#### v0.0.3.9000
+
+* Validated functions now keep their formals instead of being coerced to splat.
+* Add Travis.
+* Pass R CMD CHECK and lintr.
+* Some functions are no longer validated because this ran into circular issues.
+
 #### v0.0.2.9002
 
 * Redo the imputation of arguments within the validator.

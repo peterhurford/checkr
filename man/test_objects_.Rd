@@ -4,7 +4,10 @@
 \alias{test_objects_}
 \title{Generates random R objects to be put into functions for testing purposes.}
 \usage{
-test_objects_()
+test_objects_(objects)
+}
+\arguments{
+\item{objects}{list. The object frame to work from.}
 }
 \description{
 Generates random R objects to be put into functions for testing purposes.

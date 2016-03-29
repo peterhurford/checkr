@@ -4,7 +4,14 @@
 \alias{random_objs}
 \title{Generate a vector or list of random objects from a particular set of possible choices.}
 \usage{
-random_objs(objects, amount)
+random_objs(objects, amount, list_max_length = 50)
+}
+\arguments{
+\item{objects}{list. The list of objects to generate from.}
+
+\item{amount}{numeric. The amount of objects to generate.}
+
+\item{list_max_length}{numeric. What is the maximum size of a given vector or list?}
 }
 \description{
 Generate a vector or list of random objects from a particular set of possible choices.

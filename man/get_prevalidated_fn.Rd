@@ -4,7 +4,7 @@
 \alias{get_prevalidated_fn}
 \title{Get the pre-validated function that is wrapped in validations.}
 \usage{
-get_prevalidated_fn(...)
+get_prevalidated_fn(fn)
 }
 \arguments{
 \item{fn}{validated_function. The function to get the pre-validated function for.}

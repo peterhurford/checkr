@@ -7,7 +7,7 @@
 is.empty(obj)
 }
 \arguments{
-\item{obj.}{The object to test.}
+\item{obj}{ANY. The object to test.}
 }
 \value{
 a boolean whether or not the object is empty.

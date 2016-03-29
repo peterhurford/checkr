@@ -7,7 +7,7 @@
 #' @export
 validate <- function(...) {
   conditions <- substitute(list(...))
-  validate_(conditions)
+  checkr:::validate_(conditions)
 }
 
 #' Validate without NSE.
@@ -21,7 +21,7 @@ validate_ <- function(conditions, env = parent.frame(2)) {
   if (conditions[[1]] != substitute(list) && is.call(conditions)) {
     conditions <- list(conditions)
   }
-  errors <- Filter(Negate(is.null), lapply(conditions, verify_condition, env = env))
+  errors <- Filter(Negate(is.null), lapply(conditions, checkr:::verify_condition, env = env))
   if (length(errors) > 0) {
     stop("Error on ", paste(errors, collapse = ", "), call. = FALSE)
   }

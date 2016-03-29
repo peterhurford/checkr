@@ -1,6 +1,8 @@
 Package: checkr
 Title: Automatically Test R Functions
-Version: 0.0.2.9002
+Version: 0.0.3.9000
+Author: Peter Hurford <peter@peterhurford.com>
+Maintainer: Peter Hurford <peter@peterhurford.com>
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
 Description: Be able to specify preconditions and postconditions for R functions
     and have them automatically checked at runtime. Then, randomly generate R
@@ -8,9 +10,11 @@ Description: Be able to specify preconditions and postconditions for R functions
     conditions hold.
 Depends:
     R (>= 3.1.0)
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
+Imports:
+    methods
 Suggests:
     testthat,
-    microbenchmark
+    memoise
 RoxygenNote: 5.0.1.9000

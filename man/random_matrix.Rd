@@ -4,7 +4,10 @@
 \alias{random_matrix}
 \title{Generate a random matrix.}
 \usage{
-random_matrix()
+random_matrix(objects)
+}
+\arguments{
+\item{objects}{list. The object frame to start from.}
 }
 \description{
 A random matrix needs three random things...
@@ -12,7 +15,7 @@ A random width, a random height, and a random data
 data should be a random assortment of integers, doubles, logicals, or characters, with
   all of them being the same class.
 Because there are so many possible matricies, it seems easier to generate them on
-demand rather than preallocate all possible matricies into OBJECTS.
-We will then populate some random matricies onto OBJECTS for later use.
+demand rather than preallocate all possible matricies into default_objects().
+We will then populate some random matricies onto default_objects() for later use.
 }
 

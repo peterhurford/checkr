@@ -4,12 +4,12 @@
 \alias{quickcheck}
 \title{Quickcheck a function.}
 \usage{
-quickcheck(...)
+quickcheck(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE)
 }
 \arguments{
 \item{fn}{function. A function to randomly check postconditions for.}
 
-\item{postconditions.}{Optional postconditions to quickcheck for.}
+\item{postconditions}{list. Optional postconditions to quickcheck for.}
 
 \item{verbose}{logical. Whether or not to announce the success.}
 

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{function. The function to print.}
 
-\item{...}{Additional arguments to pass to print.}
+\item{...}{list. Additional arguments to pass to print.}
 }
 \description{
 Print validated functions more clearly.

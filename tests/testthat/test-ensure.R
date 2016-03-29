@@ -5,7 +5,7 @@ context("ensure")
 #' @param length numeric. The length of the random string to generate.
 #' @param alphabet character. A list of characters to draw from to create the string.
 random_string <- ensure(
-  pre = list(length %is% numeric, length(length) == 1, length > 0,
+  pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e+7,
     alphabet %is% list || alphabet %is% vector,
     alphabet %contains_only% simple_string,
     all(sapply(alphabet, nchar) == 1)),
@@ -17,7 +17,7 @@ random_string <- ensure(
 describe("classes", {
   test_that("the result is a validated function", {
     expect_true(random_string %is% "function")
-  expect_true(random_string %is% validated_function)
+    expect_true(random_string %is% validated_function)
   })
   test_that("validation preserves original classes", {
     add <- function(x, y) x + y
@@ -26,6 +26,11 @@ describe("classes", {
     add <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric, add)
     expect_true(add %is% validated_function)
     expect_true(add %is% adding_function)
+  })
+  test_that("validation preserves original formals", {
+    add <- function(x, y) x + y
+    eadd <- ensure(pre = list(x %is% numeric, y %is% numeric), post = result %is% numeric, add)
+    expect_equal(formals(add), formals(eadd))
   })
 })
 
@@ -37,7 +42,7 @@ describe("precondition validations", {
     expect_error(random_string(10), "Error on missing arguments: alphabet")
   })
   test_that("alphabet is checked for list or vector", {
-    expect_error(random_string(10, "pizza"), 
+    expect_error(random_string(10, "pizza"),
       "Error on alphabet %is% list || alphabet %is% vector")
   })
   test_that("alphabet is checked that it only contains characters", {
@@ -113,10 +118,10 @@ describe("fetchers", {
   test_that("preconditions fetches the preconditions", {
     expect_identical(preconditions(add), substitute(list(x %is% numeric, y %is% numeric)))
   })
-  test_that("postconditions fetches the preconditions", {
+  test_that("postconditions fetches the postconditions", {
     expect_equal(postconditions(add), substitute(result %is% numeric))
   })
-  test_that("postconditions fetches the preconditions", {
+  test_that("get_prevalidated_fn gets the pre-validated function", {
     expect_equal(get_prevalidated_fn(add), function(x, y) x + y)
   })
 })
@@ -423,4 +428,22 @@ describe("missing arguments VI", {
   test_that("second_flag can be missing in the opposite order VI", {
     expect_false(fn(flag = FALSE, fn = isTRUE))
   })
+})
+
+describe("printing calculates preconditions, postconditions, and the before_fn", {
+  called_pre <- FALSE
+  called_post <- FALSE
+  called_prevalid <- FALSE
+  with_mock(
+    `checkr::preconditions` = function(...) { called_pre <<- TRUE },
+    `checkr::postconditions` = function(...) { called_post <<- TRUE },
+    `checkr::get_prevalidated_fn` = function(...) { called_prevalid <<- TRUE }, {
+      expect_false(called_pre)
+      expect_false(called_post)
+      expect_false(called_prevalid)
+      print(random_string)
+      expect_true(called_pre)
+      expect_true(called_post)
+      expect_true(called_prevalid)
+    })
 })

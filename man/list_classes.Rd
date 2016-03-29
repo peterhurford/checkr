@@ -6,6 +6,9 @@
 \usage{
 list_classes(object)
 }
+\arguments{
+\item{object}{ANY. The object to check classes for.}
+}
 \description{
 Get all the classes within a list.
 }

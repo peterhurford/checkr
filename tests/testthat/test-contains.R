@@ -31,8 +31,8 @@ describe("custom matchers", {
 })
 
 test_that("contains vs. contains_only", {
-  expect_true(list(1, 2, "a") %contains% numeric) 
-  expect_false(list(1, 2, "a") %contains_only% numeric) 
+  expect_true(list(1, 2, "a") %contains% numeric)
+  expect_false(list(1, 2, "a") %contains_only% numeric)
 })
 
 test_that("does_not_contain is the opposite of contains", {

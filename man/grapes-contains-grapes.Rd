@@ -3,30 +3,38 @@
 \name{\%contains\%}
 \alias{\%contains\%}
 \alias{\%contains_only\%}
+\alias{\%does_not_contain\%}
 \title{Test if a list contains some elements of the desired class.}
 \usage{
 match_list \%contains\% expected_class
 
+match_list \%does_not_contain\% expected_class
+
 match_list \%contains_only\% expected_class
 }
 \arguments{
-\item{match_list.}{The list to test for class of the elements.}
+\item{match_list}{list. The list to test for class of the elements.}
 
-\item{expected_class.}{The name of the expected class to test.}
+\item{expected_class}{character. The name of the expected class to test.}
 }
 \value{
 Boolean whether or not the match_list has at least one element of expected_class.
+
+Boolean whether or not the match_list has no elements of the expected_class.
 
 Boolean whether or not the match_list has all elements of expected_class.
 }
 \description{
 Test if a list contains some elements of the desired class.
 
+Test if a list does not contain some elements of the desired class.
+
 Test if a list contains only elements of the desired class.
 }
 \examples{
   list(1, 2, 3) \%contains\% numeric
   list(1, 2, "a") \%contains\% numeric
+  list(1, 2, 3) \%does_not_contain\% character
   list(1, 2, 3) \%contains_only\% numeric
   list(1, 2, "a") \%contains_only\% numeric
 }

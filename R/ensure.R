@@ -1,6 +1,6 @@
 #' Ensure checks that certain preconditions and postconditions of a function are true.
 #'
-#' @param fn function. A function to run with validated pre- and postconditions.
+#' @param checker_fn function. A function to run with validated pre- and postconditions.
 #' @param preconditions list. A list of preconditions to check.
 #' @param postconditions list. A list of postconditions to check.
 #' @examples
@@ -9,16 +9,16 @@
 #'     function(x, y) { x + y })
 #' @return The original function, but also of class validated_function, with added validations.
 #' @export
-ensure <- function(fn, preconditions = list(), postconditions = list()) {
-  if (is(fn, "validated_function")) {
-    stop("The function has already been validated.")  
+ensure <- function(checker_fn, preconditions = list(), postconditions = list()) {
+  if (is(checker_fn, "validated_function")) {
+    stop("The function has already been validated.")
   }
   pre <- substitute(preconditions)
   post <- substitute(postconditions)
-  force(fn)
+  force(checker_fn)
   validated_fn <- function(...) {
-    args <- list(...)
-    formals <- names(formals(fn))
+    args <- lapply(as.list(sys.call()[-1]), eval)
+    formals <- names(formals(checker_fn))
 
     # Goal here is to (a) impute names the user doesn't give with the formals
     # and (b) detect if any formals are missing so we can place in their defaults
@@ -27,12 +27,12 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     if (is.null(names(args))) {
       names(args) <- head(formals, length(args))
     } else {
-      empty_names <- vapply(names(args), is.empty, logical(1))
+      empty_names <- vapply(names(args), checkr::is.empty, logical(1))
       names(args)[empty_names] <- head(missing_formals, length(args))
     }
 
     # Get all the non-empty arguments to impute missing arguments.
-    default_args <- Filter(Negate(is.name), formals(fn))
+    default_args <- Filter(Negate(is.name), formals(checker_fn))
     for (pos in seq_along(default_args)) {
       if (!(names(default_args)[[pos]] %in% names(args))) {
         args[[names(default_args)[[pos]]]] <- default_args[[pos]]
@@ -44,25 +44,27 @@ ensure <- function(fn, preconditions = list(), postconditions = list()) {
     missing_defaults <- setdiff(names(default_args), names(args))
     if (length(missing_defaults) > 0) {
       length(args) <- length(args) + length(missing_defaults)
-      names(args) <- Filter(Negate(is.empty), union(names(args), missing_defaults))
+      names(args) <- Filter(Negate(checkr::is.empty),
+        union(names(args), missing_defaults))
     }
 
     # Run the preconditions and postconditions.
-    tryCatch(validate_(pre, env = args),
+    tryCatch(checkr:::validate_(pre, env = args),
       error = function(e) {
         e <- as.character(e)
         flag <- "object '.*not found"
         if (grepl(flag, e)) {
           missing_args_error(gsub("' not found", "",
             gsub("object '", "", regmatches(e, regexpr(flag, e)))))
-        } else { stop(e) } 
+        } else { stop(e) }
       })
-    args$result <- fn(...)
-    validate_(post, env = args)
+    args$result <- do.call(checker_fn, args)
+    checkr:::validate_(post, env = args)
     args$result
   }
 
-  class(validated_fn) <- append(class(fn), "validated_function", 0)
+  formals(validated_fn) <- formals(checker_fn)
+  class(validated_fn) <- append(class(checker_fn), "validated_function", 0)
   validated_fn
 }
 
@@ -79,26 +81,19 @@ preconditions <- function(fn) conditions_(fn, "pre")
 #' @export
 postconditions <- function(fn) conditions_(fn, "post")
 
-conditions_ <- ensure(
-  pre = list(fn %is% validated_function,
-    key %in% c("pre", "post")),
-  post = result %is% call,
-  function(fn, key) { environment(fn)[[key]] })
+conditions_ <- function(fn, key) { environment(fn)[[key]] }
 
 
 #' Get the pre-validated function that is wrapped in validations.
 #' @param fn validated_function. The function to get the pre-validated function for.
 #' @return a call containing the postconditions.
 #' @export
-get_prevalidated_fn <- ensure(
-  pre = fn %is% validated_function,
-  post = list(result %is% "function", result %isnot% validated_function),
-  function(fn) { environment(fn)$fn })
+get_prevalidated_fn <- function(fn) { environment(fn)$checker_fn }
 
 
 #' Print validated functions more clearly.
 #' @param x function. The function to print.
-#' @param ... Additional arguments to pass to print.
+#' @param ... list. Additional arguments to pass to print.
 #' @export
 print.validated_function <- function(x, ...) {
   print(list(

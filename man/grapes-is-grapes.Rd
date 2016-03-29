@@ -7,12 +7,12 @@
 \usage{
 match_object \%is\% expected_class
 
-... \%isnot\% NA
+match_object \%isnot\% expected_class
 }
 \arguments{
-\item{match_object.}{The object to test for class.}
+\item{match_object}{ANY. The object to test for class.}
 
-\item{expected_class.}{The name of the expected class.}
+\item{expected_class}{character. The name of the expected class.}
 }
 \value{
 Boolean whether or not the match_object is the expected_class.

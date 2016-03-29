@@ -6,12 +6,14 @@
 \usage{
 print_args(x)
 }
+\arguments{
+\item{x}{ANY. The object to print args for.}
+}
 \description{
 Print function arguments
 }
 \examples{
 l <- list(x = seq(3), y = seq(4))
-print_args(l)
-[1] "x = 1:3, y = 1:4"
+checkr:::print_args(l)
 }
 
