@@ -136,7 +136,7 @@ describe("quickcheck", {
       paste0(sample(alphabet, length, replace = TRUE), collapse = "")
     }
     quickcheck(ensure(
-      pre = list(length %is% numeric, length(length) == 1, length > 0,
+      pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e7,
         alphabet %is% list || alphabet %is% vector,
         alphabet %contains_only% simple_string,
         all(sapply(alphabet, nchar) == 1)),
