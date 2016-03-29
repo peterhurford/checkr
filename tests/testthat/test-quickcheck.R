@@ -65,7 +65,7 @@ describe("testing frame", {
   })
   test_that("it generates based on restrictions of each formal II", {
     random_string <- ensure(
-      pre = list(length %is% numeric, length(length) == 1, length > 0,
+      pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e+7,
         alphabet %is% list || alphabet %is% vector,
         alphabet %contains_only% simple_string),
       function(length, alphabet) {

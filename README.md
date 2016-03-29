@@ -41,6 +41,7 @@ add("a", "b")
 #' @param alphabet character. A list of characters to draw from to create the string.
 random_string <- ensure(
   pre = list(length %is% numeric, length(length) == 1, length > 0,
+    length < 1e+7, length %% 1 == 0,
     alphabet %is% list || alphabet %is% vector,
     alphabet %contains_only% simple_string,
     all(sapply(alphabet, nchar) == 1)),
@@ -97,7 +98,7 @@ For example, if we had written a thorough test for (a), we would have noticed th
 
 ```R
 quickcheck(ensure(
-  pre = list(length %is% numeric, length(length) == 1, length > 0,
+  pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e+7,
     alphabet %is% list || alphabet %is% vector,
       alphabet %contains_only% simple_string),
   post = list(nchar(result) == length, length(result) == 1,
@@ -113,6 +114,8 @@ We use `ensure` from the [validations package](https://github.com/peterhurford/v
 This quickcheck will automatically generate possible arguments that match the preconditions and then do some verifications, such as (a) verifying that the number of characters of the resulting string is the same as the `length` that you passed into the function, (b) that the resulting string is not a length > 1 vector, (c) that the resulting string is all characters, and (d) that all the characters in the string are within the given `alphabet`.
 
 This easily accomplishes in two lines what normally takes five well thought-out and detailed tests.
+
+(Why `length < 1e+7`?... Another thing I learned only by quickchecking -- you can break `sample` with sufficiently large lengths.)
 
 #### Reversing and Property-based Testing
 
