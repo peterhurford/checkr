@@ -65,7 +65,7 @@ random_string <- function(length, alphabet) {
 }
 ```
 
-This is a pretty simple function, but it's possible to make an error even on something this simple -- as you can see, we accidentally hardcoded the length as 10 instead of using the built-in `length` parameter (this isn't contrived -- this is a typo [I have made in real life](https://github.com/peterhurford/validations/commit/585af6de4ee25622dfaa665e83106a2398cc946c)).
+This is a pretty simple function, but it's possible to make an error even on something this simple -- as you can see, we accidentally hardcoded the length as 10 instead of using the built-in `length` parameter (this isn't contrived -- this is a typo [I have made in real life](https://github.com/peterhurford/checkr/commit/585af6de4ee25622dfaa665e83106a2398cc946c)).
 
 We may write some tests using testthat:
 
@@ -109,7 +109,7 @@ quickcheck(ensure(
 Error: Quickcheck for random_string failed on item #1: length = 53L, alphabet = list("shtafWoWGRWmCSIRquDNxqskiKGyVdHFApld")
 ```
 
-We use `ensure` from the [validations package](https://github.com/peterhurford/validations) to specify preconditions for what random items we should test our function with and to specify postconditions that must hold true for every run that satisfies the preconditions.  (I recommend making every-day use of the validations package even if not doing `quickcheck`, because it creates more clear functions that are more explicit about what they require and are less likely to crash in confusing ways.  ...They're also way easier to quickcheck.)
+We use `ensure` to specify preconditions for what random items we should test our function with and to specify postconditions that must hold true for every run that satisfies the preconditions.  (I recommend making every-day use of validations even if not doing `quickcheck`, because it creates more clear functions that are more explicit about what they require and are less likely to crash in confusing ways.  ...They're also way easier to quickcheck.)
 
 This quickcheck will automatically generate possible arguments that match the preconditions and then do some verifications, such as (a) verifying that the number of characters of the resulting string is the same as the `length` that you passed into the function, (b) that the resulting string is not a length > 1 vector, (c) that the resulting string is all characters, and (d) that all the characters in the string are within the given `alphabet`.
 
@@ -153,7 +153,7 @@ In June 2015 (8 months before me), Revolution Analytics released [their own vers
 
 However, this version of Quickcheck has a few important improvements:
 
-(1) The tight integration with the validations package lets you more clearly specify the preconditions and postconditions.
+(1) The tight integration with validations lets you more clearly specify the preconditions and postconditions.
 
 (2) You can be a lot more specific about the preconditions you can specify on the random objects. Revolution Analytics' objects are always one class and all objects of that class, whereas with this package you can mix and match classes and specify other things (e.g., all >0).
 
@@ -164,7 +164,7 @@ However, this version of Quickcheck has a few important improvements:
 
 ## Installation
 
-This package is not yet available from CRAN.  Instead, it and the required [validations package](http://www.github.com/peterhurford/validations) can be installed using [devtools](http://www.github.com/hadley/devtools):
+This package is not yet available from CRAN.  Instead, it can be installed using [devtools](http://www.github.com/hadley/devtools):
 
 ```R
 if (!require("devtools")) { install.packages("devtools") }
