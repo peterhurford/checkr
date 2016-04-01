@@ -1,14 +1,32 @@
+get_testing_frame <- function(formals, frame) {
+  if (is.null(frame)) {
+    lapply(seq_along(formals), function(n) sample(checkr:::test_objects()))
+  } else {
+    if (!identical(formals, names(frame))) {
+      stop("The custom testing_frame you submitted does not match the formals.")
+    } else {
+      frame
+    }
+  }
+}
+
+
 #' Create the necessary testing objects to quickcheck a function.
 #' @param fn function. A function to generate test objects for.
-function_test_objects <- function(fn) {
+#' @param frame list. A custom testing_frame to use, if necessary.
+function_test_objects <- function(fn, frame = NULL) {
   if (is(fn, "validated_function")) {
     preconditions <- preconditions(fn)
     if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
         preconditions <- list(preconditions)
     }
+    if (length(preconditions) > 1) { preconditions <- preconditions[-1] }
     pre_fn <- checkr::get_prevalidated_fn(fn)
     formals <- names(formals(pre_fn))
-    testing_frame <- lapply(seq_along(formals), function(n) sample(checkr:::test_objects()))
+    if (length(formals) == 0) {
+      stop("You cannot quickcheck a function with no arguments.")
+    }
+    testing_frame <- checkr:::get_testing_frame(formals, frame)
     testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
       # First we try calculating each input independently so that we can maximize
       # the number of test samples.
@@ -23,24 +41,21 @@ function_test_objects <- function(fn) {
         TRUE
       }, frame)
     }), error = function(e) {
-      if (grepl("not found", as.character(e), fixed = TRUE)) {
-        # If there was a not found error, we assume it was because of interdependent
-        # preconditions, so we go to the backup of calculating the arguments jointly.
-        lapply(lapply(testing_frame, function(frame) {
-          lapply(seq_along(testing_frame[[1]]), function(pos) {
-            env <- lapply(testing_frame, `[[`, pos)
-            names(env) <- formals
-            for (precondition in as.list(preconditions)) {
-              if (!isTRUE(eval(precondition, envir = env))) { return(NULL) }
-            }
-            frame[[pos]]
-          })
-        }), function(frame) { Filter(Negate(is.null), frame) })
-      } else { stop(e) }
+      # If there was an error, we assume it was because of interdependent
+      # preconditions, so we go to the backup of calculating the arguments jointly.
+      lapply(lapply(testing_frame, function(frame) {
+        lapply(seq_along(testing_frame[[1]]), function(pos) {
+          env <- lapply(testing_frame, `[[`, pos)
+          names(env) <- formals
+          for (precondition in as.list(preconditions)) {
+            if (!isTRUE(eval(precondition, envir = env))) { return(NULL) }
+          }
+          frame[[pos]]
+        }) }), function(frame) { Filter(Negate(is.null), frame) })
     })
   } else {
     formals <- names(formals(fn))
-    testing_frame <- lapply(seq_along(formals), function(n) sample(checkr:::test_objects()))
+    testing_frame <- checkr:::get_testing_frame(formals, frame)
   }
   names(testing_frame) <- formals
   testing_frame
@@ -86,11 +101,13 @@ function_name <- function(orig_function_name) {
 #' @param postconditions list. Optional postconditions to quickcheck for.
 #' @param verbose logical. Whether or not to announce the success.
 #' @param testthat logical. Whether or not to run testthat.
+#' @param frame list. A custom testing_frame to use, if necessary.
 #' @return either TRUE if the function passed the quickcheck or FALSE if it didn't.
 #' @export
-quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE) {
+quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRUE,
+  frame = NULL) {
   post <- substitute(postconditions)
-  testing_frame <- checkr:::function_test_objects(fn)
+  testing_frame <- checkr:::function_test_objects(fn, frame = frame)
   if (any(vapply(testing_frame, length, numeric(1)) == 0)) {
     stop("No quickcheck testing frame was generated. Make sure your preconditions aren't",
       " impossible to satisfy!")

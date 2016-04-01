@@ -1,3 +1,9 @@
+#### v0.0.4.9000
+
+* Resolve bugs with nesting quickchecks within quickchecks.
+* Allow a custom testing frame to be passed to quickcheck.
+* Add `%within%` as a helper to test membership within a numeric boundary.
+
 #### v0.0.3.9000
 
 * Validated functions now keep their formals instead of being coerced to splat.
