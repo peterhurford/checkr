@@ -1,3 +1,7 @@
+#### v0.0.4.9001
+
+* Prevent errors in testthat from the function name being too long.
+
 #### v0.0.4.9000
 
 * Resolve bugs with nesting quickchecks within quickchecks.
