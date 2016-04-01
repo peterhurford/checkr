@@ -26,7 +26,7 @@ function_test_objects <- function(fn, frame = NULL) {
     if (length(formals) == 0) {
       stop("You cannot quickcheck a function with no arguments.")
     }
-    testing_frame <- get_testing_frame(formals, frame)
+    testing_frame <- checkr:::get_testing_frame(formals, frame)
     testing_frame <- tryCatch(lapply(seq_along(testing_frame), function(pos) {
       # First we try calculating each input independently so that we can maximize
       # the number of test samples.
@@ -55,7 +55,7 @@ function_test_objects <- function(fn, frame = NULL) {
     })
   } else {
     formals <- names(formals(fn))
-    testing_frame <- get_testing_frame(formals, frame)
+    testing_frame <- checkr:::get_testing_frame(formals, frame)
   }
   names(testing_frame) <- formals
   testing_frame
