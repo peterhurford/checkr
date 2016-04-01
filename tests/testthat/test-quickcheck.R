@@ -122,6 +122,10 @@ describe("quickcheck", {
       quickcheck(ensure(post = result %is% character, function() "Hi!")),
       "no arguments")
   })
+  test_that("it works on a long function", {
+    quickcheck(ensure(pre = x %is% numeric,
+      function(x) { x + x + x + x + x + x + x + x + x }))
+  })
   test_that("reverse example", {
     quickcheck(ensure(pre = list(length(x) == 1, x %is% vector || x %is% list),
       post = identical(result, x), function(x) rev(x)))
