@@ -113,6 +113,7 @@ quickcheck <- function(fn, postconditions = NULL, verbose = TRUE, testthat = TRU
       " impossible to satisfy!")
   }
   function_name <- function_name(substitute(fn))
+  if (length(function_name) > 1) { function_name <- function_name[[1]] }
   failed <- FALSE
   for (pos in seq_along(testing_frame[[1]])) {
     if (identical(failed, FALSE)) {
