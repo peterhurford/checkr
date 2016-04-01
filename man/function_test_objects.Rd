@@ -4,10 +4,12 @@
 \alias{function_test_objects}
 \title{Create the necessary testing objects to quickcheck a function.}
 \usage{
-function_test_objects(fn)
+function_test_objects(fn, frame = NULL)
 }
 \arguments{
 \item{fn}{function. A function to generate test objects for.}
+
+\item{frame}{list. A custom testing_frame to use, if necessary.}
 }
 \description{
 Create the necessary testing objects to quickcheck a function.

@@ -81,6 +81,10 @@ describe("testing frame", {
     testing_frame <- function_test_objects(class_matcher)
     expect_equal(sapply(testing_frame$x, class), sapply(testing_frame$y, class))
   })
+  test_that("it can be custom", {
+    custom_testing_frame <- function_test_objects(identity, frame = list(x = 1))
+    expect_equal(list(x = 1), custom_testing_frame)
+  })
 })
 
 describe("quickcheck", {
@@ -112,6 +116,11 @@ describe("quickcheck", {
     impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
       identity)
     expect_error(quickcheck(impossible_preconditions), "impossible to satisfy")
+  })
+  test_that("it errors if it quickchecks a function with no formals", {
+    expect_error(
+      quickcheck(ensure(post = result %is% character, function() "Hi!")),
+      "no arguments")
   })
   test_that("reverse example", {
     quickcheck(ensure(pre = list(length(x) == 1, x %is% vector || x %is% list),

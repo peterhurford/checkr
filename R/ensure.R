@@ -17,7 +17,9 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
   post <- substitute(postconditions)
   force(checker_fn)
   validated_fn <- function(...) {
-    args <- lapply(as.list(sys.call()[-1]), eval)
+    args <- lapply(as.list(sys.call()[-1]), function(expr) {
+      eval(expr, parent.frame(3))
+    })
     formals <- names(formals(checker_fn))
 
     # Goal here is to (a) impute names the user doesn't give with the formals
