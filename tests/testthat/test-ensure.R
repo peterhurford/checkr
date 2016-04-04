@@ -89,6 +89,13 @@ describe("postconditions", {
   test_that("result is checked for length", {
     expect_error(random_string(10, LETTERS), "Error on nchar(result) < length", fixed = TRUE)
   })
+
+  test_that("it works for NULL", {
+    fn <- ensure(result %is% NULL, function(x) NULL)
+    expect_equal(NULL, fn(1))
+    expect_equal(NULL, fn("a"))
+    expect_equal(NULL, fn(NULL))
+  })
 })
 
 describe("one without the other", {
