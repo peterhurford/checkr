@@ -30,6 +30,15 @@ test_that("custom class names", {
   expect_true(NULL %is% NULL)
 })
 
+test_that("any class", {
+  expect_true("a" %is% any)
+  expect_true("a" %is% ANY)
+  expect_true(1 %is% any)
+  expect_true(1.0 %is% any)
+  expect_true(list(1, "a", 2) %is% any)
+  expect_true(iris %is% any)
+})
+
 describe("custom matchers", {
   test_that("simple_string", {
     expect_true("pizza" %is% simple_string)
