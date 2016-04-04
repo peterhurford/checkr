@@ -1,3 +1,8 @@
+#### v0.0.4.9003
+
+* Introduce `package_exports_checked`, which checks a package for whether all exported functions are checked using checkr (either have zero formals or are wrapped in `ensure` blocks).
+* Add a test for `any` (e.g., `1 %is% any`) that will always be `TRUE`. This is useful to be explicit that your function can take any input.
+
 #### v0.0.4.9002
 
 * Allow `NULL` to work as a result of the function in `ensure` or `quickcheck`.

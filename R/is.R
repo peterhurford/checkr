@@ -26,6 +26,10 @@
       match_object = match_object, logical(1))))
   }
 
+  if (identical(tolower(expected_class), "any")) {
+    return(TRUE)
+  }
+
   if (identical(expected_class, NULL)) {
     expected_class <- "NULL"
   }

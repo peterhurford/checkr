@@ -1,6 +1,6 @@
 Package: checkr
 Title: Automatically Test R Functions
-Version: 0.0.4.9002
+Version: 0.0.4.9003
 Author: Peter Hurford <peter@peterhurford.com>
 Maintainer: Peter Hurford <peter@peterhurford.com>
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
@@ -16,5 +16,6 @@ Imports:
     methods
 Suggests:
     testthat,
-    memoise
+    memoise,
+    devtools
 RoxygenNote: 5.0.1.9000
