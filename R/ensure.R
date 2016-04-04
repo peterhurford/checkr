@@ -50,7 +50,7 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
         union(names(args), missing_defaults))
     }
 
-    # Run the preconditions and postconditions.
+    # Run the preconditions
     tryCatch(checkr:::validate_(pre, env = args),
       error = function(e) {
         e <- as.character(e)
@@ -60,7 +60,12 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
             gsub("object '", "", regmatches(e, regexpr(flag, e)))))
         } else { stop(e) }
       })
-    args$result <- do.call(checker_fn, args)
+
+    # Now we need to add the result to the list of arguments so we can post-validate
+    # Assignment here must be careful to assign NULL correctly
+    # http://stackoverflow.com/questions/7944809/assigning-null-to-a-list-element-in-r
+    args["result"] <- list(do.call(checker_fn, args))
+
     checkr:::validate_(post, env = args)
     args$result
   }
