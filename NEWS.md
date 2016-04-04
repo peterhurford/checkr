@@ -1,3 +1,7 @@
+#### v0.0.4.9002
+
+* Allow `NULL` to work as a result of the function in `ensure` or `quickcheck`.
+
 #### v0.0.4.9001
 
 * Prevent errors in testthat from the function name being too long.
