@@ -8,6 +8,8 @@ test_that("it passes when all exported functions are checked", {
 
 test_that("it fails when all exported functions are not checked", {
   devtools::install("fakepackages/notallexportedchecked")
-  expect_false(package_exports_checked("notallexportedchecked"))
+  expect_false(package_exports_checked("notallexportedchecked", stop = FALSE))
+  expect_error(package_exports_checked("notallexportedchecked"),
+    "not checked by checkr: pending_identity")
   remove.packages("notallexportedchecked")
 })
