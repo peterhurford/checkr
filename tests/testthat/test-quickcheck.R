@@ -81,9 +81,15 @@ describe("testing frame", {
     testing_frame <- function_test_objects(class_matcher)
     expect_equal(sapply(testing_frame$x, class), sapply(testing_frame$y, class))
   })
+})
+
+describe("custom testing frames", {
   test_that("it can be custom", {
     custom_testing_frame <- function_test_objects(identity, frame = list(x = 1))
     expect_equal(list(x = 1), custom_testing_frame)
+  })
+  test_that("a custom testing frame must match the formals of the function", {
+    expect_error(function_test_objects(function(x) x, frame = list(y = 1)))
   })
 })
 
