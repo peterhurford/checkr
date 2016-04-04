@@ -1,3 +1,5 @@
+context("within")
+
 test_that("within", {
   expect_true(1 %within% c(0, 2))
   expect_true(1 %within% c(0, 1.5))
