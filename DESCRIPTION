@@ -16,5 +16,6 @@ Imports:
     methods
 Suggests:
     testthat,
-    memoise
+    memoise,
+    devtools
 RoxygenNote: 5.0.1.9000
