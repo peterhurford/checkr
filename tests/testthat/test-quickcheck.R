@@ -88,74 +88,81 @@ describe("testing frame", {
 })
 
 describe("quickcheck", {
-  test_that("simple success example I", {
-    quickcheck(identity)
+  describe("integration tests", {
+    test_that("simple success example I", {
+      quickcheck(identity)
+    })
+    test_that("simple seccess example II", {
+      add_one <- ensure(
+        pre = x %is% numeric,
+        post = result %is% numeric,
+        function(x) x + 1)
+      quickcheck(add_one)
+    })
+    test_that("simple failure example I", {
+      add_one <- ensure(
+        pre = x %is% numeric,
+        post = result %is% character, # this will fail because the result will actually be numeric
+        function(x) x + 1)
+      expect_false(quickcheck(add_one, testthat = FALSE))
+    })
+    test_that("simple failure example II", {
+      add_one <- ensure(
+        pre = x %is% character, # quickcheck will only generate characters which will fail
+        post = result %is% numeric,
+        function(x) x + 1)
+      expect_false(quickcheck(add_one, testthat = FALSE))
+    })
+    test_that("reverse example", {
+      quickcheck(ensure(pre = list(length(x) == 1, x %is% vector || x %is% list),
+        post = identical(result, x), function(x) rev(x)))
+      quickcheck(ensure(pre = list(x %is% vector || x %is% list),
+        post = identical(result, x), function(x) rev(rev(x))))
+    })
+    test_that("random string example - failure", {
+      random_string <- function(length, alphabet) {
+        paste0(sample(alphabet, 10), collapse = "")
+      }
+      expect_false(quickcheck(ensure(
+        pre = list(length %is% numeric, length(length) == 1, length > 0,
+          alphabet %is% list || alphabet %is% vector,
+            alphabet %contains_only% simple_string),
+        post = list(nchar(result) == length, length(result) == 1,
+          is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
+        random_string), testthat = FALSE))
+    })
+    test_that("random string example - success", {
+      random_string <- function(length, alphabet) {
+        paste0(sample(alphabet, length, replace = TRUE), collapse = "")
+      }
+      quickcheck(ensure(
+        pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e7,
+          alphabet %is% list || alphabet %is% vector,
+          alphabet %contains_only% simple_string,
+          all(sapply(alphabet, nchar) == 1)),
+        post = list(nchar(result) == length, length(result) == 1,
+          is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
+        random_string))
+    })
   })
-  test_that("simple seccess example II", {
-    add_one <- ensure(
-      pre = x %is% numeric,
-      post = result %is% numeric,
-      function(x) x + 1)
-    quickcheck(add_one)
-  })
-  test_that("simple failure example I", {
-    add_one <- ensure(
-      pre = x %is% numeric,
-      post = result %is% character, # this will fail because the result will actually be numeric
-      function(x) x + 1)
-    expect_false(quickcheck(add_one, testthat = FALSE))
-  })
-  test_that("simple failure example II", {
-    add_one <- ensure(
-      pre = x %is% character, # quickcheck will only generate characters which will fail
-      post = result %is% numeric,
-      function(x) x + 1)
-    expect_false(quickcheck(add_one, testthat = FALSE))
-  })
-  test_that("it errors if the testing frame is reduced to 0", {
-    impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
-      identity)
-    expect_error(quickcheck(impossible_preconditions), "impossible to satisfy")
-  })
-  test_that("it errors if it quickchecks a function with no formals", {
-    expect_error(
-      quickcheck(ensure(post = result %is% character, function() "Hi!")),
-      "no arguments")
-  })
-  test_that("it works on a long function", {
-    quickcheck(ensure(pre = x %is% numeric,
-      function(x) { x + x + x + x + x + x + x + x + x }))
-  })
-  test_that("reverse example", {
-    quickcheck(ensure(pre = list(length(x) == 1, x %is% vector || x %is% list),
-      post = identical(result, x), function(x) rev(x)))
-    quickcheck(ensure(pre = list(x %is% vector || x %is% list),
-      post = identical(result, x), function(x) rev(rev(x))))
-  })
-  test_that("random string example - failure", {
-    random_string <- function(length, alphabet) {
-      paste0(sample(alphabet, 10), collapse = "")
-    }
-    expect_false(quickcheck(ensure(
-      pre = list(length %is% numeric, length(length) == 1, length > 0,
-        alphabet %is% list || alphabet %is% vector,
-          alphabet %contains_only% simple_string),
-      post = list(nchar(result) == length, length(result) == 1,
-        is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
-      random_string), testthat = FALSE))
-  })
-  test_that("random string example - success", {
-    random_string <- function(length, alphabet) {
-      paste0(sample(alphabet, length, replace = TRUE), collapse = "")
-    }
-    quickcheck(ensure(
-      pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e7,
-        alphabet %is% list || alphabet %is% vector,
-        alphabet %contains_only% simple_string,
-        all(sapply(alphabet, nchar) == 1)),
-      post = list(nchar(result) == length, length(result) == 1,
-        is.character(result), all(strsplit(result, "")[[1]] %in% alphabet)),
-      random_string))
+  describe("unit tests", {
+    test_that("it works on a long function", {
+      quickcheck(ensure(pre = x %is% numeric,
+        function(x) { x + x + x + x + x + x + x + x + x }))
+    })
+    test_that("it errors if the testing frame is reduced to 0", {
+      impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
+        identity)
+      expect_error(quickcheck(impossible_preconditions), "impossible to satisfy")
+    })
+    test_that("it errors if it quickchecks a function with no formals", {
+      expect_error(
+        quickcheck(ensure(post = result %is% character, function() "Hi!")),
+        "no arguments")
+    })
+    test_that("NULL is allowed", {
+      quickcheck(ensure(post = result %is% NULL, function(x) NULL))
+    })
   })
 })
 
