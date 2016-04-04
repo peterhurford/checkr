@@ -13,3 +13,8 @@ test_that("it fails when all exported functions are not checked", {
     "not checked by checkr: pending_identity")
   remove.packages("notallexportedchecked")
 })
+
+test_that("for example, it doesn't work on checkr", {
+  expect_false(package_exports_checked("checkr", stop = FALSE))
+  expect_error(package_exports_checked("checkr"), "not checked by checkr")
+})
