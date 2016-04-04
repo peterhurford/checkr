@@ -9,4 +9,4 @@ pending <- function() { "Pending!" }
 #'
 #' This function needs to be checked or else the test will fail. But it's not checked!
 #' @export
-pending_identity <- identity 
+pending_identity <- identity
