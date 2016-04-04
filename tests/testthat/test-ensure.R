@@ -91,7 +91,7 @@ describe("postconditions", {
   })
 
   test_that("it works for NULL", {
-    fn <- ensure(result %is% NULL, function(x) NULL)
+    fn <- ensure(post = result %is% NULL, function(x) NULL)
     expect_equal(NULL, fn(1))
     expect_equal(NULL, fn("a"))
     expect_equal(NULL, fn(NULL))
