@@ -33,4 +33,5 @@ should_be_checked <- function(fn) { length(formals(fn)) > 0 }
 #' Determine whether a function is checked with checkr.
 #'
 #' @param fn function. The function to check.
+#' @export
 is.validated_function <- function(fn) { methods::is(fn, "validated_function") }
