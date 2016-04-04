@@ -3,7 +3,7 @@
 #' @param package character. The name of the package to check.
 #' @param stop logical. If TRUE, errors and tells you which functions are
 #'    not checked. If FALSE, the function will return FALSE.
-#' @returns either a logical or an error.
+#' @return either a logical or an error.
 #' @export
 package_exports_checked <- function(package, stop = TRUE) {
   exports <- getNamespaceExports(package)

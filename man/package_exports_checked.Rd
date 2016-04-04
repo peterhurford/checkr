@@ -4,10 +4,16 @@
 \alias{package_exports_checked}
 \title{Checks if all exported functions in the package are checked using checkr.}
 \usage{
-package_exports_checked(package)
+package_exports_checked(package, stop = TRUE)
 }
 \arguments{
 \item{package}{character. The name of the package to check.}
+
+\item{stop}{logical. If TRUE, errors and tells you which functions are
+not checked. If FALSE, the function will return FALSE.}
+}
+\value{
+either a logical or an error.
 }
 \description{
 Checks if all exported functions in the package are checked using checkr.
