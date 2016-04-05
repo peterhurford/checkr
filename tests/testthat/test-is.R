@@ -30,15 +30,6 @@ test_that("custom class names", {
   expect_true(NULL %is% NULL)
 })
 
-test_that("any class", {
-  expect_true("a" %is% any)
-  expect_true("a" %is% ANY)
-  expect_true(1 %is% any)
-  expect_true(1.0 %is% any)
-  expect_true(list(1, "a", 2) %is% any)
-  expect_true(iris %is% any)
-})
-
 describe("custom matchers", {
   test_that("simple_string", {
     expect_true("pizza" %is% simple_string)
@@ -52,8 +43,25 @@ describe("custom matchers", {
     expect_true(c(1, 2, 3) %is% vector)
     expect_true(c("a", "b", "c") %is% vector)
     expect_true(c(a = "a", b = "b", c = "c") %is% vector)
+    expect_false(iris$Species %is% vector)
     expect_false(list(1, 2, 3) %is% vector)
     expect_false(iris %is% vector)
+  })
+  test_that("atomic", {
+    expect_true(c(1, 2, 3) %is% atomic)
+    expect_true(c("a", "b", "c") %is% atomic)
+    expect_true(c(a = "a", b = "b", c = "c") %is% atomic)
+    expect_true(iris$Species %is% atomic)
+    expect_false(list(1, 2, 3) %is% atomic)
+    expect_false(iris %is% atomic)
+  })
+  test_that("all", {
+    expect_true("a" %is% any)
+    expect_true("a" %is% ANY)
+    expect_true(1 %is% any)
+    expect_true(1.0 %is% any)
+    expect_true(list(1, "a", 2) %is% any)
+    expect_true(iris %is% any)
   })
   test_that("empty", {
     expect_true("" %is% empty)
