@@ -18,3 +18,8 @@ test_that("for example, it doesn't work on checkr", {
   expect_false(package_exports_checked("checkr", stop = FALSE))
   expect_error(package_exports_checked("checkr"), "not checked by checkr")
 })
+
+test_that("it takes package paths", {
+  expect_false(package_exports_checked(".", stop = FALSE))
+  expect_error(package_exports_checked("."), "not checked by checkr")
+})

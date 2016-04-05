@@ -6,6 +6,9 @@
 #' @return either a logical or an error.
 #' @export
 package_exports_checked <- function(package, stop = TRUE) {
+  if (!(package %in% rownames(installed.packages()))) {
+    package <- devtools::as.package(package)$package
+  }
   exports <- getNamespaceExports(package)
   errors <- lapply(exports, function(export) {
     fn <- get(export, envir = getNamespace(package))
