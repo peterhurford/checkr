@@ -1,3 +1,7 @@
+#### v0.0.4.9004
+
+* `package_exports_checked` now can take a file path as well as a package name.
+
 #### v0.0.4.9003
 
 * Introduce `package_exports_checked`, which checks a package for whether all exported functions are checked using checkr (either have zero formals or are wrapped in `ensure` blocks).
