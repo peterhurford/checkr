@@ -20,5 +20,5 @@ test_that("for example, it doesn't work on checkr", {
 })
 
 test_that("it takes package paths", {
-  expect_false(package_exports_checked("../..", stop = FALSE))
+  expect_false(package_exports_checked("..", stop = FALSE))
 })
