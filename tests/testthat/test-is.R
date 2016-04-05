@@ -43,7 +43,7 @@ describe("custom matchers", {
     expect_true(c(1, 2, 3) %is% vector)
     expect_true(c("a", "b", "c") %is% vector)
     expect_true(c(a = "a", b = "b", c = "c") %is% vector)
-    expect_false(iris$Species %is% atomic)
+    expect_false(iris$Species %is% vector)
     expect_false(list(1, 2, 3) %is% vector)
     expect_false(iris %is% vector)
   })
