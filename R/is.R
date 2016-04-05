@@ -26,9 +26,6 @@
       match_object = match_object, logical(1))))
   }
 
-  if (identical(tolower(expected_class), "any")) {
-    return(TRUE)
-  }
 
   if (identical(expected_class, NULL)) {
     expected_class <- "NULL"
@@ -43,6 +40,9 @@
     expected_class <- "data.frame"
   }
 
+  if (identical(tolower(expected_class), "any")) {
+    return(TRUE)
+  }
   if (identical(expected_class, "simple_string")) {
     return(checkr::is.simple_string(match_object))
   }
@@ -57,6 +57,9 @@
   }
   if (identical(expected_class, "vector")) {
     return(is.vector(match_object) && !methods::is(match_object, "list"))
+  }
+  if (identical(expected_class, "atomic")) {
+    return(is.atomic(match_object))
   }
   methods::is(match_object, expected_class)
 }

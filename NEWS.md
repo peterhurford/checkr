@@ -1,3 +1,7 @@
+#### v0.0.4.9005
+
+* Added a matcher for atomic (e.g., `1 %is% atomic`).
+
 #### v0.0.4.9004
 
 * `package_exports_checked` now can take a file path as well as a package name.
