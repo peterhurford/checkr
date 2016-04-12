@@ -217,7 +217,7 @@ describe("missing arguments I", {
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
   test_that("silence I", {
-    expect_silent(fn(a = list(1), b = list(2)))
+    expect_silent(fn(list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order I", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
@@ -264,7 +264,7 @@ describe("missing arguments II", {
     expect_equal(list(1, 2, 1), fn(list(1), list(2)))
   })
   test_that("silence II", {
-    expect_silent(fn(a = list(1), b = list(2)))
+    expect_silent(fn(list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order II", {
     expect_equal(list(1, 2, 1), fn(b = list(2), a = list(1)))
@@ -316,7 +316,7 @@ describe("missing arguments III", {
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
   test_that("silence III", {
-    expect_silent(fn(a = list(1), b = list(2)))
+    expect_silent(fn(list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order III", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
@@ -368,7 +368,7 @@ describe("missing arguments IV", {
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
   test_that("silence IV", {
-    expect_silent(fn(a = list(1), b = list(2)))
+    expect_silent(fn(list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order IV", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
