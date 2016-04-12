@@ -240,6 +240,7 @@ describe("missing arguments II", {
   test_that("the function works II", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
+  test_that("the function works without names II", {
     expect_equal(list(1, 2, 3), fn(list(1), list(2), list(3)))
   })
   test_that("the function works with partial names II", {
@@ -265,7 +266,6 @@ describe("missing arguments II", {
   test_that("silence II", {
     expect_silent(fn(a = list(1), b = list(2)))
   })
-  test_that("the function works without names II", {
   test_that("c can be missing in the opposite order II", {
     expect_equal(list(1, 2, 1), fn(b = list(2), a = list(1)))
   })
