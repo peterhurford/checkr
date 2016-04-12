@@ -449,6 +449,65 @@ describe("missing arguments VI", {
   })
 })
 
+describe("finding formals", {
+  test_that("finding a global variable", {
+    fn <- checkr::ensure(pre = x %is% numeric, function(x) x)
+    a <- 12
+    expect_equal(12, fn(a))
+    a <- "a"
+    expect_error(fn(a), "x %is% numeric")
+  })
+  test_that("finding a base function", {
+    fn <- checkr::ensure(pre = x %is% "function", function(x) x)
+    expect_is(c, "function")
+    expect_equal(c, fn(c))
+  })
+  test_that("finding a function from another package", {
+    fn <- checkr::ensure(pre = x %is% "function", function(x) x)
+    expect_is(testthat::test_that, "function")
+    expect_equal(testthat::test_that, fn(testthat::test_that))
+  })
+  test_that("it can find a function - complex example", {
+    batch <- checkr::ensure(
+      pre = list(batch_fn %is% "function",
+        keys %is% atomic || keys %is% list,
+        size %is% numeric, size > 0, length(size) == 1, size %% 1 == 0,
+        combination_strategy %is% "function",
+        trycatch %is% logical,
+        retry %is% numeric, retry >= 0, retry %% 1 == 0),
+      function(batch_fn, keys, size = 50, combination_strategy = c,
+        trycatch = FALSE, retry = 0) {
+          function(...) {
+            list(result = combination_strategy(batch_fn(...)),
+              size = size,
+              flag = flag,
+              trycatch = trycatch,
+              retry = retry)
+          }
+      })
+      expect_silent(fn <- batch(function(x) x + 1, "x", size = 100))
+      expect_is(fn, "function")
+      target <- list(result = seq(2, 11), size = 100, trycatch = FALSE, retry = 0)
+      expect_equal(target, fn(seq(10)))
+    })
+
+  describe("threading", {
+    a <- 1
+    fn <- checkr::ensure(pre = x %is% numeric, function(x) x + 1)
+    fn2 <- checkr::ensure(pre = x %is% numeric, function(x) x + 2)
+    fn3 <- checkr::ensure(pre = x %is% numeric, function(x) x + 3)
+    test_that("threading one function up", {
+      expect_equal(2, fn(a))
+    })
+    test_that("threading two functions up", {
+      expect_equal(4, fn(fn2(a)))
+    })
+    test_that("threading three functions up", {
+      expect_equal(7, fn(fn2(fn3(a))))
+    })
+  })
+})
+
 describe("matching up multiple missing formals", {
   test_that("Simple example", {
     fn <- function(a = 1, b = 2, c = 3, flag = "add") {
