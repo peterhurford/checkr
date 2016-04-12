@@ -29,6 +29,6 @@ before_script:
   - Rscript -e 'if (!require("covr")) install.packages("covr", repos = "http://cran.rstudio.com/")'
   - Rscript -e 'devtools::install_deps(repos = "http://cran.rstudio.com", dependencies = TRUE)'
 script:
-  - Rscript -e 'r <- rcmdcheck::rcmdcheck(".", args = c("--no-manual")); l <- lintr::lint_package("."); print(l); quit(save = "no", status = if (length(c(r$errors, r$warnings, l)) > 1 || grepl("FAILED", r$output$stdout)) { 1 } else { 0 }, runLast = FALSE)'
+  - Rscript -e 'r <- rcmdcheck::rcmdcheck(".", args = c("--no-manual")); devtools::test(); l <- lintr::lint_package("."); print(l); quit(save = "no", status = if (length(c(r$errors, r$warnings, l)) > 1 || grepl("FAILED", r$output$stdout)) { 1 } else { 0 }, runLast = FALSE)'
 after_success:
   - Rscript -e 'library(covr);codecov()'
