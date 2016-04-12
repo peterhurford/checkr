@@ -30,7 +30,7 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
       names(args) <- head(formals, length(args))
     } else {
       empty_names <- vapply(names(args), checkr::is.empty, logical(1))
-      names(args)[empty_names] <- head(missing_formals, length(args))
+      names(args)[empty_names] <- head(missing_formals, sum(empty_names))
     }
 
     # Get all the non-empty arguments to impute missing arguments.
