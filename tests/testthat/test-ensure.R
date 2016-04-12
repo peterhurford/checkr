@@ -437,6 +437,41 @@ describe("missing arguments VI", {
   })
 })
 
+describe("matching up multiple missing formals", {
+  test_that("Simple example", {
+    fn <- function(a = 1, b = 2, c = 3, flag = "add") {
+      if (identical(flag, "add")) {
+        a + b + c
+      } else {
+        a - b - c
+      }
+    }
+    expect_equal(5, fn(1, c = 2))
+  })
+  test_that("More complex example", {
+    batch <- checkr::ensure(
+      pre = list(batch_fn %is% "function",
+        keys %is% atomic || keys %is% list,
+        size %is% numeric, size > 0, length(size) == 1, size %% 1 == 0,
+        trycatch %is% logical,
+        retry %is% numeric, retry >= 0, retry %% 1 == 0),
+      function(batch_fn, keys, size = 50, flag = "flag", trycatch = FALSE, retry = 0) {
+          function(...) {
+            list(result = batch_fn(...),
+              size = size,
+              flag = flag,
+              trycatch = trycatch,
+              retry = retry)
+          }
+      })
+    fn <- batch(function(x) x + 1, "x", flag = "truck")
+    expect_is(fn, "function")
+    target <- list(result = seq(2, 11), size = 50,
+      flag = "truck", trycatch = FALSE, retry = 0)
+    expect_equal(target, fn(seq(10)))
+  })
+})
+
 describe("printing calculates preconditions, postconditions, and the before_fn", {
   called_pre <- FALSE
   called_post <- FALSE
