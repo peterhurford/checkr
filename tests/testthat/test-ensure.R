@@ -216,6 +216,9 @@ describe("missing arguments I", {
     expect_equal(list(1, 2), fn(a = list(1), list(2)))
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
+  test_that("silence I", {
+    expect_silent(fn(a = list(1), b = list(2)))
+  })
   test_that("c can be missing in the opposite order I", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
@@ -237,7 +240,6 @@ describe("missing arguments II", {
   test_that("the function works II", {
     expect_equal(list(1, 2, 3), fn(a = list(1), b = list(2), c = list(3)))
   })
-  test_that("the function works without names II", {
     expect_equal(list(1, 2, 3), fn(list(1), list(2), list(3)))
   })
   test_that("the function works with partial names II", {
@@ -260,6 +262,10 @@ describe("missing arguments II", {
     expect_equal(list(1, 2, 1), fn(a = list(1), list(2)))
     expect_equal(list(1, 2, 1), fn(list(1), list(2)))
   })
+  test_that("silence II", {
+    expect_silent(fn(a = list(1), b = list(2)))
+  })
+  test_that("the function works without names II", {
   test_that("c can be missing in the opposite order II", {
     expect_equal(list(1, 2, 1), fn(b = list(2), a = list(1)))
   })
@@ -309,6 +315,9 @@ describe("missing arguments III", {
     expect_equal(list(1, 2), fn(a = list(1), list(2)))
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
+  test_that("silence III", {
+    expect_silent(fn(a = list(1), b = list(2)))
+  })
   test_that("c can be missing in the opposite order III", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
@@ -357,6 +366,9 @@ describe("missing arguments IV", {
     expect_equal(list(1, 2), fn(list(1), b = list(2)))
     expect_equal(list(1, 2), fn(a = list(1), list(2)))
     expect_equal(list(1, 2), fn(list(1), list(2)))
+  })
+  test_that("silence IV", {
+    expect_silent(fn(a = list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order IV", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
@@ -446,7 +458,8 @@ describe("matching up multiple missing formals", {
         a - b - c
       }
     }
-    expect_equal(5, fn(1, c = 2))
+    expect_silent(result <- fn(1, c = 2))
+    expect_equal(5, result)
   })
   test_that("More complex example", {
     batch <- checkr::ensure(
@@ -464,7 +477,7 @@ describe("matching up multiple missing formals", {
               retry = retry)
           }
       })
-    fn <- batch(function(x) x + 1, "x", flag = "truck")
+    expect_silent(fn <- batch(function(x) x + 1, "x", flag = "truck"))
     expect_is(fn, "function")
     target <- list(result = seq(2, 11), size = 50,
       flag = "truck", trycatch = FALSE, retry = 0)
