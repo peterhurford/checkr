@@ -10,7 +10,7 @@
 #' @return The original function, but also of class validated_function, with added validations.
 #' @export
 ensure <- function(checker_fn, preconditions = list(), postconditions = list()) {
-  if (is(checker_fn, "validated_function")) {
+  if (methods::is(checker_fn, "validated_function")) {
     stop("The function has already been validated.")
   }
   pre <- substitute(preconditions)
