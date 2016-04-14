@@ -490,19 +490,93 @@ describe("finding formals", {
       expect_equal(target, fn(seq(10)))
     })
 
-  describe("threading", {
+  describe("threading I - numerics", {
     a <- 1
     fn <- checkr::ensure(pre = x %is% numeric, function(x) x + 1)
     fn2 <- checkr::ensure(pre = x %is% numeric, function(x) x + 2)
     fn3 <- checkr::ensure(pre = x %is% numeric, function(x) x + 3)
-    test_that("threading one function up", {
+    fn4 <- checkr::ensure(pre = x %is% numeric, function(x) x + 4)
+    test_that("threading one function up - numerics", {
       expect_equal(2, fn(a))
     })
-    test_that("threading two functions up", {
+    test_that("threading two functions up - numerics", {
       expect_equal(4, fn(fn2(a)))
     })
-    test_that("threading three functions up", {
+    test_that("threading three functions up - numerics", {
       expect_equal(7, fn(fn2(fn3(a))))
+    })
+    test_that("threading four functions up - numerics", {
+      expect_equal(11, fn(fn2(fn3(fn4(a)))))
+    })
+  })
+  describe("threading I - dataframes", {
+    a <- iris
+    fn <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    fn2 <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    fn3 <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    fn4 <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    test_that("threading one function up - dataframes", {
+      expect_equal(iris, fn(iris))
+    })
+    test_that("threading two functions up - dataframes", {
+      expect_equal(iris, fn(fn2(iris)))
+    })
+    test_that("threading three functions up - dataframes", {
+      expect_equal(iris, fn(fn2(fn3(iris))))
+    })
+    test_that("threading four functions up - dataframes", {
+      expect_equal(iris, fn(fn2(fn3(iris))))
+    })
+  })
+  describe("threading II - numerics", {
+    fn1 <- function(x, y) {
+      fn2(x, y)
+    }
+    fn2 <- function(x, y) {
+      x <- fn3(x)
+      y <- fn3(y)
+      fn4(x, y)
+    }
+    fn3 <- checkr::ensure(pre = x %is% numeric, function(x) x + 3)
+    fn4 <- checkr::ensure(pre = list(x %is% numeric, y %is% numeric),
+      function(x, y) x + 4 + y + 4)
+    test_that("threading four functions up - numerics", {
+      expect_equal(16, fn1(1, 1))
+    })
+  })
+  describe("threading II - dataframes", {
+    fn1 <- function(x, y) {
+      fn2(x, y)
+    }
+    fn2 <- function(x, y) {
+      x <- fn3(x)
+      y <- fn3(y)
+      fn4(x, y)
+    }
+    fn3 <- checkr::ensure(pre = x %is% dataframe, function(x) head(x))
+    fn4 <- checkr::ensure(pre = list(x %is% dataframe, y %is% dataframe),
+      function(x, y) rbind(x, y))
+    test_that("threading four functions up - dataframes", {
+      expect_equal(rbind(head(iris), head(iris)), fn1(iris, iris))
+    })
+  })
+  describe("threading III - dataframes", {
+    fn1 <- function(x, y) {
+      fn2(x, y)
+    }
+    fn2 <- function(x, y) {
+      fn3(rbind(x, y), y)
+    }
+    fn3 <- function(x, y) {
+      x <- fn4(x)
+      y <- fn4(y)
+      fn5(x, y)
+    }
+    fn4 <- checkr::ensure(pre = x %is% dataframe, function(x) head(x))
+    fn5 <- checkr::ensure(pre = list(x %is% dataframe, y %is% dataframe),
+      function(x, y) rbind(x, y))
+    test_that("threading four functions up - dataframes", {
+      expect_equal(rbind(head(rbind(iris, iris)), head(iris)), fn1(iris, iris))
     })
   })
 })
