@@ -1,3 +1,8 @@
+#### v0.0.4.9006
+
+* Fixed the bug that prevented using function names in conditions or in arguments.
+* Fixed the bug that caused a warning when too many default arguments were assigned.
+
 #### v0.0.4.9005
 
 * Added a matcher for atomic (e.g., `1 %is% atomic`).
