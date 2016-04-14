@@ -2,6 +2,7 @@
 #'
 #' @param num numeric. The number to check.
 #' @param range numeric. A vector with one number specifying the lower-bound and another number specifying the upper-bound.
+#' @export
 `%within%` <- ensure(
   pre = list(num %is% numeric, length(num) == 1,
     range %is% vector, length(range) == 2, range %contains_only% numeric),
