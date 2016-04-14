@@ -15,7 +15,7 @@ get_testing_frame <- function(formals, frame) {
 #' @param fn function. A function to generate test objects for.
 #' @param frame list. A custom testing_frame to use, if necessary.
 function_test_objects <- function(fn, frame = NULL) {
-  if (is(fn, "validated_function")) {
+  if (methods::is(fn, "validated_function")) {
     preconditions <- preconditions(fn)
     if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
         preconditions <- list(preconditions)

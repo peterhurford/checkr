@@ -216,6 +216,9 @@ describe("missing arguments I", {
     expect_equal(list(1, 2), fn(a = list(1), list(2)))
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
+  test_that("silence I", {
+    expect_silent(fn(list(1), b = list(2)))
+  })
   test_that("c can be missing in the opposite order I", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
@@ -259,6 +262,9 @@ describe("missing arguments II", {
     expect_equal(list(1, 2, 1), fn(list(1), b = list(2)))
     expect_equal(list(1, 2, 1), fn(a = list(1), list(2)))
     expect_equal(list(1, 2, 1), fn(list(1), list(2)))
+  })
+  test_that("silence II", {
+    expect_silent(fn(list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order II", {
     expect_equal(list(1, 2, 1), fn(b = list(2), a = list(1)))
@@ -309,6 +315,9 @@ describe("missing arguments III", {
     expect_equal(list(1, 2), fn(a = list(1), list(2)))
     expect_equal(list(1, 2), fn(list(1), list(2)))
   })
+  test_that("silence III", {
+    expect_silent(fn(list(1), b = list(2)))
+  })
   test_that("c can be missing in the opposite order III", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
   })
@@ -357,6 +366,9 @@ describe("missing arguments IV", {
     expect_equal(list(1, 2), fn(list(1), b = list(2)))
     expect_equal(list(1, 2), fn(a = list(1), list(2)))
     expect_equal(list(1, 2), fn(list(1), list(2)))
+  })
+  test_that("silence IV", {
+    expect_silent(fn(list(1), b = list(2)))
   })
   test_that("c can be missing in the opposite order IV", {
     expect_equal(list(1, 2), fn(b = list(2), a = list(1)))
@@ -434,6 +446,174 @@ describe("missing arguments VI", {
   })
   test_that("second_flag can be missing in the opposite order VI", {
     expect_false(fn(flag = FALSE, fn = isTRUE))
+  })
+})
+
+describe("finding formals", {
+  test_that("finding a global variable", {
+    fn <- checkr::ensure(pre = x %is% numeric, function(x) x)
+    a <- 12
+    expect_equal(12, fn(a))
+    a <- "a"
+    expect_error(fn(a), "x %is% numeric")
+  })
+  test_that("finding a base function", {
+    fn <- checkr::ensure(pre = x %is% "function", function(x) x)
+    expect_is(c, "function")
+    expect_equal(c, fn(c))
+  })
+  test_that("finding a function from another package", {
+    fn <- checkr::ensure(pre = x %is% "function", function(x) x)
+    expect_is(testthat::test_that, "function")
+    expect_equal(testthat::test_that, fn(testthat::test_that))
+  })
+  test_that("it can find a function - complex example", {
+    batch <- checkr::ensure(
+      pre = list(batch_fn %is% "function",
+        keys %is% atomic || keys %is% list,
+        size %is% numeric, size > 0, length(size) == 1, size %% 1 == 0,
+        combination_strategy %is% "function",
+        trycatch %is% logical,
+        retry %is% numeric, retry >= 0, retry %% 1 == 0),
+      function(batch_fn, keys, size = 50, combination_strategy = c,
+        trycatch = FALSE, retry = 0) {
+          function(...) {
+            list(result = combination_strategy(batch_fn(...)),
+              size = size,
+              trycatch = trycatch,
+              retry = retry)
+          }
+      })
+      expect_silent(fn <- batch(function(x) x + 1, "x", size = 100))
+      expect_is(fn, "function")
+      target <- list(result = seq(2, 11), size = 100, trycatch = FALSE, retry = 0)
+      expect_equal(target, fn(seq(10)))
+    })
+
+  describe("threading I - numerics", {
+    a <- 1
+    fn <- checkr::ensure(pre = x %is% numeric, function(x) x + 1)
+    fn2 <- checkr::ensure(pre = x %is% numeric, function(x) x + 2)
+    fn3 <- checkr::ensure(pre = x %is% numeric, function(x) x + 3)
+    fn4 <- checkr::ensure(pre = x %is% numeric, function(x) x + 4)
+    test_that("threading one function up - numerics", {
+      expect_equal(2, fn(a))
+    })
+    test_that("threading two functions up - numerics", {
+      expect_equal(4, fn(fn2(a)))
+    })
+    test_that("threading three functions up - numerics", {
+      expect_equal(7, fn(fn2(fn3(a))))
+    })
+    test_that("threading four functions up - numerics", {
+      expect_equal(11, fn(fn2(fn3(fn4(a)))))
+    })
+  })
+  describe("threading I - dataframes", {
+    a <- iris
+    fn <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    fn2 <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    fn3 <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    fn4 <- checkr::ensure(pre = x %is% dataframe, function(x) x)
+    test_that("threading one function up - dataframes", {
+      expect_equal(iris, fn(iris))
+    })
+    test_that("threading two functions up - dataframes", {
+      expect_equal(iris, fn(fn2(iris)))
+    })
+    test_that("threading three functions up - dataframes", {
+      expect_equal(iris, fn(fn2(fn3(iris))))
+    })
+    test_that("threading four functions up - dataframes", {
+      expect_equal(iris, fn(fn2(fn3(iris))))
+    })
+  })
+  describe("threading II - numerics", {
+    fn1 <- function(x, y) {
+      fn2(x, y)
+    }
+    fn2 <- function(x, y) {
+      x <- fn3(x)
+      y <- fn3(y)
+      fn4(x, y)
+    }
+    fn3 <- checkr::ensure(pre = x %is% numeric, function(x) x + 3)
+    fn4 <- checkr::ensure(pre = list(x %is% numeric, y %is% numeric),
+      function(x, y) x + 4 + y + 4)
+    test_that("threading four functions up - numerics", {
+      expect_equal(16, fn1(1, 1))
+    })
+  })
+  describe("threading II - dataframes", {
+    fn1 <- function(x, y) {
+      fn2(x, y)
+    }
+    fn2 <- function(x, y) {
+      x <- fn3(x)
+      y <- fn3(y)
+      fn4(x, y)
+    }
+    fn3 <- checkr::ensure(pre = x %is% dataframe, function(x) head(x))
+    fn4 <- checkr::ensure(pre = list(x %is% dataframe, y %is% dataframe),
+      function(x, y) rbind(x, y))
+    test_that("threading four functions up - dataframes", {
+      expect_equal(rbind(head(iris), head(iris)), fn1(iris, iris))
+    })
+  })
+  describe("threading III - dataframes", {
+    fn1 <- function(x, y) {
+      fn2(x, y)
+    }
+    fn2 <- function(x, y) {
+      fn3(rbind(x, y), y)
+    }
+    fn3 <- function(x, y) {
+      x <- fn4(x)
+      y <- fn4(y)
+      fn5(x, y)
+    }
+    fn4 <- checkr::ensure(pre = x %is% dataframe, function(x) head(x))
+    fn5 <- checkr::ensure(pre = list(x %is% dataframe, y %is% dataframe),
+      function(x, y) rbind(x, y))
+    test_that("threading four functions up - dataframes", {
+      expect_equal(rbind(head(rbind(iris, iris)), head(iris)), fn1(iris, iris))
+    })
+  })
+})
+
+describe("matching up multiple missing formals", {
+  test_that("Simple example", {
+    fn <- function(a = 1, b = 2, c = 3, flag = "add") {
+      if (identical(flag, "add")) {
+        a + b + c
+      } else {
+        a - b - c
+      }
+    }
+    expect_silent(result <- fn(1, c = 2))
+    expect_equal(5, result)
+  })
+  test_that("More complex example", {
+    batch <- checkr::ensure(
+      pre = list(batch_fn %is% "function",
+        keys %is% atomic || keys %is% list,
+        size %is% numeric, size > 0, length(size) == 1, size %% 1 == 0,
+        trycatch %is% logical,
+        retry %is% numeric, retry >= 0, retry %% 1 == 0),
+      function(batch_fn, keys, size = 50, flag = "flag", trycatch = FALSE, retry = 0) {
+          function(...) {
+            list(result = batch_fn(...),
+              size = size,
+              flag = flag,
+              trycatch = trycatch,
+              retry = retry)
+          }
+      })
+    expect_silent(fn <- batch(function(x) x + 1, "x", flag = "truck"))
+    expect_is(fn, "function")
+    target <- list(result = seq(2, 11), size = 50,
+      flag = "truck", trycatch = FALSE, retry = 0)
+    expect_equal(target, fn(seq(10)))
   })
 })
 

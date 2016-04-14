@@ -6,6 +6,13 @@ test_that("simple errors", {
   expect_error(validate(iris %isnot% dataframe), "iris %isnot% dataframe")
 })
 
+test_that("functions", {
+  expect_true(validate(function(x) x %is% "function"))
+  expect_true(validate(c %is% "function"))
+  expect_true(validate(checkr:::validate %is% "function"))
+  expect_true(validate(testthat::test_that %is% "function"))
+})
+
 test_that("simple errors with complex objects", {
   expect_error(validate( (a ~ b + c) %isnot% formula),
     "(a ~ b + c) %isnot% formula", fixed = TRUE)
