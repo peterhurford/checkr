@@ -34,7 +34,8 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
     }
 
     # Get all the non-empty arguments to impute missing arguments.
-    default_args <- Filter(Negate(is.name), formals(checker_fn))
+    has_default_arg <- function(arg) { nchar(arg) > 0 || is.null(arg) }
+    default_args <- Filter(has_default_arg, formals(checker_fn))
     for (pos in seq_along(default_args)) {
       if (!(names(default_args)[[pos]] %in% names(args))) {
         args[[names(default_args)[[pos]]]] <- default_args[[pos]]
@@ -51,7 +52,7 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
     }
 
     # Run the preconditions
-    tryCatch(checkr:::validate_(pre, env = args),
+    tryCatch(checkr:::validate_(pre, env = lapply(args, eval)),
       error = function(e) {
         e <- as.character(e)
         flag <- "object '.*not found"

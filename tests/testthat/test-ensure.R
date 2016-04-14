@@ -480,7 +480,6 @@ describe("finding formals", {
           function(...) {
             list(result = combination_strategy(batch_fn(...)),
               size = size,
-              flag = flag,
               trycatch = trycatch,
               retry = retry)
           }
