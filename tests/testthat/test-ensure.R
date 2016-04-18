@@ -604,7 +604,7 @@ describe("finding formals", {
       })
     iris2 <- iris
     iris2$id <- seq(NROW(iris2))
-    iris3 <- iris2[sample(seq(NROW(iris2))),]
+    iris3 <- iris2[sample(seq(NROW(iris2))), ]
     expect_false(isTRUE(all.equal(iris2, iris3)))
     expect_true(isTRUE(all.equal(sanitize_data_frame(iris2), sanitize_data_frame(iris3))))
     class(iris2) <- c("custom_data", "data.frame")
