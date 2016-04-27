@@ -1,3 +1,7 @@
+#### v0.0.4.9007
+
+* Allow empty string to be a default argument in a validated function.
+
 #### v0.0.4.9006
 
 * Fixed the bug that prevented using function names in conditions or in arguments.
