@@ -99,6 +99,13 @@ describe("postconditions", {
     expect_equal(NULL, fn("a"))
     expect_equal(NULL, fn(NULL))
   })
+  
+  test_that("it works for an empty string", {
+    fn <- ensure(post = identical(result, ""), function(x) "")
+    expect_equal("", fn(1))
+    expect_equal("", fn("a"))
+    expect_equal("", fn(NULL))
+  })
 })
 
 describe("one without the other", {
@@ -449,6 +456,30 @@ describe("missing arguments VI", {
   })
   test_that("second_flag can be missing in the opposite order VI", {
     expect_false(fn(flag = FALSE, fn = isTRUE))
+  })
+})
+
+describe("default arguments", {
+  test_that("NULL can be a formal", {
+    fn <- checkr::ensure(
+      pre = list(x %is% numeric || is.null(x),
+                 y %is% numeric || is.null(y)),
+      function(x = NULL, y = NULL) list(x, y))
+    expect_equal(list(NULL, NULL), fn())
+  })
+  test_that("empty string can be a formal", {
+    fn <- checkr::ensure(
+      pre = list(x %is% numeric || identical(x, ""),
+                 y %is% numeric || identical(y, "")),
+      function(x = NULL, y = NULL) list(x, y))
+    expect_equal(list("", ""), fn())
+  })
+  test_that("NA can be a formal", {
+    fn <- checkr::ensure(
+      pre = list(x %is% numeric || is.na(x),
+                 y %is% numeric || is.na(y)),
+      function(x = NA, y = NA) list(x, y))
+    expect_equal(list(NA, NA), fn())
   })
 })
 
