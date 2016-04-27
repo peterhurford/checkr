@@ -471,7 +471,7 @@ describe("default arguments", {
     fn <- checkr::ensure(
       pre = list(x %is% numeric || identical(x, ""),
                  y %is% numeric || identical(y, "")),
-      function(x = NULL, y = NULL) list(x, y))
+      function(x = "", y = "") list(x, y))
     expect_equal(list("", ""), fn())
   })
   test_that("NA can be a formal", {

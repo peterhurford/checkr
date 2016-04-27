@@ -34,7 +34,7 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
     }
 
     # Get all the non-empty arguments to impute missing arguments.
-    has_default_arg <- function(arg) { nchar(arg) > 0 || is.null(arg) }
+    has_default_arg <- function(arg) { nchar(arg) > 0 || is.null(arg) || identical(arg, "") }
     default_args <- Filter(has_default_arg, formals(checker_fn))
     for (pos in seq_along(default_args)) {
       if (!(names(default_args)[[pos]] %in% names(args))) {
