@@ -1,5 +1,8 @@
 context("ensure")
 
+# Used for finding a formal test
+CONSTANT_NUMBER <- 10
+
 #' Generate a random string.
 #'
 #' @param length numeric. The length of the random string to generate.
@@ -456,6 +459,10 @@ describe("finding formals", {
     expect_equal(12, fn(a))
     a <- "a"
     expect_error(fn(a), "x %is% numeric")
+  })
+  test_that("finding a constant", {
+    fn <- checkr::ensure(pre = x %is% numeric, function(x) x)
+    expect_equal(10, fn(CONSTANT_NUMBER))
   })
   test_that("finding a base function", {
     fn <- checkr::ensure(pre = x %is% "function", function(x) x)
