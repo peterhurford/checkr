@@ -688,9 +688,26 @@ describe("matching up multiple missing formals", {
   })
 })
 
-test_that("lapply works", {
-  add_one <- checkr::ensure(pre = x %is% numeric, function(x) x + 1) 
-  expect_equal(seq(2, 6), lapply(seq(5), add_one))
+describe("splats", {
+  test_that("splat threading", {
+    fn <- checkr::ensure(pre = list(l %is% list, l %contains_only% numeric),
+      function(l) { sum(unlist(l)) })
+    fn2 <- function(...) { fn(list(...)) }
+    expect_equal(6, fn2(1, 2, 3))
+  })
+  test_that("splat returning", {
+    fn <- checkr::ensure(pre = f %is% "function",
+      function(f) { function(...) { f(unlist(list(...))) } })
+    expect_equal(6, fn(function(l) sum(unlist(l)))(1, 2, 3))
+  })
+  test_that("lapply works - long form", {
+    add_one <- checkr::ensure(pre = x %is% numeric, function(x) x + 1) 
+    expect_equal(seq(2, 6), unlist(lapply(seq(5), function(y) add_one(y))))
+  })
+  test_that("lapply works - short form", {
+    add_one <- checkr::ensure(pre = x %is% numeric, function(x) x + 1) 
+    expect_equal(seq(2, 6), unlist(lapply(seq(5), add_one)))
+  })
 })
 
 describe("printing calculates preconditions, postconditions, and the before_fn", {

@@ -175,6 +175,19 @@ describe("quickcheck", {
     test_that("NA is allowed", {
       quickcheck(ensure(post = result %is% NA, function(x) NA))
     })
+    test_that("it can layer postconditions", {
+      random_string <- ensure(
+        pre = list(length %is% numeric, length(length) == 1, length > 0, length < 1e7,
+          alphabet %is% list || alphabet %is% vector,
+          alphabet %contains_only% simple_string,
+          all(sapply(alphabet, nchar) == 1)),
+        post = list(nchar(result) == length, length(result) == 1, is.character(result)),
+        function(length, alphabet) {
+          paste0(sample(alphabet, length, replace = TRUE), collapse = "")
+        })
+      quickcheck(post = list(nchar(result) == length,
+        all(strsplit(result, "")[[1]] %in% alphabet)), random_string)
+    })
   })
 })
 
