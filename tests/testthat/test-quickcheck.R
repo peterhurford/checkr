@@ -169,6 +169,12 @@ describe("quickcheck", {
     test_that("NULL is allowed", {
       quickcheck(ensure(post = result %is% NULL, function(x) NULL))
     })
+    test_that("empty string is allowed", {
+      quickcheck(ensure(post = identical(result, ""), function(x) ""))
+    })
+    test_that("NA is allowed", {
+      quickcheck(ensure(post = result %is% NA, function(x) NA))
+    })
   })
 })
 
