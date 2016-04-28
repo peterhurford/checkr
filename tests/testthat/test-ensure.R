@@ -688,6 +688,11 @@ describe("matching up multiple missing formals", {
   })
 })
 
+test_that("lapply works", {
+  add_one <- checkr::ensure(pre = x %is% numeric, function(x) x + 1) 
+  expect_equal(seq(2, 6), lapply(seq(5), add_one))
+})
+
 describe("printing calculates preconditions, postconditions, and the before_fn", {
   called_pre <- FALSE
   called_post <- FALSE
