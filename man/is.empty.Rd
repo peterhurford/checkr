@@ -2,9 +2,12 @@
 % Please edit documentation in R/empty.R
 \name{is.empty}
 \alias{is.empty}
+\alias{is_empty}
 \title{Tests whether an object is empty.}
 \usage{
 is.empty(obj)
+
+is_empty(obj)
 }
 \arguments{
 \item{obj}{ANY. The object to test.}

@@ -1,6 +1,6 @@
 Package: checkr
 Title: Automatically Test R Functions
-Version: 0.0.4.9007
+Version: 0.0.4.9008
 Author: Peter Hurford <peter@peterhurford.com>
 Maintainer: Peter Hurford <peter@peterhurford.com>
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
