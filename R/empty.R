@@ -18,3 +18,7 @@ is.empty <- function(obj) {
   if (methods::is(obj, "list")) { return(all(vapply(obj, is.empty, logical(1)))) }
   suppressWarnings(is.na(obj) || is.null(obj) || NROW(obj) == 0 || obj == "")
 }
+
+#' @rdname is.empty
+#' @export
+is_empty <- is.empty
