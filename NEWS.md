@@ -1,6 +1,11 @@
-#### v0.0.4.9009
+#### v0.1.1
 
 * Add the ability to manually define a testing frame using an explicit precondition passed to `function_test_objects`, which is now exported. 
+
+## v0.1.0
+
+* Switch to stable versioning.
+
 
 #### v0.0.4.9008
 
