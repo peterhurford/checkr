@@ -12,17 +12,24 @@ get_testing_frame <- function(formals, frame) {
 
 
 #' Create the necessary testing objects to quickcheck a function.
+#'
 #' @param fn function. A function to generate test objects for.
+#' @param pre list. A list of explicit preconditions to pass, if desired.
 #' @param frame list. A custom testing_frame to use, if necessary.
-function_test_objects <- function(fn, frame = NULL) {
-  if (methods::is(fn, "validated_function")) {
-    preconditions <- preconditions(fn)
+#' @export
+function_test_objects <- function(fn = NULL, pre = NULL, frame = NULL) {
+  if (methods::is(fn, "validated_function") || !is.null(substitute(pre))) {
+    if (methods::is(fn, "validated_function")) {
+      preconditions <- preconditions(fn)
+      formals <- names(formals(checkr::get_prevalidated_fn(fn)))
+    } else {
+      preconditions <- substitute(pre)
+      formals <- "x"
+    }
     if (preconditions[[1]] != substitute(list) && is.call(preconditions)) {
         preconditions <- list(preconditions)
     }
     if (length(preconditions) > 1) { preconditions <- preconditions[-1] }
-    pre_fn <- checkr::get_prevalidated_fn(fn)
-    formals <- names(formals(pre_fn))
     if (length(formals) == 0) {
       stop("You cannot quickcheck a function with no arguments.")
     }
