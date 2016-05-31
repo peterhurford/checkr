@@ -1,3 +1,7 @@
+#### v0.0.4.9009
+
+* Add the ability to manually define a testing frame using an explicit precondition passed to `function_test_objects`, which is now exported. 
+
 #### v0.0.4.9008
 
 * Add `is_empty` as an alias for `is.empty`.
