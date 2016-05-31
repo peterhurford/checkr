@@ -1,3 +1,7 @@
+## v0.1.0
+
+* Switch to stable versioning.
+
 #### v0.0.4.9008
 
 * Add `is_empty` as an alias for `is.empty`.
