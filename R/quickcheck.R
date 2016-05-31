@@ -14,7 +14,7 @@ get_testing_frame <- function(formals, frame) {
 #' Create the necessary testing objects to quickcheck a function.
 #'
 #' @param fn function. A function to generate test objects for.
-#' @param preconditions list. A list of explicit preconditions to pass, if desired.
+#' @param pre list. A list of explicit preconditions to pass, if desired.
 #' @param frame list. A custom testing_frame to use, if necessary.
 #' @export
 function_test_objects <- function(fn = NULL, pre = NULL, frame = NULL) {

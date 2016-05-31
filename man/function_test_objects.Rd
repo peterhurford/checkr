@@ -9,9 +9,9 @@ function_test_objects(fn = NULL, pre = NULL, frame = NULL)
 \arguments{
 \item{fn}{function. A function to generate test objects for.}
 
-\item{frame}{list. A custom testing_frame to use, if necessary.}
+\item{pre}{list. A list of explicit preconditions to pass, if desired.}
 
-\item{preconditions}{list. A list of explicit preconditions to pass, if desired.}
+\item{frame}{list. A custom testing_frame to use, if necessary.}
 }
 \description{
 Create the necessary testing objects to quickcheck a function.
