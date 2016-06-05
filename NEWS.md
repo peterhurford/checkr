@@ -1,3 +1,7 @@
+#### v0.1.2
+
+* Fixed a bug where functions could not be used as formals.
+
 #### v0.1.1
 
 * Add the ability to manually define a testing frame using an explicit precondition passed to `function_test_objects`, which is now exported. 
