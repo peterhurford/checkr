@@ -481,6 +481,14 @@ describe("default arguments", {
       function(x = NA, y = NA) list(x, y))
     expect_equal(list(NA, NA), fn())
   })
+  test_that("function can be a formal", {
+    fn <- function() 4
+    fn2 <- checkr::ensure(
+      pre = list(x %is% numeric,
+                 y %is% numeric),
+      function(x = fn(), y = fn()) list(x, y))
+    expect_equal(list(4, 4), fn2())
+  })
 })
 
 describe("finding formals", {

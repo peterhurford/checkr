@@ -52,8 +52,10 @@ ensure <- function(checker_fn, preconditions = list(), postconditions = list()) 
     }
 
     # Run the preconditions
-    tryCatch(checkr:::validate_(pre, env = lapply(args, eval)),
-      error = function(e) {
+    tryCatch({
+      args <- lapply(args, function(expr) eval(expr, envir = parent.frame(3)))
+      checkr:::validate_(pre, env = args)
+    }, error = function(e) {
         e <- as.character(e)
         flag <- "object '.*not found"
         if (grepl(flag, e)) {
