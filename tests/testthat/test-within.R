@@ -53,14 +53,13 @@ test_that("quickcheck III", {
 })
 
 test_that("quickcheck vectorized", {
-  debugonce(checkr:::function_test_objects)
   checkr::quickcheck(checkr::ensure(
     pre = list(length(a) > 1,
       b %is% numeric, length(b) == 1,
       c %is% numeric, length(c) == 1,
-      all(a > b) && all(b < c)),
-    post = isTRUE(result),
+      all(a >= b) && all(b <= c)),
+    post = all(result),
     function (a, b, c) { a %within% c(b, c) })
   , frame = list(a = replicate(100, sample(seq(100)), simplify = FALSE),
-    b = sample(seq(1000)), c = sample(seq(1000))))
+    b = sample(seq(0, 100)), c = sample(seq(80, 1000))))
 })
