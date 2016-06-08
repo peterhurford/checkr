@@ -1,3 +1,7 @@
+#### v0.1.3
+
+* `%within%` is vectorized.
+
 #### v0.1.2
 
 * Fixed a bug where functions could not be used as formals.
