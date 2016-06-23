@@ -1,4 +1,4 @@
-context("pacakge_exports_checked")
+context("package_exports_checked")
 
 test_that("it passes when all exported functions are checked", {
   devtools::install("fakepackages/allexportedchecked")
