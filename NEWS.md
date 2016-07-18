@@ -1,3 +1,7 @@
+#### v0.1.4
+
+* Fix `is.empty` to work with vectorized input.
+
 #### v0.1.3
 
 * `%within%` is vectorized.

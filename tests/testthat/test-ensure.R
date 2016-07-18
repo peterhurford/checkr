@@ -100,7 +100,7 @@ describe("postconditions", {
     expect_equal(NULL, fn("a"))
     expect_equal(NULL, fn(NULL))
   })
-  
+
   test_that("it works for an empty string", {
     fn <- ensure(post = identical(result, ""), function(x) "")
     expect_equal("", fn(1))
