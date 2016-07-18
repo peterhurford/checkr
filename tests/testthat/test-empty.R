@@ -27,4 +27,5 @@ test_that("it is FALSE for everything else", {
   expect_false(is.empty(iris))
   expect_false(is.empty(list(NA, NULL, 1)))
   expect_false(is.empty(list(a = list(NA, NA), b = list(1, 2))))
+  expect_false(is.empty(c("", "a")))
 })

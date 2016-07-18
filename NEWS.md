@@ -1,3 +1,28 @@
+#### v0.1.4
+
+* Fix `is.empty` to work with vectorized input.
+
+#### v0.1.3
+
+* `%within%` is vectorized.
+
+#### v0.1.2
+
+* Fixed a bug where functions could not be used as formals.
+
+#### v0.1.1
+
+* Add the ability to manually define a testing frame using an explicit precondition passed to `function_test_objects`, which is now exported. 
+
+## v0.1.0
+
+* Switch to stable versioning.
+
+
+#### v0.0.4.9008
+
+* Add `is_empty` as an alias for `is.empty`.
+
 #### v0.0.4.9007
 
 * Allow empty string to be a default argument in a validated function.
@@ -27,15 +52,17 @@
 
 #### v0.0.4.9001
 
+
 * Prevent errors in testthat from the function name being too long.
 
-#### v0.0.4.9000
+## v0.0.4.9000
 
 * Resolve bugs with nesting quickchecks within quickchecks.
 * Allow a custom testing frame to be passed to quickcheck.
 * Add `%within%` as a helper to test membership within a numeric boundary.
 
-#### v0.0.3.9000
+
+## v0.0.3.9000
 
 * Validated functions now keep their formals instead of being coerced to splat.
 * Add Travis.

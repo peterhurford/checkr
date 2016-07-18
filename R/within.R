@@ -4,9 +4,9 @@
 #' @param range numeric. A vector with one number specifying the lower-bound and another number specifying the upper-bound.
 #' @export
 `%within%` <- ensure(
-  pre = list(num %is% numeric, length(num) == 1,
+  pre = list(num %is% numeric,
     range %is% vector, length(range) == 2, range %contains_only% numeric),
   post = result %is% logical,
   from <- function(num, range) {
-    num >= range[[1]] && num <= range[[2]]
+    num >= range[[1]] & num <= range[[2]]
   })

@@ -81,6 +81,10 @@ describe("testing frame", {
     testing_frame <- function_test_objects(class_matcher)
     expect_equal(sapply(testing_frame$x, class), sapply(testing_frame$y, class))
   })
+  test_that("the preconditions can be passed explicitly using pre", {
+    testing_frame <- function_test_objects(pre = x %is% list)[[1]]
+    expect_true(testing_frame %contains_only% list)
+  })
 })
 
 describe("custom testing frames", {

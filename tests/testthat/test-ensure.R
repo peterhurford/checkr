@@ -1,7 +1,8 @@
 context("ensure")
 
-# Used for finding a formal test
+# Used for testing the ability to find global formals
 CONSTANT_NUMBER <- 10
+global_fn <- function() 5
 
 #' Generate a random string.
 #'
@@ -99,7 +100,7 @@ describe("postconditions", {
     expect_equal(NULL, fn("a"))
     expect_equal(NULL, fn(NULL))
   })
-  
+
   test_that("it works for an empty string", {
     fn <- ensure(post = identical(result, ""), function(x) "")
     expect_equal("", fn(1))
@@ -480,6 +481,21 @@ describe("default arguments", {
                  y %is% numeric || is.na(y)),
       function(x = NA, y = NA) list(x, y))
     expect_equal(list(NA, NA), fn())
+  })
+  test_that("function can be a formal I", {
+    fn <- function() 4
+    fn2 <- checkr::ensure(
+      pre = list(x %is% numeric,
+                 y %is% numeric),
+      function(x = fn(), y = fn()) list(x, y))
+    expect_equal(list(4, 4), fn2())
+  })
+  test_that("function can be a formal II", {
+    fn2 <- checkr::ensure(
+      pre = list(x %is% numeric,
+                 y %is% numeric),
+      function(x = global_fn(), y = global_fn()) list(x, y))
+    expect_equal(list(5, 5), fn2())
   })
 })
 
