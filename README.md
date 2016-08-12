@@ -177,3 +177,5 @@ devtools::install_github("peterhurford/checkr")
 Inspired by [Cobra](http://cobra-language.com/).
 
 Similar to the [ensurer](https://github.com/smbache/ensurer) package (and I think these two packages would work well together), but I didn't remember that package existed until now.
+
+Also similar in syntax to [RDL](https://github.com/plum-umd/rdl) in Ruby, which I did not know about until months after I made this package.
