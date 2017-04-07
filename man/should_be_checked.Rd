@@ -12,4 +12,3 @@ should_be_checked(fn)
 \description{
 Functions should be checked as long as they have formals.
 }
-

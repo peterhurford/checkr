@@ -15,4 +15,3 @@ a call containing the postconditions.
 \description{
 Get the pre-validated function that is wrapped in validations.
 }
-

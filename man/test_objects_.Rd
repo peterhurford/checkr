@@ -12,4 +12,3 @@ test_objects_(objects)
 \description{
 Generates random R objects to be put into functions for testing purposes.
 }
-

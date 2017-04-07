@@ -18,4 +18,3 @@ either a logical or an error.
 \description{
 Checks if all exported functions in the package are checked using checkr.
 }
-

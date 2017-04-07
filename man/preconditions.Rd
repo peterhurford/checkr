@@ -15,4 +15,3 @@ a call containing the preconditions.
 \description{
 Get the stated preconditions of a validated function.
 }
-

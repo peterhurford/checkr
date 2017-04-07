@@ -30,4 +30,3 @@ If given a function of class \code{validated_function}, the pre- and post-condit
 be automatically inferred by the definition of the function. The test objects used to
 test the function will be screened ahead of time to ensure they meet the preconditions.
 }
-

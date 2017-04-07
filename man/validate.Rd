@@ -18,4 +18,3 @@ Validate checks that certain facts are true.
 \examples{
   validate(1 == 1, "a" \%is\% character, length(c(1, 2, 3)) == 3)
 }
-

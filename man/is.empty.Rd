@@ -28,4 +28,3 @@ Empty items are NULL, NA, or nothing (length 0).
   is.empty("")
   is.empty(data.frame())
 }
-

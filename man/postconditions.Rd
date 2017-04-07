@@ -15,4 +15,3 @@ a call containing the postconditions.
 \description{
 Get the stated postconditions of a validated function.
 }
-
