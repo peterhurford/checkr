@@ -12,4 +12,3 @@ list_classes(object)
 \description{
 Get all the classes within a list.
 }
-

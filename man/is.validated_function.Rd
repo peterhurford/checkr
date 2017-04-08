@@ -12,4 +12,3 @@ is.validated_function(fn)
 \description{
 Determine whether a function is checked with checkr.
 }
-

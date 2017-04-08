@@ -12,4 +12,3 @@ function_name(orig_function_name)
 \description{
 Get the name from a passed function, which may be a validated function or just a block.
 }
-

@@ -16,4 +16,3 @@ random_objs(objects, amount, list_max_length = 50)
 \description{
 Generate a vector or list of random objects from a particular set of possible choices.
 }
-

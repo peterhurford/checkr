@@ -16,4 +16,3 @@ function_test_objects(fn = NULL, pre = NULL, frame = NULL)
 \description{
 Create the necessary testing objects to quickcheck a function.
 }
-

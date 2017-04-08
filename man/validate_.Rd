@@ -16,4 +16,3 @@ the validate (though not the validate_) function.}
 \description{
 Validate without NSE.
 }
-

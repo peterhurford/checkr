@@ -24,4 +24,3 @@ Ensure checks that certain preconditions and postconditions of a function are tr
     post = list(result \%is\% numeric),
     function(x, y) { x + y })
 }
-

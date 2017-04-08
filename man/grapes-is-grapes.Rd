@@ -31,4 +31,3 @@ Test whether a match object is not a member of a particular class.
   "pizza" \%is\% simple_string
   list(a = "pizza", b = "pie") \%is\% c("character", "list")
 }
-

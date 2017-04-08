@@ -12,4 +12,3 @@ present(...)
 \description{
 This function is the opposite of missing.
 }
-

@@ -13,9 +13,9 @@ Depends:
 License: MIT + file LICENSE
 LazyData: true
 Imports:
+    memoise,
     methods
 Suggests:
     testthat,
-    memoise,
     devtools
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 6.0.1

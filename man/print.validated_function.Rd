@@ -14,4 +14,3 @@
 \description{
 Print validated functions more clearly.
 }
-

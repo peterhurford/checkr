@@ -2,8 +2,8 @@
 % Please edit documentation in R/contains.R
 \name{\%contains\%}
 \alias{\%contains\%}
-\alias{\%contains_only\%}
 \alias{\%does_not_contain\%}
+\alias{\%contains_only\%}
 \title{Test if a list contains some elements of the desired class.}
 \usage{
 match_list \%contains\% expected_class
@@ -38,4 +38,3 @@ Test if a list contains only elements of the desired class.
   list(1, 2, 3) \%contains_only\% numeric
   list(1, 2, "a") \%contains_only\% numeric
 }
-

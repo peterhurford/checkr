@@ -14,4 +14,3 @@ num \%within\% range
 \description{
 Define if a number is within a certain range.
 }
-

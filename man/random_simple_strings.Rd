@@ -18,4 +18,3 @@ random_simple_strings(amount, chars = TRUE, utf8 = FALSE, objects)
 \description{
 Generate a random simple string (i.e., a length-1 non-empty vector of characters).
 }
-

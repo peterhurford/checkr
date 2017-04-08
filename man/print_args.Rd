@@ -16,4 +16,3 @@ Print function arguments
 l <- list(x = seq(3), y = seq(4))
 checkr:::print_args(l)
 }
-

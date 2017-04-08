@@ -18,4 +18,3 @@ Because there are so many possible matricies, it seems easier to generate them o
 demand rather than preallocate all possible matricies into default_objects().
 We will then populate some random matricies onto default_objects() for later use.
 }
-
