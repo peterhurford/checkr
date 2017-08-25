@@ -161,7 +161,7 @@ describe("quickcheck", {
         function(x) { x + x + x + x + x + x + x + x + x }))
     })
     test_that("it errors if the testing frame is reduced to 0", {
-      impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
+      impossible_preconditions <- ensure(pre = list(x %is% character, x %is_not% character),
         identity)
       expect_error(quickcheck(impossible_preconditions), "impossible to satisfy")
     })

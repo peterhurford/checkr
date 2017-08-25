@@ -5,5 +5,5 @@
 #' @export
 present <- function(...) {
   try(get(deparse(substitute(...)),
-    envir = parent.frame(), inherits = FALSE), silent = TRUE) %isnot% "try-error"
+    envir = parent.frame(), inherits = FALSE), silent = TRUE) %is_not% "try-error"
 }

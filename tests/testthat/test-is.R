@@ -85,9 +85,9 @@ test_that("multiple matchers", {
   expect_true(structure("a", class = c("character", "numeric")) %is% c("character", "numeric"))
 })
 
-test_that("isnot negates is", {
-  expect_true("a" %isnot% numeric)
-  expect_true(1 %isnot% string)
-  expect_false(1 %isnot% numeric)
-  expect_false("a" %isnot% string)
+test_that("is_not negates is", {
+  expect_true("a" %is_not% numeric)
+  expect_true(1 %is_not% string)
+  expect_false(1 %is_not% numeric)
+  expect_false("a" %is_not% string)
 })

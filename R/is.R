@@ -67,9 +67,12 @@
 #' Test whether a match object is not a member of a particular class.
 #' @rdname grapes-is-grapes
 #' @export
-`%isnot%` <- function(match_object, expected_class) {
+`%is_not%` <- function(match_object, expected_class) {
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
   !(checkr:::`%is_%`(match_object, expected_class))
 }
+
+
+`%isnot%` <- `%is_not%`

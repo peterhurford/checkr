@@ -2,12 +2,12 @@
 % Please edit documentation in R/is.R
 \name{\%is\%}
 \alias{\%is\%}
-\alias{\%isnot\%}
+\alias{\%is_not\%}
 \title{Test for class membership}
 \usage{
 match_object \%is\% expected_class
 
-match_object \%isnot\% expected_class
+match_object \%is_not\% expected_class
 }
 \arguments{
 \item{match_object}{ANY. The object to test for class.}
