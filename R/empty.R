@@ -1,7 +1,7 @@
 #' Tests whether an object is empty.
 #'
 #' Empty items are NULL, NA, or nothing (length 0).
-#' 
+#'
 #' @param obj ANY. The object to test.
 #' @examples
 #'   is.empty(NULL)
