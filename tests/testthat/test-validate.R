@@ -14,7 +14,7 @@ test_that("functions", {
 })
 
 test_that("simple errors with complex objects", {
-  expect_error(validate( (a ~ b + c) %isnot% formula),
+  expect_error(validate((a ~ b + c) %isnot% formula),
     "(a ~ b + c) %isnot% formula", fixed = TRUE)
   expect_error(validate(c("a", "b") %is% simple_string),
     "c(\"a\", \"b\") %is% simple_string", fixed = TRUE)
