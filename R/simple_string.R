@@ -1,7 +1,7 @@
 #' Tests whether a string is simple.
 #'
 #' A simple string is an R object that is a length-1 vector of non-empty characters.
-#' 
+#'
 #' @param string character.
 #' @examples
 #'   is.simple_string("pizza")              # true

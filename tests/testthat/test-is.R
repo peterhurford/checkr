@@ -11,7 +11,7 @@ test_that("simple matchers", {
 test_that("more complex classes", {
   expect_true(iris %is% data.frame)
   expect_true(list(1, 2, 3) %is% list)
-  expect_true( (a ~ b + c) %is% formula)
+  expect_true((a ~ b + c) %is% formula)
 })
 
 test_that("complex class matching", {

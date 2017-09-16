@@ -157,8 +157,8 @@ describe("quickcheck", {
   })
   describe("unit tests", {
     test_that("it works on a long function", {
-      quickcheck(ensure(pre = x %is% numeric,
-        function(x) { x + x + x + x + x + x + x + x + x }))
+      suppressWarnings(quickcheck(ensure(pre = x %is% numeric,
+        function(x) { x + x + x + x + x + x + x + x + x })))
     })
     test_that("it errors if the testing frame is reduced to 0", {
       impossible_preconditions <- ensure(pre = list(x %is% character, x %isnot% character),
