@@ -5,6 +5,7 @@ test_that("it passes when all exported functions are checked", {
   expect_true(package_exports_checked("allexportedchecked"))
   expect_true(package_exports_checked("fakepackages/allexportedchecked"))
   remove.packages("allexportedchecked")
+  unloadNamespace("notallexportedchecked")
 })
 
 test_that("it fails when all exported functions are not checked", {
@@ -14,6 +15,7 @@ test_that("it fails when all exported functions are not checked", {
     "not checked by checkr: pending_identity")
   expect_false(package_exports_checked("fakepackages/notallexportedchecked", stop = FALSE))
   remove.packages("notallexportedchecked")
+  unloadNamespace("notallexportedchecked")
 })
 
 test_that("for example, it doesn't work on checkr", {
