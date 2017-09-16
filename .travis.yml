@@ -11,7 +11,7 @@ r_github_packages:
     - jimhester/lintr
     - jimhester/covr
 script:
-  - R -e 'r <- rcmdcheck::rcmdcheck(".", args = c("--no-manual")); l <- lintr::lint_package("."); print(l); devtools::test(); quit(save = "no", status = if (length(c(r$errors, r$warnings, l)) > 0) { 1 } else { 0 }, runLast = FALSE)'
+  - R -e 'r <- rcmdcheck::rcmdcheck(".", args = c("--no-manual")); l <- lintr::lint_package("."); print(l); devtools::install("."); devtools::test(); quit(save = "no", status = if (length(c(r$errors, r$warnings, l)) > 0) { 1 } else { 0 }, runLast = FALSE)'
 after_success:
   - R -e 'library(covr); coveralls()'
 env:
