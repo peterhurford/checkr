@@ -11,7 +11,7 @@
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
-  checkr:::contains_(match_list, expected_class, exclusive = FALSE)
+  contains_(match_list, expected_class, exclusive = FALSE)
 }
 
 #' Test if a list does not contain some elements of the desired class.
@@ -24,7 +24,7 @@
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
-  !checkr:::contains_(match_list, expected_class, exclusive = FALSE)
+  !contains_(match_list, expected_class, exclusive = FALSE)
 }
 
 #' Test if a list contains only elements of the desired class.
@@ -38,11 +38,11 @@
   if (is.name(substitute(expected_class))) {
     expected_class <- deparse(substitute(expected_class))
   }
-  checkr:::contains_(match_list, expected_class, exclusive = TRUE)
+  contains_(match_list, expected_class, exclusive = TRUE)
 }
 
 contains_ <- function(match_list, expected_class, exclusive) {
   if (checkr::is.empty(match_list)) { return(FALSE) }
   match_fn <- if (isTRUE(exclusive)) { all } else { any }
-  match_fn(vapply(match_list, checkr:::`%is_%`, expected_class = expected_class, logical(1)))
+  match_fn(vapply(match_list, `%is_%`, expected_class = expected_class, logical(1)))
 }
